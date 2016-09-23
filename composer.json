@@ -1,0 +1,14 @@
+{
+    "name": "lab1353/monkyz",
+    "description": "Dynamic Panel Admin",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniele Montecchi",
+            "email": "d.montecchi@yahoo.it"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
