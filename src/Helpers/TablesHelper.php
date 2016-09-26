@@ -50,12 +50,13 @@ class TablesHelper
 	{
 		$input_from_type = collect($this->input_from_type);
 		$input_from_name = collect($this->input_from_name);
-		$override = (!empty($this->override_db_configuration[$section]['fields'])) ? $this->override_db_configuration[$section]['fields'] : [];
+		$override_table = (!empty($this->override_db_configuration[$section]['fields'])) ? $this->override_db_configuration[$section]['fields'] : [];
 
 		if (empty($this->tables[$section]['fields'])) {
 			$columns = \DB::select('SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`=\''.$section.'\'');
 			foreach ($columns as $column) {
 				$c_name = $column->COLUMN_NAME;
+				$override = (!empty($override_table[$c_name])) ? $override_table[$c_name] : [];
 
 				$c_title = ucwords(str_replace('_', ' ', $c_name));
 				if (isset($override['title'])) $c_title = $override['title'];
@@ -71,35 +72,36 @@ class TablesHelper
 				}
 				if (empty($c_input)) {
 					$c_input = $input_from_name->search(function ($value, $key) use ($c_name) {
-						//dump('key: '.$key.'|value: '.implode(',', $value).'| c_name:'.$c_name.'| return:'.in_array($c_name, $value));
 						return in_array($c_name, $value);
 					});
 				}
 				if (empty($c_input)) {
 					$c_input = $input_from_type->search(function ($value, $key) use ($c_type) {
-						//dump('key: '.$key.'|value: '.implode(',', $value).'| c_name:'.$c_type.'| return:'.in_array($c_type, $value));
 						return in_array($c_type, $value);
 					});
 				}
 				if (empty($c_input)) $c_input = 'text';
-				if (isset($override[$c_name]['input'])) $c_input = $override[$c_name]['input'];
+				if (isset($override['input'])) $c_input = $override['input'];
 
 				// relationships
-				$source_table = '';
-				$source_field = '';
-				if ($c_input=='select') {
+				$source_table = (isset($override['source_table'])) ? $override['source_table'] : '';
+				$source_field = (isset($override['source_field'])) ? $override['source_field'] : '';
+				if ($c_input=='select' && empty($source_table)) {
 					$c_title = str_replace(' Id', '', $c_title);
 					$st = str_plural(str_replace('_id', '', $c_name));
 					if (!empty($this->tables[$st])) {
 						$source_table = $st;
-						$this->getColumns($st);
-						$sfs = $this->tables[$st]['fields'];
 
-						if (!empty($sfs)) {
-							foreach ($sfs as $sf=>$sfp) {
-								if ($sfp['input']=='text') {
-									$source_field = $sf;
-									break;
+						if (empty($source_field)) {
+							$this->getColumns($st);
+							$sfs = $this->tables[$st]['fields'];
+
+							if (!empty($sfs)) {
+								foreach ($sfs as $sf=>$sfp) {
+									if ($sfp['input']=='text') {
+										$source_field = $sf;
+										break;
+									}
 								}
 							}
 						}
@@ -114,10 +116,10 @@ class TablesHelper
 				if ($c_required && is_null($c_default)) $c_default = ($c_input=='numeric') ? 0 : '';
 
 				$c_in_list = (!in_array($c_type, ['key','text']));
-				if (isset($override[$c_name]['in_list'])) $c_in_list = $override[$c_name]['in_list'];
+				if (isset($override['in_list'])) $c_in_list = $override['in_list'];
 
 				$c_in_edit = (!in_array($c_type, ['key']));
-				if (isset($override[$c_name]['in_edit'])) $c_in_edit = $override[$c_name]['in_edit'];
+				if (isset($override['in_edit'])) $c_in_edit = $override['in_edit'];
 
 				$fields[$c_name] = [
 					'title'	=> $c_title,

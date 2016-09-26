@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
+use Illuminate\Support\Facades\Route;
 
 class MonkyzController extends Controller
 {
@@ -20,6 +21,13 @@ class MonkyzController extends Controller
     	$this->htables = new HTables();
 		$tables = $this->htables->getTables();
 
-    	view()->share(compact('monkyz_assets', 'tables'));
+		// route name
+		$section_name = \Request::path();
+		$section_name = str_replace(config('lab1353.monkyz.main.prefix').'/', '', $section_name);
+		while (strpos($section_name, '/')!==false) {
+			$section_name = dirname($section_name);
+		}
+
+    	view()->share(compact('monkyz_assets', 'tables', 'section_name'));
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
 				<div class="row">
 					<div class="col-lg-12">
-						<h1 class="page-header">{{ $table['title'] }} <small>&gt;</small> list</h1>
+						<h1 class="page-header">{{ $table['title'] }} <small>list</small></h1>
 					</div>
 				</div>
 
@@ -17,7 +17,7 @@
 											<th>{{ $params['title'] }}</th>
 										@endif
 									@endforeach
-									<th>Actions</th>
+									<th align="right">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -28,7 +28,7 @@
 												{!! Lab1353\Monkyz\Helpers\FieldsHelper::renderInList($params, $record[$field]) !!}
 											@endif
 										@endforeach
-										<td>
+										<td align="right">
 											<a href="{{ route('monkyz.dynamic.edit', [ 'id'=>$record['id'], 'section'=>$section ]) }}" class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i> Edit</a>
 											<a href="" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> Delete</a>
 										</td>

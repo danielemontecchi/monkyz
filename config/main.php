@@ -44,42 +44,6 @@ return [
 	 * ]
 	 */
 	'override_db_configuration'	=> [
-		'crimes'	=> [
-			'icon'	=> 'fa fa-user-secret',
-			'fields'	=> [
-				'source'	=> [
-					'input'	=> 'url',
-				],
-				'image'	=> [
-					'in_list'	=> false,
-				],
-				'image_url'	=> [
-					'title'	=> 'Image',
-					'input'	=> 'image',
-				],
-				'latitude'	=> [
-					'in_list'	=> false,
-				],
-				'longitude'	=> [
-					'in_list'	=> false,
-				],
-				'address'	=> [
-					'in_list'	=> false,
-				],
-				'created_at'	=> [
-					'in_list'	=> false,
-					'in_edit'	=> false,
-				],
-				'updated_at'	=> [
-					'in_list'	=> false,
-					'in_edit'	=> false,
-				],
-				'deleted_at'	=> [
-					'in_list'	=> false,
-					'in_edit'	=> false,
-				],
-			],
-		],
 		'migrations'	=> [
 			'visible'	=> false,
 		],
