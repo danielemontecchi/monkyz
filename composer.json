@@ -1,6 +1,7 @@
 {
     "name": "lab1353/monkyz",
     "description": "Dynamic Panel Admin",
+    "keywords": ["laravel", "admin", "panel", "dynamic"],
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -10,5 +11,13 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/support": "5.1.x|5.2.x|5.3.x"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    }
 }

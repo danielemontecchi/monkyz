@@ -8,6 +8,7 @@
                 </button>
                 <a href="{{ route('monkyz.dashboard') }}" class="navbar-brand">
                 	<img src="{{ $monkyz_assets }}images/logo/monkyz_24.png" /> Monkyz
+                	<small>for {{ parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST) }}</small>
                 </a>
             </div>
             <!-- /.navbar-header -->

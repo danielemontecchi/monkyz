@@ -6,16 +6,17 @@
 @color_gray_dark: lighten(#000, 20%);
 @color_gray: lighten(#000, 33.5%);
 @color_gray_light: lighten(#000, 60%);
-@color_gray_lighter: lighten(#000, 93.5%);
-@color_gray_lightest: lighten(#000, 97.25%);
+@color_gray_lighter: lighten(#000, 90%); // lighten(#000, 93.5%);
+@color_gray_lightest: lighten(#000, 95%);
 @color_green: #7AC29A;
 @color_orange: #F3BB45;
 @color_white: #FFFFFF;
 
-@body_background: @color_gray_lightest;
-@border_color: @color_gray_light;
-@link_color: @color_green;
-@toolbar_background: @color_white;
+@body_background: @color_white;
+@border_color: lighten(#000, 80%);
+@link_color: @color_gray;
+@toolbar_background: @color_gray_lighter;
+@sidebar_background: @color_gray_lightest;
 
 @brand-primary: @color_green;
 @brand-success: #5cb85c;
@@ -62,7 +63,7 @@ a {
         position: inherit;
         margin: 0 0 0 250px;
         padding: 0 10px;
-        border-left: 1px solid darken(@color_gray_lightest, 6.5%);
+        border-left: 1px solid @border_color;
     }
 }
 
@@ -73,6 +74,10 @@ a {
 .navbar-default {
 	background-color: @toolbar_background;
 
+	&.sidebar {
+		background-color: @sidebar_background;
+	}
+
 	.navbar-brand {
 		text-transform: uppercase;
 		color: @color_gray_dark;
@@ -80,6 +85,14 @@ a {
 
 		img {
 			display: inline;
+		}
+
+		small {
+			text-transform: none;
+			font-size: 0.6em;
+			font-style: italic;
+			padding-left: 10px;
+			color: lighten(@color_gray_dark, 30%);
 		}
 	}
 }
@@ -156,7 +169,7 @@ a {
 }
 
 .sidebar ul li {
-    border-bottom: 1px solid darken(@color_gray_lightest, 6.5%);
+    border-bottom: 1px solid @border_color;
     a {
         &.active {
             background-color: @color_gray_lighter;
@@ -240,6 +253,17 @@ a {
     color: white;
 }
 
+// Table
+
+table {
+	tbody tr td {
+		img {
+			max-width: 50px;
+			max-height: 50px;
+		}
+	}
+}
+
 // Chat Widget
 
 .chat {
@@ -251,7 +275,7 @@ a {
 .chat li {
     margin-bottom: 10px;
     padding-bottom: 5px;
-    border-bottom: 1px dotted @color_gray_light;
+    border-bottom: 1px dotted @border_color;
 }
 
 .chat li.left .chat-body {
@@ -358,7 +382,7 @@ table.dataTable thead .sorting:after {
 .show-grid [class^="col-"] {
     padding-top: 10px;
     padding-bottom: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid @border_color;
     background-color: #eee !important;
 }
 
