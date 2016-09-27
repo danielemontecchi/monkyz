@@ -1,8 +1,6 @@
 <?php
 
 return [
-	'version'	=> '0.1-dev',
-
 	'prefix'	=> 'monkyz',	// prefix of url for access at Monkyz
 
 	'input_from_type'	=> [

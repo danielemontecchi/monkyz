@@ -12,12 +12,12 @@
     ],
     "minimum-stability": "dev",
     "require": {
-		"laravel/framework": "5.*",
-        "illuminate/support": "5.1.x|5.2.x|5.3.x"
+		"laravel/framework": "5.2",
+        "illuminate/support": "5.2.x|5.3.x"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1-dev"
+            "dev-master": "1.0.0-dev"
         }
     }
 }

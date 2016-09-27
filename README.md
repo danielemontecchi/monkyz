@@ -11,6 +11,7 @@ It adapts to existing database by creating a full CRUD management for any table.
 No configuration required: without writing a single line of code, your control panel is ready for use.
 
 ## Table of Contents
+
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Credits](#credits)
