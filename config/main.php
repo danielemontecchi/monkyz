@@ -4,16 +4,19 @@ return [
 	'prefix'	=> 'monkyz',	// prefix of url for access at Monkyz
 
 	'input_from_type'	=> [
+		'checkbox'	=> ['boolean'],
 		'date'	=> ['date'],
-		'datetime'	=> ['timestamp','datetime'],
+		'datetime'	=> ['date','datetime','time','timestamp','year'],
 		'hidden'	=> ['key'],
-		'numeric'	=> ['int'],
-		'text'	=> ['varchar'],
-		'textarea'	=> ['text'],
+		'numeric'	=> ['tinyint','smallint','int','mediumint','bigint','decimal','float','double','real','bit','serial'],
+		'select'	=> ['enum'],
+		'text'	=> ['char','varchar'],
+		'textarea'	=> ['tinytext','mediumtext','text','longtext','tinyblob','mediumblob','blob','longblob'],
 	],
 
 	'input_from_name'	=> [
 		'checkbox'	=> ['visible','enabled'],
+		'color'	=> ['color'],
 		'email'	=> ['email'],
 		'hidden'	=> ['id','created_at','updated_at','deleted_at'],
 		'image'	=> ['image'],
@@ -21,6 +24,8 @@ return [
 		'tel'	=> ['tel','fax','telephone'],
 		'url'	=> ['url'],
 	],
+
+	'fields_name_hide_in_edit'	=> ['created_at','updated_at','deleted_at'],
 
 	/**
 	 * Override the dynamic db configuration
@@ -33,10 +38,16 @@ return [
 	 *			'field_name'	=> [	// name of field in db
 	 *				'title'	=> 'Column',	// title of column
 	 *				'input'	=> 'text',	// input tag type
-	 *				'source_table'	=> 'table2',	// name of relationship's table
-	 *				'source_field'	=> 'name',	// name of string of relationship's table
 	 *				'in_list'	=> true,	// visibility in list
 	 *				'in_edit'	=> true,	// visibility in edit and add
+	 *				'source'	=> [	// info of relationship
+	 *					'table'	=> 'table2',	// name of relationship's table
+	 *					'field_value'	=> 'id',	// name of value field of relationship's table
+	 *					'field_text'	=> 'name',	// name of text field of relationship's table
+	 *				],
+	 *				'attributes'	=> [	// array of extra attributes of field
+	 *					'class'	=> 'mycss'
+	 *				]
 	 *			]
 	 *		]
 	 * ]

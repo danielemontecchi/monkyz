@@ -43,99 +43,67 @@ class FieldsHelper
 		return $echo;
 	}
 
-	private static function renderCheckbox($params, $name, $value, $inList = true)
+	private static function renderCheckbox($params, $name, $value)
 	{
-		if ($inList) {
-			return  '<i class="fa fa-2x '.($value ? 'fa-check-circle text-success' : 'fa-times-circle text-danger').'" aria-hidden="true"></i>';
+		return  '<i class="fa fa-2x '.($value ? 'fa-check-circle text-success' : 'fa-times-circle text-danger').'" aria-hidden="true"></i>';
+	}
+
+	private static function renderDate($params, $name, $value)
+	{
+		if (!empty($value)) {
+			$dt = new Carbon($value);
+			$dt->timezone = config('app.timezone');
+			return $dt->toDateString();
 		} else {
 			return '';
 		}
 	}
 
-	private static function renderDate($params, $name, $value, $inList = true)
+	private static function renderDatetime($params, $name, $value)
 	{
-		if ($inList) {
-			if (!empty($value)) {
-				$dt = new Carbon($value);
-				$dt->timezone = config('app.timezone');
-				return $dt->toDateString();
-			} else {
-				return '';
-			}
+		if (!empty($value)) {
+			$dt = new Carbon($value);
+			$dt->timezone = config('app.timezone');
+			return $dt->toDateTimeString();
 		} else {
 			return '';
 		}
 	}
 
-	private static function renderDatetime($params, $name, $value, $inList = true)
+	private static function renderImage($params, $name, $value)
 	{
-		if ($inList) {
-			if (!empty($value)) {
-				$dt = new Carbon($value);
-				$dt->timezone = config('app.timezone');
-				return $dt->toDateTimeString();
-			} else {
-				return '';
-			}
-		} else {
-			return '';
-		}
+		return '<img src="'.$value.'" class="img-responsive img-thumbnail" />';
 	}
 
-	private static function renderImage($params, $name, $value, $inList = true)
+	private static function renderNumber($params, $name, $value)
 	{
-		if ($inList) {
-			return '<img src="'.$value.'" class="img-responsive img-thumbnail" />';
-		} else {
-			return '';
-		}
+		$decimal = strlen(substr(strrchr($value, "."), 1));
+		$locale = localeconv();
+		return number_format($value, $decimal, $locale['decimal_point'], $locale['thousands_sep']);
 	}
 
-	private static function renderNumber($params, $name, $value, $inList = true)
+	private static function renderSelect($params, $name, $value)
 	{
-		if ($inList) {
-			$decimal = strlen(substr(strrchr($value, "."), 1));
-			$locale = localeconv();
-			return number_format($value, $decimal, $locale['decimal_point'], $locale['thousands_sep']);
-		} else {
-			return '';
-		}
+    	$model = new DynamicModel;
+		$model->setTable($params['source']['table']);
+		$field_value = $params['source']['field_value'];
+    	$record = $model->where($field_value, $value)->first();
+    	if (!empty($record)) {
+	    	$field_text = $params['source']['field_text'];
+
+			return  $record->$field_text;
+    	} else {
+    		return '';
+    	}
 	}
 
-	private static function renderSelect($params, $name, $value, $inList = true)
+	private static function renderText($params, $name, $value)
 	{
-		if ($inList) {
-	    	$model = new DynamicModel;
-			$model->setTable($params['source_table']);
-	    	$records = $model->find($value);
-	    	if (!empty($records)) {
-	    		$record = $records->first();
-		    	$field = $params['source_field'];
-
-				return  $record->$field;
-	    	} else {
-	    		return '';
-	    	}
-		} else {
-			return '';
-		}
+		return  str_limit($value, 30);
 	}
 
-	private static function renderText($params, $name, $value, $inList = true)
+	private static function renderUrl($params, $name, $value)
 	{
-		if ($inList) {
-			return  str_limit($value, 30);
-		} else {
-			return '';
-		}
-	}
-
-	private static function renderUrl($params, $name, $value, $inList = true)
-	{
-		if ($inList) {
-			return '<a href="'.$value.'" title="'.$value.'" target="_blank">'.str_limit($value, 30).'</a>';
-		} else {
-			return '';
-		}
+		return '<a href="'.$value.'" title="'.$value.'" target="_blank">'.str_limit($value, 30).'</a>';
 	}
 }

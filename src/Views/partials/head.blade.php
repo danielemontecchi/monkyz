@@ -13,11 +13,19 @@
 <!-- MetisMenu CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/1.1.3/metisMenu.min.css" rel="stylesheet">
 
-<!-- Custom CSS -->
-<link href="{{ $monkyz_assets }}css/monkyz.min.css" rel="stylesheet">
+<!-- Goolge Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
 
 <!--  Fonts and icons     -->
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+@if(!empty($scripts['datatables']))
+	<!--  Datatables     -->
+	<link href="//cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css" rel="stylesheet">
+@endif
+
+<!-- Custom CSS -->
+<link href="{{ $monkyz_assets }}css/monkyz.min.css" rel="stylesheet">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>

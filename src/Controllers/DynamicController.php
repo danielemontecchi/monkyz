@@ -2,6 +2,7 @@
 
 namespace Lab1353\Monkyz\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -26,25 +27,117 @@ class DynamicController extends MonkyzController
 		}
 	}
 
-    public function getList($section)
-    {
-    	$model = new DynamicModel;
+	public function getList($section)
+	{
+		$model = new DynamicModel;
 		$model->setTable($section);
-    	$records = $model->get()->toArray();
+		$records = $model->get()->toArray();
 
-    	return view('monkyz::dynamic.list')->with(compact('records'));
-    }
+		// datatables
+		$dt = '
+		$(document).ready(function(){
+			$(".table").DataTable( {';
 
-    public function getEdit($section, $id=0)
-    {
-    	$model = new DynamicModel;
+		if(\App::getLocale()=='it') {
+			$dt.='
+				"language": {
+					"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Italian.json"
+				},';
+		}
+		$i = 0;
+		$dt_order = '';
+		$dt .= '"columns": [ ';
+		foreach ($this->htables->getColumns($section) as $column=>$params) {
+			if ($params['in_list']) {
+				$dt .= '{"orderable": true}, ';
+				if ($params['input']=='text' && empty($dt_order)) {
+					$dt_order .= '
+						"order": [[ '.$i.', "asc" ]],
+					';
+				}
+				$i++;
+			}
+		}
+		$dt .= '{"orderable": false} ],
+			'.$dt_order;
+
+		$dt .= '
+			});
+		});
+		';
+
+		$scripts['datatables'] = $dt;
+
+
+		return view('monkyz::dynamic.list')->with(compact('records', 'scripts'));
+	}
+
+	public function getEdit($section, $id=0)
+	{
+		$fields = $this->htables->getColumns($section);
+
+		$model = new DynamicModel;
 		$model->setTable($section);
 		if ($id>0) {
-    		$record = $model->find($id);
+			$record = $model->find($id);
 		} else {
 			$record = $model;
+
+			foreach ($fields as $field=>$params) {
+				if (!empty($params['default'])) {
+					$record->$field = $params['default'];
+				}
+			}
 		}
 
-    	return view('monkyz::dynamic.edit')->with(compact('record'));
-    }
+		return view('monkyz::dynamic.edit')->with(compact('record', 'fields'));
+	}
+
+	public function postSave(Request $request, $section)
+	{
+		$data = $request->all();
+
+		if (!empty($data)) {
+			$fields = $this->htables->getColumns($section);
+			$field_key = 'id';
+			foreach ($fields as $field=>$params) {
+				if ($params['type']=='key') {
+					$field_key = $field;
+					break;
+				}
+			}
+
+			$model = new DynamicModel;
+			$model->setTable($section);
+
+			$record = (!empty($data[$field_key])) ? $model->find($data[$field_key]) : $model;
+			foreach ($fields as $field=>$params) {
+				if ($params['in_edit']) {
+					if (in_array($params['input'], ['date','datetime'])) {
+						$dt = new Carbon($data[$field]);
+						$record->$field = $dt;
+					} else {
+						$record->$field = $data[$field];
+					}
+				}
+			}
+
+			if ($record->save()) {
+				return redirect()
+					->route('monkyz.dynamic.list', compact('section'))
+					->with('success', 'You have successfully Saved!')
+				;
+			} else {
+				return redirect()
+					->back()
+					->with('error', 'There were errors in saving!')
+				;
+			}
+		} else {
+			return redirect()
+				->back()
+				->with('error', 'No data received!')
+			;
+		}
+	}
 }

@@ -5,9 +5,9 @@
 
 ---
 
-**Monkyz** is a dynamic administrative panel to *Laravel 5.x* .
+**Monkyz** is a dynamic and autonomous Administration Panel for *Laravel 5.x* .
 
-It adapts to existing database by creating a full CRUD management for any table.
+It adapts to existing database by creating a full CRUD management for any table existing.
 No configuration required: without writing a single line of code, your control panel is ready for use.
 
 ## Table of Contents
@@ -46,11 +46,13 @@ The file `config/lab1353/monkyz/main.php` contains the configuration details of 
 - `prefix`: prefix of url for access at **Monkyz**
 - `input_from_type`: array to find the relative input according to the field type defined on the database
 - `input_from_name`: array to find the relative input according to the name of field
+- `fields_name_hide_in_edit`: array of field's name that will be hidden in edit (such as: created_at, updated_at, deleted_at)
 - `override_db_configuration`: parameter to overwrite dynamic configuration of tables and database fields
 
 ### Parameter `override_db_configuration`
 
 This parameter overrides the dynamic configuration of tables and fields.
+The array structure looks like:
 
 ```php
  'table_name'	=> [	// name of table in db
@@ -61,10 +63,16 @@ This parameter overrides the dynamic configuration of tables and fields.
  		'field_name'	=> [	// name of field in db
  			'title'	=> 'Column',	// title of column
  			'input'	=> 'text',	// input tag type
- 			'source_table'	=> 'table2',	// name of relationship's table
- 			'source_field'	=> 'name',	// name of string of relationship's table
  			'in_list'	=> true,	// visibility in list
  			'in_edit'	=> true,	// visibility in edit and add
+			'source'	=> [	// info of relationship
+				'table'	=> 'table2',	// name of relationship's table
+				'field_value'	=> 'id',	// name of value field of relationship's table
+				'field_text'	=> 'name',	// name of text field of relationship's table
+			],
+			'attributes'	=> [	// array of extra attributes of field
+				'class'	=> 'mycss'
+			]
  		]
  	]
  ]

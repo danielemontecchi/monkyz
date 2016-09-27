@@ -1,7 +1,7 @@
 {
     "name": "lab1353/monkyz",
-    "description": "Dynamic Panel Admin for Laravel 5",
-    "keywords": ["laravel", "admin", "panel", "dynamic"],
+    "description": "Dynamic and autonomous Administration Panel for Laravel 5",
+    "keywords": ["laravel", "laravel5", "admin", "panel", "dynamic", "autonomous", "crud"],
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -17,7 +17,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.0-dev"
+            "dev-master": "1.0.x-dev"
         }
     }
 }

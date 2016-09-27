@@ -1,9 +1,14 @@
 @extends('monkyz::layouts.monkyz')
 
 @section('content')
-				<div class="row">
-					<div class="col-lg-12">
-						<h1 class="page-header">{{ $table['title'] }} <small>list</small></h1>
+				<div class="row page-header">
+					<div class="col-lg-8">
+						<h1>{{ $table['title'] }} <small>list</small></h1>
+					</div>
+					<div class="col-lg-4 text-right">
+						<a href="{{ route('monkyz.dynamic.add', compact('section')) }}" class="btn btn-success">
+							<i class="fa fa-plus" aria-hidden="true"></i>Create
+						</a>
 					</div>
 				</div>
 

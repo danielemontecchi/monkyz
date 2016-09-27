@@ -84,23 +84,31 @@ class TablesHelper
 				if (isset($override['input'])) $c_input = $override['input'];
 
 				// relationships
-				$source_table = (isset($override['source_table'])) ? $override['source_table'] : '';
-				$source_field = (isset($override['source_field'])) ? $override['source_field'] : '';
-				if ($c_input=='select' && empty($source_table)) {
-					$c_title = str_replace(' Id', '', $c_title);
-					$st = str_plural(str_replace('_id', '', $c_name));
-					if (!empty($this->tables[$st])) {
-						$source_table = $st;
+				$source_table = '';
+				$source_field_value = '';
+				$source_field_text = '';
+				if ($c_input=='select') {
+					if (isset($override['source']['table'])) $source_table = $override['source']['table'];
+					if (isset($override['source']['field_value'])) $source_field_value = $override['source']['field_value'];
+					if (isset($override['source']['field_text'])) $source_field_text = $override['source']['field_text'];
+					if (empty($source_table)) {
+						$c_title = str_replace(' Id', '', $c_title);
+						$st = str_plural(str_replace('_id', '', $c_name));
+						if (!empty($this->tables[$st])) {
+							$source_table = $st;
 
-						if (empty($source_field)) {
-							$this->getColumns($st);
-							$sfs = $this->tables[$st]['fields'];
+							if (empty($source_field_text) || empty($source_field_value)) {
+								$this->getColumns($st);
+								$sfs = $this->tables[$st]['fields'];
 
-							if (!empty($sfs)) {
-								foreach ($sfs as $sf=>$sfp) {
-									if ($sfp['input']=='text') {
-										$source_field = $sf;
-										break;
+								if (!empty($sfs)) {
+									foreach ($sfs as $sf=>$sfp) {
+										if (empty($source_field_text) && $sfp['input']=='text') {
+											$source_field_text = $sf;
+										}
+										if (empty($source_field_value) && $sfp['type']=='key') {
+											$source_field_value = $sf;
+										}
 									}
 								}
 							}
@@ -115,23 +123,31 @@ class TablesHelper
 				$c_default = $column->COLUMN_DEFAULT;
 				if ($c_required && is_null($c_default)) $c_default = ($c_input=='numeric') ? 0 : '';
 
-				$c_in_list = (!in_array($c_type, ['key','text']));
+				$c_in_list = (!in_array($c_type, ['text']));
 				if (isset($override['in_list'])) $c_in_list = $override['in_list'];
 
-				$c_in_edit = (!in_array($c_type, ['key']));
+				$c_in_edit = (!in_array($c_name, config('lab1353.monkyz.main.fields_name_hide_in_edit')));
 				if (isset($override['in_edit'])) $c_in_edit = $override['in_edit'];
+
+				$c_attributes = [ 'class'=>'' ];
+				if (isset($override['attributes'])) $c_attributes = array_merge($c_attributes, $override['attributes']);
+
 
 				$fields[$c_name] = [
 					'title'	=> $c_title,
 					'type'	=> $c_type,
 					'input'	=> $c_input,
-					'source_table'	=> $source_table,
-					'source_field'	=> $source_field,
+					'source'	=> [
+						'table'	=> $source_table,
+						'field_value'	=> $source_field_value,
+						'field_text'	=> $source_field_text,
+					],
 					'length'	=> $c_length,
 					'default'	=> $c_default,
 					'required'	=> $c_required,
 					'in_list'	=> $c_in_list,
 					'in_edit'	=> $c_in_edit,
+					'attributes'	=> $c_attributes
 				];
 			}
 

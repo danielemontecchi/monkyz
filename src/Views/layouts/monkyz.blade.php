@@ -17,6 +17,8 @@
         <!-- Page Content -->
         <div id="page-wrapper">
             <div class="container-fluid">
+            	@include('monkyz::partials.messages')
+
 				@yield('content')
             </div>
             <!-- /.container-fluid -->
