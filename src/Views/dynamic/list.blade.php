@@ -17,7 +17,7 @@
 											<th>{{ $params['title'] }}</th>
 										@endif
 									@endforeach
-									<th align="right">Actions</th>
+									<th class="text-center">Actions</th>
 								</tr>
 							</thead>
 							<tbody>
