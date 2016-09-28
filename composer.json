@@ -10,10 +10,8 @@
             "email": "d.montecchi@yahoo.it"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-		"laravel/framework": "5.2",
-        "illuminate/support": "5.2.x|5.3.x"
+		"laravel/framework": "5.2.x"
     },
     "extra": {
         "branch-alias": {

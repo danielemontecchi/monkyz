@@ -2,6 +2,7 @@
 
 namespace Lab1353\Monkyz\Models;
 
+use Cache;
 use Illuminate\Database\Eloquent\Model;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 

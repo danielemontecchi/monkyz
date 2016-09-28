@@ -116,6 +116,5 @@ php artisan vendor:publish --provider="Lab1353\Monkyz\Providers\MonkyzServicePro
 **Generate LESS**
 
 ```bash
-lessc --clean-css packages/lab1353/monkyz/assets/less/monkyz.less public/vendor/lab1353/monkyz/css/monkyz.min.css
-lessc --clean-css packages/lab1353/monkyz/assets/less/monkyz.less packages/lab1353/monkyz/assets/css/monkyz.min.css
+lessc --clean-css packages/lab1353/monkyz/assets/less/monkyz.less packages/lab1353/monkyz/assets/css/monkyz.min.css && cp packages/lab1353/monkyz/assets/css/monkyz.min.css public/vendor/lab1353/monkyz/css/monkyz.min.css
 ```

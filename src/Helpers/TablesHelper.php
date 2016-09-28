@@ -1,6 +1,8 @@
 <?php
 namespace Lab1353\Monkyz\Helpers;
 
+use Cache;
+
 class TablesHelper
 {
 	protected $override_db_configuration;
@@ -13,37 +15,50 @@ class TablesHelper
 		$this->override_db_configuration = (array)config('lab1353.monkyz.main.override_db_configuration');
 		$this->input_from_type = (array)config('lab1353.monkyz.main.input_from_type');
 		$this->input_from_name = (array)config('lab1353.monkyz.main.input_from_name');
+
+		if (Cache::has('monkyz-tables')) {
+			$this->tables = Cache::get('monkyz-tables');
+		}
 	}
 
 	public function getTables()
 	{
-		$override = $this->override_db_configuration;
-		$db_tables = collect(\DB::select('SHOW TABLES'))->toArray();
-		foreach ($db_tables as $table) {
-			$table_name = array_values((array) $table)[0];
-			$tables[$table_name] = $this->getTable($table_name);
+		if (empty($this->tables)) {
+			dump('retrieve tables');
+			$override = $this->override_db_configuration;
+			$db_tables = collect(\DB::select('SHOW TABLES'))->toArray();
+			foreach ($db_tables as $table) {
+				$table_name = array_values((array) $table)[0];
+				$tables[$table_name] = $this->getTable($table_name);
+			}
+			$this->tables = $tables;
+			Cache::put('monkyz-tables', $tables, 60);
 		}
-		$this->tables = $tables;
 
-		return $tables;
+		return $this->tables;
 	}
 
 	public function getTable($table_name)
 	{
-		$override = $this->override_db_configuration;
+		$table_params = $this->tables[$table_name];
+		if (empty($table_params)) {
+			$override = $this->override_db_configuration;
 
-		$t_title = ucwords(str_replace('_', ' ', $table_name));
-		if (isset($override[$table_name]['title'])) $t_title = $override[$table_name]['title'];
-		$t_visible = true;
-		if (isset($override[$table_name]['visible'])) $t_visible = $override[$table_name]['visible'];
-		$t_icon = 'fa fa-table fa-fw';
-		if (isset($override[$table_name]['icon'])) $t_icon = $override[$table_name]['icon'];
+			$t_title = ucwords(str_replace('_', ' ', $table_name));
+			if (isset($override[$table_name]['title'])) $t_title = $override[$table_name]['title'];
+			$t_visible = true;
+			if (isset($override[$table_name]['visible'])) $t_visible = $override[$table_name]['visible'];
+			$t_icon = 'fa fa-table fa-fw';
+			if (isset($override[$table_name]['icon'])) $t_icon = $override[$table_name]['icon'];
 
-		return [
-			'title'	=> $t_title,
-			'icon'	=> '<i class="'.$t_icon.'" aria-hidden="true"></i>',
-			'visible'	=> $t_visible,
-		];
+			$table_params = [
+				'title'	=> $t_title,
+				'icon'	=> '<i class="'.$t_icon.'" aria-hidden="true"></i>',
+				'visible'	=> $t_visible,
+			];
+		}
+
+		return $table_params;
 	}
 
 	public function getColumns($section)
@@ -152,6 +167,7 @@ class TablesHelper
 			}
 
 			$this->tables[$section]['fields'] = $fields;
+			Cache::put('monkyz-tables', $tables, 60);
 		}
 
 		return $this->tables[$section]['fields'];

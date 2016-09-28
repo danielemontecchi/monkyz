@@ -2,6 +2,7 @@
 
 namespace Lab1353\Monkyz\Controllers;
 
+use Cache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -12,7 +13,7 @@ use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 class DynamicController extends MonkyzController
 {
 	public function __construct() {
-		parent::__construct();
+    	$this->storeViewShare();
 
 		$fields = [];
 		$route = request()->route();

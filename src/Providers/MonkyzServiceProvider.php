@@ -24,6 +24,9 @@ class MonkyzServiceProvider extends ServiceProvider
 			$path_pkg.'config' => config_path('lab1353/monkyz'),
 			$path_pkg.'assets' => public_path('vendor/lab1353/monkyz'),
 		]);
+
+        // package
+        $this->app->make('Lab1353\Monkyz\Controllers\MonkyzController');
     }
 
     /**
@@ -38,8 +41,6 @@ class MonkyzServiceProvider extends ServiceProvider
 
 		// routes
         include $path_src.'routes.php';
-        // package
-        $this->app->make('Lab1353\Monkyz\Controllers\MonkyzController');
         // config
         $this->mergeConfigFrom($path_pkg.'config/main.php', 'lab1353/monkyz/main');
     }

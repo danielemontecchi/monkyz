@@ -29,8 +29,8 @@
 @text_color: @color_black;
 @text_color_alt: @color_white;
 @body_background: @color_white;
-@toolbar_background: darken(@color_primary, 25%);
-@sidebar_background: darken(@color_primary, 15%);
+@toolbar_background: darken(@color_primary, 15%);
+@sidebar_background: darken(@color_primary, 10%);
 @border_color: lighten(@color_primary, 15%);
 @link_color: lighten(@color_primary, 15%);
 
@@ -148,7 +148,6 @@ a {
 			&:focus,
 			&:hover,
 			&.active {
-	        	border-bottom: 1px solid darken(@border_color, 5%);
 	            background-color: darken(@sidebar_background, 5%);
 
 				.fa.arrow:before {
@@ -277,6 +276,9 @@ form {
 .btn .fa {
 	margin-right: 10px;
 }
+.btn.btn-xs .fa {
+	margin-right: 5px;
+}
 
 .btn-outline {
     color: inherit;
@@ -320,12 +322,34 @@ table {
 	thead {
 		background: @color_primary;
 		color: @text_color_alt;
+
+		tr {
+			th.sorting_asc,
+			th.sorting_desc {
+				background: fade(lighten(@color_primary, 25%), 20%) !important;
+			}
+		}
 	}
 
 	tbody tr td {
 		img {
 			max-width: 50px;
 			max-height: 50px;
+		}
+
+		a.btn {
+			margin-right: 7px;
+
+			&:last-child {
+				margin-right: 0px;
+			}
+		}
+
+		&.sorting_1 {
+			background: fade(lighten(@color_primary, 25%), 15%);
+		}
+		&.sorting_2 {
+			background: fade(lighten(@color_primary, 20%), 15%);
 		}
 	}
 }

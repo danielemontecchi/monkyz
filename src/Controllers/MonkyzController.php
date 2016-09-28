@@ -2,6 +2,7 @@
 
 namespace Lab1353\Monkyz\Controllers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -12,7 +13,7 @@ class MonkyzController extends Controller
 {
 	protected $htables;
 
-    public function __construct()
+    public function storeViewShare()
     {
     	// assets
     	$monkyz_assets = str_replace(['http:','https:'], '', str_finish(url('/vendor/lab1353/monkyz/'), '/'));
