@@ -1,28 +1,34 @@
-![Monkyz](assets/images/logo/monkyz_logo_large.png)
+![Monkyz](assets/images/logo/monkyz_logo_grey_100.png)
 
-# ![monkyz logo](assets/images/logo/monkyz_24.png) Monkyz
-[![lab1353](https://img.shields.io/badge/powered-lab1353-brightgreen.svg)](http://1353.it)
+# ![monkyz logo](assets/images/logo/monkyz_24.png) Monkyz [![lab1353](https://img.shields.io/badge/powered%20by-lab1353-brightgreen.svg)](http://1353.it)
 
----
-
-**Monkyz** is a dynamic and autonomous Administration Panel for *Laravel 5.x* .
+**Monkyz** is a dynamic and autonomous Administration Panel for *Laravel 5.2* .
 
 It adapts to existing database by creating a full CRUD management for any table existing.
 No configuration required: without writing a single line of code, your control panel is ready for use.
 
 ## Table of Contents
 
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
+  - [Parameter `override_db_configuration`](#parameter-override_db_configuration)
 - [Credits](#credits)
 - [License](#license)
+
+## Requirements
+
+The requirements are:
+
+- PHP >= 5.5.9
+- Laravel 5.2
 
 ## Installation
 
 First, pull in the package through Composer.
 
 ```bash
-composer require lab1353/monkyz:dev-master
+php composer.phar require lab1353/monkyz:dev-master
 ```
 
 And then, within `config/app.php`, include the service provider.
@@ -39,6 +45,12 @@ Finally, publish the assets:
 php artisan vendor:publish --provider="Lab1353\Monkyz\Providers\MonkyzServiceProvider"
 ```
 
+The following files will be published:
+
+- views in: `/resources/views/vendor/lab1353/monkyz`
+- configuration files: `/config/lab1353/monkyz`
+- assets: `/public/vendor/lab1353/monkyz`
+
 ## Configuration
 
 The file `config/lab1353/monkyz/main.php` contains the configuration details of **Monkyz**:
@@ -52,6 +64,7 @@ The file `config/lab1353/monkyz/main.php` contains the configuration details of 
 ### Parameter `override_db_configuration`
 
 This parameter overrides the dynamic configuration of tables and fields.
+
 The array structure looks like:
 
 ```php

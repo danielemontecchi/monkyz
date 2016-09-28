@@ -7,7 +7,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="{{ route('monkyz.dashboard') }}" class="navbar-brand">
-                	<img src="{{ $monkyz_assets }}images/logo/monkey_logo_80.png" />
+                	<img src="{{ $monkyz_assets }}images/logo/monkyz_logo_white_80.png" />
                 	<small>for {{ parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST) }}</small>
                 </a>
             </div>

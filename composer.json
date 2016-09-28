@@ -11,7 +11,9 @@
         }
     ],
     "require": {
-		"laravel/framework": "5.2.x"
+	    "php": ">=5.5.9",
+	    "illuminate/database": "~5.2",
+	    "illuminate/support": "~5.2",
     },
     "extra": {
         "branch-alias": {

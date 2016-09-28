@@ -72,7 +72,7 @@ class FieldsHelper
 
 	private static function renderImage($params, $name, $value)
 	{
-		return '<img src="'.$value.'" class="img-responsive img-thumbnail" />';
+		return '<img data-original="'.$value.'" class="img-responsive img-thumbnail lazy" />';
 	}
 
 	private static function renderNumber($params, $name, $value)
@@ -84,10 +84,15 @@ class FieldsHelper
 
 	private static function renderSelect($params, $name, $value)
 	{
-    	$model = new DynamicModel;
-		$model->setTable($params['source']['table']);
+		$record = null;
+		$source_table = $params['source']['table'];
 		$field_value = $params['source']['field_value'];
-    	$record = $model->where($field_value, $value)->first();
+		if (!empty($source_table) && !empty($field_value)) {
+	    	$model = new DynamicModel;
+			$model->setTable($source_table);
+			$record = $model->where($field_value, $value)->first();
+		}
+
     	if (!empty($record)) {
 	    	$field_text = $params['source']['field_text'];
 

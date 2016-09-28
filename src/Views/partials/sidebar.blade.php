@@ -18,13 +18,16 @@
 								</li>
 							</ul>
 						</li>-->
+
 						@foreach($tables as $table => $params)
-							@if($params['visible'])
-								<li>
-									<a href="{{ route('monkyz.dynamic.list', $table) }}" class="@if($section_name==$table) active @endif">
-										{!! $params['icon'] !!}{{ $params['title'] }}
-									</a>
-								</li>
+							@if(!empty($table))
+								@if($params['visible'])
+									<li>
+										<a href="{{ route('monkyz.dynamic.list', $table) }}" class="@if($section_name==$table) active @endif">
+											{!! $params['icon'] !!}{{ $params['title'] }}
+										</a>
+									</li>
+								@endif
 							@endif
 						@endforeach
 					</ul>

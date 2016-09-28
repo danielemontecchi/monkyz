@@ -24,7 +24,6 @@ class TablesHelper
 	public function getTables()
 	{
 		if (empty($this->tables)) {
-			dump('retrieve tables');
 			$override = $this->override_db_configuration;
 			$db_tables = collect(\DB::select('SHOW TABLES'))->toArray();
 			foreach ($db_tables as $table) {
@@ -69,6 +68,7 @@ class TablesHelper
 
 		if (empty($this->tables[$section]['fields'])) {
 			$columns = \DB::select('SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`=\''.$section.'\'');
+			$fields = [];
 			foreach ($columns as $column) {
 				$c_name = $column->COLUMN_NAME;
 				$override = (!empty($override_table[$c_name])) ? $override_table[$c_name] : [];
@@ -167,7 +167,7 @@ class TablesHelper
 			}
 
 			$this->tables[$section]['fields'] = $fields;
-			Cache::put('monkyz-tables', $tables, 60);
+			Cache::put('monkyz-tables', $this->tables, 60);
 		}
 
 		return $this->tables[$section]['fields'];

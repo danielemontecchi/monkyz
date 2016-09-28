@@ -9,6 +9,9 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/metisMenu/1.1.3/metisMenu.min.js"></script>
 
+<!-- Lazy Load -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+
 @if(!empty($scripts['datatables']))
 	<!--  Datatables     -->
 	<script src="//cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js"></script>
@@ -19,4 +22,4 @@
 @endif
 
 <!-- Custom Theme JavaScript -->
-<script src="{{ $monkyz_assets }}js/sb-admin-2.min.js"></script>
+<script src="{{ $monkyz_assets }}js/sb-admin-2.js"></script>

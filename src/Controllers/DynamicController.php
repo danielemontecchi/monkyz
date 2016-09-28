@@ -64,8 +64,14 @@ class DynamicController extends MonkyzController
 
 		$dt .= '
 			});
-		});
-		';
+		})
+		.on("page.dt", reloadLazyLoad())
+		.on("stateLoaded.dt", reloadLazyLoad())
+		.on("column-reorder", reloadLazyLoad())
+		.on("row-reordered", reloadLazyLoad())
+		.on("draw.dt", reloadLazyLoad())
+		;';
+		//TODO: check the correctly call of LazyLoad
 
 		$scripts['datatables'] = $dt;
 
