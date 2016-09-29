@@ -14,8 +14,11 @@ No configuration required: without writing a single line of code, your control p
 - [Configuration](#configuration)
   - [File `main`](#file-main)
   - [File `db`](#file-db)
+    - [`tables` Parameter](tables-parameter)
 - [Known Issues](#known-issues)
+- [Future Additions](#future-additions)
 - [Credits](#credits)
+  - [Vendors](#vendors)
 - [License](#license)
 
 ## Requirements
@@ -66,16 +69,19 @@ The following files will be published:
 The file `config/lab1353/monkyz/main.php` contains the configuration details of **Monkyz**:
 
 - `prefix`: prefix of url for access at **Monkyz**
-- `input_from_type`: array to find the relative input according to the field type defined on the database
-- `input_from_name`: array to find the relative input according to the name of field
-- `fields_name_hide_in_edit`: array of field's name that will be hidden in edit (such as: created_at, updated_at, deleted_at)
-- `override_db_configuration`: parameter to overwrite dynamic configuration of tables and database fields
 
 ### File `db`
 
-The file `config/lab1353/monkyz/db.php` overrides the dynamic configuration of tables and fields.
+The file `config/lab1353/monkyz/db.php` contains parameters for generate the dynamic configuration of the DB structure:
 
-The array structure of `tables` parameter looks like:
+- `input_from_type`: array to find the relative input according to the field type defined on the database
+- `input_from_name`: array to find the relative input according to the name of field
+- `fields_name_hide_in_edit`: array of field's name that will be hidden in edit (such as: created_at, updated_at, deleted_at)
+- `tables`: [view the details](#tables-parameter)
+
+#### `tables` Parameter
+
+The `tables` parameter are the ovveride array of dynamic DB structure:
 
 ```php
 'table_name'	=> [	// name of table in db
@@ -88,7 +94,10 @@ The array structure of `tables` parameter looks like:
 			'input'	=> 'text',
 			'in_list'	=> true,
 			'in_edit'	=> true,
-			'source'	=> [
+			'image'	=> [
+				'path'	=> 'upload/',
+			],
+			'relationship'	=> [
 				'table'	=> 'table2',
 				'field_value'	=> 'id',
 				'field_text'	=> 'name',
@@ -111,13 +120,28 @@ The array structure of `tables` parameter looks like:
 **Field parameters**
 
 - `title`: title of column
-- `input` (block|checkbox|color|date|datetime|file|hidden|image|number|select|tel|text|url): input tag type
+- `input`: The input types are:
+  - `block`: the `<pre>` block to display the value
+  - `checkbox`: checkbox true/false
+  - `color`: hex color selector (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
+  - `date`: only date tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
+  - `datetime`: date and time (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
+  - `file`: file upload
+  - `hidden`: field hidden used, by default, to the key fields
+  - `image`: file upload for only image (accepted extensions: .jpg, .jpeg, .png)
+  - `number`: number tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
+  - `select`: select tag for relationships
+  - `tel`: telephone number (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
+  - `text`: text tag for string
+  - `url`: url tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
 - `in_list` (true|false): visibility in list
 - `in_edit` (true|false): visibility in edit and add record
-- `source`: relationship details
-	- `table`: name of relationship's table
-	- `field_value`: name of value field of relationship's table
-	- `field_text`: name of text field of relationship's table
+- `image`: image details
+  - `path`: path of images uploaded
+- `relationship`: relationship details
+  - `table`: name of relationship's table
+  - `field_value`: name of value field of relationship's table
+  - `field_text`: name of text field of relationship's table
 - `attributes`: array (`'key' => 'value'`) of extra attributes in input
 
 > ATTENTION!!! Monkeyz currently only supports one-to-one and many-to-one relationships
@@ -130,15 +154,43 @@ These are the known issues that will be resolved on the next versions:
 
 - relationships: Monkeyz currently only supports one-to-one and many-to-one relationships
 
+## Future Additions
+
+- compatibility with [Laravel 5.3](https://laravel.com/docs/5.3/upgrade#upgrade-5.3.0)
+- settings
+- [Laravel validation rules](https://laravel.com/docs/5.2/validation) for fields
+- Artisan commands for generate automatically the `db.php` configuration file
+- roles for access sections
+- multi files uploads
+- integrate [Bootstrap Select](https://silviomoreto.github.io/bootstrap-select/examples/)
+- integrate [Bootstrap Switch](http://www.bootstrap-switch.org/)
+- widgets, counters and graph
+- integrate [Google Analytics](https://www.google.com/analytics/)
+
 ## Credits
 
-This package has been realized by [lab1353](http://1353.it)
+**Monkyz** package has been realized by [**lab1353**](http://1353.it)
+
+### Vendors
+
+**Monkyz** was made using the following css/js:
+
+- [Laravel](https://laravel.com/)
+- [Bootstrap](http://getbootstrap.com/)
+- [jQuery](https://jquery.com/)
+- [DataTables](https://datatables.net/)
+- [metisMenu](https://github.com/onokumus/metisMenu)
+- [Lazy Load Plugin for jQuery](http://www.appelsiini.net/projects/lazyload)
+- [Google Fonts](https://fonts.google.com/)
+- [Font Awesome](http://fontawesome.io/)
+
+All vendors files are load with CDN.
 
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2016 [lab1353](http://1353.it)
+Copyright (c) 2016 [**lab1353**](http://1353.it)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -156,17 +208,3 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-## Commands for developer
-
-**Force publish assets**
-
-```bash
-php artisan vendor:publish --provider="Lab1353\Monkyz\Providers\MonkyzServiceProvider" --force
-```
-
-**Generate LESS**
-
-```bash
-lessc --clean-css packages/lab1353/monkyz/assets/less/monkyz.less packages/lab1353/monkyz/assets/css/monkyz.min.css && cp packages/lab1353/monkyz/assets/css/monkyz.min.css public/vendor/lab1353/monkyz/css/monkyz.min.css
-```

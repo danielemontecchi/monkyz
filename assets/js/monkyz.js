@@ -6,7 +6,7 @@ $(function() {
 
 // enlarge image
 $(document).ready(function(){
-	$('table tr td img').hover(function() {
+	$('.img-thumbnail').hover(function() {
 		$(this).addClass('transition');
 	}, function() {
 		$(this).removeClass('transition');

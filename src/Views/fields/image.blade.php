@@ -10,6 +10,6 @@
 		@endforeach
 	>
 	@if(!empty({{ $record->$field }}))
-		<img src="{{ $record->$field }}">
+		<img src="{{ $record->$field }}" class="img-thumbnail">
 	@endif
 </div>

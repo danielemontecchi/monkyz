@@ -10,6 +10,6 @@
 		@endforeach
 	>
 	@if(!empty({{ $record->$field }}))
-		<img src="{{ asset('vendor/lab1353/monkyz/images/ext/'.strtolower(pathinfo($record->$field, PATHINFO_EXTENSION)).'.png') }}">
+		<img src="{{ Lab1353\Monkyz\Helpers\FieldsHelper::getUrlFileTypeIcon($record->$field) }}">
 	@endif
 </div>

@@ -22,4 +22,4 @@
 @endif
 
 <!-- Custom Theme JavaScript -->
-<script src="{{ $monkyz_assets }}js/sb-admin-2.js"></script>
+<script src="{{ $monkyz_assets }}js/monkyz.js"></script>
