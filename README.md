@@ -12,7 +12,9 @@ No configuration required: without writing a single line of code, your control p
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
-  - [Parameter `override_db_configuration`](#parameter-override_db_configuration)
+  - [File `main`](#file-main)
+  - [File `db`](#file-db)
+- [Known Issues](#known-issues)
 - [Credits](#credits)
 - [License](#license)
 
@@ -25,17 +27,23 @@ The requirements are:
 
 ## Installation
 
-First, pull in the package through Composer.
+First, pull in the package through Composer:
+
+```bash
+php composer.phar require lab1353/monkyz
+```
+
+or, for the latest version, in development:
 
 ```bash
 php composer.phar require lab1353/monkyz:dev-master
 ```
 
-And then, within `config/app.php`, include the service provider.
+And then, within `config/app.php`, include the service provider:
 
 ```php
 'providers' => [
-    Lab1353\Monkyz\Providers\MonkyzServiceProvider::class,
+	Lab1353\Monkyz\Providers\MonkyzServiceProvider::class,
 ];
 ```
 
@@ -53,6 +61,8 @@ The following files will be published:
 
 ## Configuration
 
+### File `main`
+
 The file `config/lab1353/monkyz/main.php` contains the configuration details of **Monkyz**:
 
 - `prefix`: prefix of url for access at **Monkyz**
@@ -61,35 +71,64 @@ The file `config/lab1353/monkyz/main.php` contains the configuration details of 
 - `fields_name_hide_in_edit`: array of field's name that will be hidden in edit (such as: created_at, updated_at, deleted_at)
 - `override_db_configuration`: parameter to overwrite dynamic configuration of tables and database fields
 
-### Parameter `override_db_configuration`
+### File `db`
 
-This parameter overrides the dynamic configuration of tables and fields.
+The file `config/lab1353/monkyz/db.php` overrides the dynamic configuration of tables and fields.
 
-The array structure looks like:
+The array structure of `tables` parameter looks like:
 
 ```php
- 'table_name'	=> [	// name of table in db
- 	'title'	=> 'Table',	// title of table
- 	'icon'	=> 'fa fa-table fa-fw',	// the fontawesome icon
- 	'visible'	=> true,	// visibility of table
- 	'fields'	=> [	// list of fields
- 		'field_name'	=> [	// name of field in db
- 			'title'	=> 'Column',	// title of column
- 			'input'	=> 'text',	// input tag type
- 			'in_list'	=> true,	// visibility in list
- 			'in_edit'	=> true,	// visibility in edit and add
-			'source'	=> [	// info of relationship
-				'table'	=> 'table2',	// name of relationship's table
-				'field_value'	=> 'id',	// name of value field of relationship's table
-				'field_text'	=> 'name',	// name of text field of relationship's table
+'table_name'	=> [	// name of table in db
+	'title'	=> 'Table',
+	'icon'	=> 'fa fa-table fa-fw',
+	'visible'	=> true,
+	'fields'	=> [
+		'field_name'	=> [	// name of field in db
+			'title'	=> 'Column',
+			'input'	=> 'text',
+			'in_list'	=> true,
+			'in_edit'	=> true,
+			'source'	=> [
+				'table'	=> 'table2',
+				'field_value'	=> 'id',
+				'field_text'	=> 'name',
 			],
-			'attributes'	=> [	// array of extra attributes of field
+			'attributes'	=> [
 				'class'	=> 'mycss'
 			]
- 		]
- 	]
- ]
+		]
+	]
+],
 ```
+
+**Table parameters**
+
+- `title`: title of table
+- `icon`: the [fontawesome icon](http://fontawesome.io/icons/)
+- `visible` (true|false): visibility of table in the sidebar menù
+- `fields`: list of fields in table
+
+**Field parameters**
+
+- `title`: title of column
+- `input` (block|checkbox|color|date|datetime|file|hidden|image|number|select|tel|text|url): input tag type
+- `in_list` (true|false): visibility in list
+- `in_edit` (true|false): visibility in edit and add record
+- `source`: relationship details
+	- `table`: name of relationship's table
+	- `field_value`: name of value field of relationship's table
+	- `field_text`: name of text field of relationship's table
+- `attributes`: array (`'key' => 'value'`) of extra attributes in input
+
+> ATTENTION!!! Monkeyz currently only supports one-to-one and many-to-one relationships
+
+## Known Issues
+
+To report a issues, use [GitHub Issues](https://github.com/lab1353/monkyz/issues).
+
+These are the known issues that will be resolved on the next versions:
+
+- relationships: Monkeyz currently only supports one-to-one and many-to-one relationships
 
 ## Credits
 

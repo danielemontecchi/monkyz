@@ -1,5 +1,5 @@
 <div class="form-group">
-	<label for="{{ $field }}">{{ $params['title'] }}</label>
+	<label for="{{ $field }}">{{ $params['title'] }}@if(in_array('required', array_keys($params['attributes']))) <strong>*</strong>@endif</label>
 	<input type="text" class="form-control {{ $params['attributes']['class'] }}"
 		id="{{ $field }}" name="{{ $field }}"
 		placeholder="{{ $params['title'] }}" value="{{ $record->$field }}"

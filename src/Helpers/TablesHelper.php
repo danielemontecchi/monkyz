@@ -5,14 +5,14 @@ use Cache;
 
 class TablesHelper
 {
-	protected $override_db_configuration;
+	protected $override_tables;
 	protected $input_from_type;
 	protected $input_from_name;
 	protected $tables;
 
 	public function __construct()
 	{
-		$this->override_db_configuration = (array)config('lab1353.monkyz.main.override_db_configuration');
+		$this->override_tables = (array)config('lab1353.monkyz.db.tables');
 		$this->input_from_type = (array)config('lab1353.monkyz.main.input_from_type');
 		$this->input_from_name = (array)config('lab1353.monkyz.main.input_from_name');
 
@@ -24,7 +24,7 @@ class TablesHelper
 	public function getTables()
 	{
 		if (empty($this->tables)) {
-			$override = $this->override_db_configuration;
+			$override = $this->override_tables;
 			$db_tables = collect(\DB::select('SHOW TABLES'))->toArray();
 			foreach ($db_tables as $table) {
 				$table_name = array_values((array) $table)[0];
@@ -41,7 +41,7 @@ class TablesHelper
 	{
 		$table_params = $this->tables[$table_name];
 		if (empty($table_params)) {
-			$override = $this->override_db_configuration;
+			$override = $this->override_tables;
 
 			$t_title = ucwords(str_replace('_', ' ', $table_name));
 			if (isset($override[$table_name]['title'])) $t_title = $override[$table_name]['title'];
@@ -64,7 +64,7 @@ class TablesHelper
 	{
 		$input_from_type = collect($this->input_from_type);
 		$input_from_name = collect($this->input_from_name);
-		$override_table = (!empty($this->override_db_configuration[$section]['fields'])) ? $this->override_db_configuration[$section]['fields'] : [];
+		$override_table = (!empty($this->override_tables[$section]['fields'])) ? $this->override_tables[$section]['fields'] : [];
 
 		if (empty($this->tables[$section]['fields'])) {
 			$columns = \DB::select('SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`=\''.$section.'\'');
