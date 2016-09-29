@@ -73,7 +73,6 @@ class TablesHelper
 			$fields = [];
 			foreach ($columns as $column) {
 				$c_name = $column->COLUMN_NAME;
-				$override = (!empty($override_table[$c_name])) ? $override_table[$c_name] : [];
 
 				$c_title = ucwords(str_replace('_', ' ', $c_name));
 				if (isset($override['title'])) $c_title = $override['title'];
@@ -84,7 +83,7 @@ class TablesHelper
 				$c_input = '';
 				if (empty($c_input)) {
 					if (ends_with($c_name, '_id')) {
-						$c_input = 'select';
+						$c_input = 'relation';
 					}
 				}
 				if (empty($c_input)) {
@@ -97,38 +96,80 @@ class TablesHelper
 						return in_array($c_type, $value);
 					});
 				}
+				if (!in_array($c_input, ['block', 'checkbox', 'color', 'date', 'datetime', 'enum',
+										'file', 'hidden', 'image', 'number', 'relation', 'tel', 'text', 'url'])) {
+					$c_input = '';
+				}
 				if (empty($c_input)) $c_input = 'text';
 				if (isset($override['input'])) $c_input = $override['input'];
 
+				$c_default = (!empty($column->COLUMN_DEFAULT)) ? $column->COLUMN_DEFAULT : '';
+
+				$c_in_list = (!in_array($c_type, ['text']));
+				if (isset($override['in_list'])) $c_in_list = $override['in_list'];
+
+				$c_in_edit = (!in_array($c_name, $fields_name_hide_in_edit));
+				if (isset($override['in_edit'])) $c_in_edit = $override['in_edit'];
+
+				// file
+				$c_file = [
+					'path'	=> 'uploads/',
+					'overwrite'	=> true,
+				];
+				if (isset($override['file']['path'])) $c_file['path'] = $override['file']['path'];
+				if (isset($override['file']['overwrite'])) $c_image['overwrite'] = (bool)$override['file']['overwrite'];
+
+				// enum
+				$c_enum = [];
+				if ($c_input=='enum') {
+					$enum_str = (string)$column->COLUMN_TYPE;
+					$enum_str = str_replace(['enum','(','\'',')'], '', $enum_str);
+					$enum = explode(',', $enum_str);
+					foreach ($enum as $k) {
+						$v = str_replace('-', ' ', $k);
+						$v = ucfirst($v);
+						$c_enum[$k] = $v;
+					}
+				}
+				if (!empty($override['enum'])) $c_enum = $override['enum'];
+
 				// image
-				$c_image_path = '';
-				if (isset($override['image']['path'])) $c_image_path = $override['image']['path'];
+				$c_image = [
+					'path'	=> 'uploads/',
+					'overwrite'	=> true,
+					'resize'	=> false,
+				];
+				if (isset($override['image']['path'])) $c_image['path'] = $override['image']['path'];
+				if (isset($override['image']['overwrite'])) $c_image['overwrite'] = (bool)$override['image']['overwrite'];
+				if (isset($override['image']['resize'])) $c_image['resize'] = (bool)$override['image']['resize'];
 
 				// relationships
-				$source_table = '';
-				$source_field_value = '';
-				$source_field_text = '';
-				if ($c_input=='select') {
-					if (isset($override['relationship']['table'])) $source_table = $override['relationship']['table'];
-					if (isset($override['relationship']['field_value'])) $source_field_value = $override['relationship']['field_value'];
-					if (isset($override['relationship']['field_text'])) $source_field_text = $override['relationship']['field_text'];
-					if (empty($source_table)) {
+				$c_relation = [
+					'table'	=> '',
+					'field_value'	=> '',
+					'field_text'	=> '',
+				];
+				if ($c_input=='relation') {
+					if (isset($override['relation']['table'])) $c_relation['table'] = $override['relation']['table'];
+					if (isset($override['relation']['field_value'])) $c_relation['field_value'] = $override['relation']['field_value'];
+					if (isset($override['relation']['field_text'])) $c_relation['field_text'] = $override['relation']['field_text'];
+					if (empty($c_relation['table'])) {
 						$c_title = str_replace(' Id', '', $c_title);
 						$st = str_plural(str_replace('_id', '', $c_name));
 						if (!empty($this->tables[$st])) {
-							$source_table = $st;
+							$c_relation['table'] = $st;
 
-							if (empty($source_field_text) || empty($source_field_value)) {
+							if (empty($c_relation['field_text']) || empty($c_relation['field_value'])) {
 								$this->getColumns($st);
 								$sfs = $this->tables[$st]['fields'];
 
 								if (!empty($sfs)) {
 									foreach ($sfs as $sf=>$sfp) {
-										if (empty($source_field_text) && $sfp['input']=='text') {
-											$source_field_text = $sf;
+										if (empty($c_relation['field_text']) && $sfp['input']=='text') {
+											$c_relation['field_text'] = $sf;
 										}
-										if (empty($source_field_value) && $sfp['type']=='key') {
-											$source_field_value = $sf;
+										if (empty($c_relation['field_value']) && $sfp['type']=='key') {
+											$c_relation['field_value'] = $sf;
 										}
 									}
 								}
@@ -137,43 +178,38 @@ class TablesHelper
 					}
 				}
 
-				$c_length = (int)($c_type=='int') ? $column->NUMERIC_PRECISION : $column->CHARACTER_MAXIMUM_LENGTH;
+				// attributes
+				$c_attributes = [
+					'class'	=> '',
+				];
 
-				$c_required = ($column->IS_NULLABLE=='NO');
+				$length = (int)($c_type=='int') ? $column->NUMERIC_PRECISION : $column->CHARACTER_MAXIMUM_LENGTH;
+				if ($length>0) $override['attributes']['maxlength'] = $length;
 
-				$c_default = $column->COLUMN_DEFAULT;
-				if ($c_required && is_null($c_default)) $c_default = ($c_input=='numeric') ? 0 : '';
+				if ($column->IS_NULLABLE=='NO' && empty($column->COLUMN_DEFAULT)) $c_attributes['required'] = 'required';
 
-				$c_in_list = (!in_array($c_type, ['text']));
-				if (isset($override['in_list'])) $c_in_list = $override['in_list'];
-
-				$c_in_edit = (!in_array($c_name, $fields_name_hide_in_edit));
-				if (isset($override['in_edit'])) $c_in_edit = $override['in_edit'];
-
-				$c_attributes = [ 'class'=>'' ];
-				if (isset($override['attributes'])) $c_attributes = array_merge($c_attributes, $override['attributes']);
+				if (isset($override['attributes'])) {
+					foreach ($override['attributes'] as $k=>$v) {
+						$c_attributes[$k] = $v;
+					}
+				}
 
 
 				$fields[$c_name] = [
 					'title'	=> $c_title,
 					'type'	=> $c_type,
 					'input'	=> $c_input,
-					'image'	=> [
-						'path'	=> $c_image_path
-					],
-					'relationship'	=> [
-						'table'	=> $source_table,
-						'field_value'	=> $source_field_value,
-						'field_text'	=> $source_field_text,
-					],
-					'length'	=> $c_length,
 					'default'	=> $c_default,
-					'required'	=> $c_required,
 					'in_list'	=> $c_in_list,
 					'in_edit'	=> $c_in_edit,
+					'enum'	=> $c_enum,
+					'file'	=> $c_file,
+					'image'	=> $c_image,
+					'relation'	=> $c_relation,
 					'attributes'	=> $c_attributes
 				];
 			}
+				if ($section=='feeds') dump($fields);
 
 			$this->tables[$section]['fields'] = $fields;
 			Cache::put('monkyz-tables', $this->tables, 60);

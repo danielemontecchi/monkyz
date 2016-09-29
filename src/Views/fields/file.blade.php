@@ -9,7 +9,9 @@
 			@endif
 		@endforeach
 	>
-	@if(!empty({{ $record->$field }}))
-		<img src="{{ Lab1353\Monkyz\Helpers\FieldsHelper::getUrlFileTypeIcon($record->$field) }}">
+	@if(!empty($record->$field))
+		<a href="{{ Lab1353\Monkyz\Helpers\FieldsHelper::getFileUrl($section, $field, $record->$field) }}" target="_blank">
+			<img src="{{ Lab1353\Monkyz\Helpers\FieldsHelper::getUrlFileTypeIcon($record->$field) }}" class="img-thumbnail">
+		</a>
 	@endif
 </div>

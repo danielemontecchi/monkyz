@@ -50,10 +50,10 @@
 						<i class="fa fa-chevron-left" aria-hidden="true"></i>Back to list
 					</a>
 					<button type="submit" class="btn btn-success">
-						@if ($key_value > 0)
-							<i class="fa fa-floppy-o" aria-hidden="true"></i>Save
-						@else
+						@if ($is_add_mode)
 							<i class="fa fa-plus" aria-hidden="true"></i>Create
+						@else
+							<i class="fa fa-floppy-o" aria-hidden="true"></i>Save
 						@endif
 					</button>
 				</div>

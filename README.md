@@ -14,7 +14,7 @@ No configuration required: without writing a single line of code, your control p
 - [Configuration](#configuration)
   - [File `main`](#file-main)
   - [File `db`](#file-db)
-    - [`tables` Parameter](tables-parameter)
+    - [Parameter `tables`](#parameter-tables)
 - [Known Issues](#known-issues)
 - [Future Additions](#future-additions)
 - [Credits](#credits)
@@ -77,9 +77,9 @@ The file `config/lab1353/monkyz/db.php` contains parameters for generate the dyn
 - `input_from_type`: array to find the relative input according to the field type defined on the database
 - `input_from_name`: array to find the relative input according to the name of field
 - `fields_name_hide_in_edit`: array of field's name that will be hidden in edit (such as: created_at, updated_at, deleted_at)
-- `tables`: [view the details](#tables-parameter)
+- `tables`: [view the details](#parameter-tables)
 
-#### `tables` Parameter
+#### Parameter `tables`
 
 The `tables` parameter are the ovveride array of dynamic DB structure:
 
@@ -94,16 +94,25 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
 			'input'	=> 'text',
 			'in_list'	=> true,
 			'in_edit'	=> true,
-			'image'	=> [
-				'path'	=> 'upload/',
+			'enum'	=> [
+				'attr'	=> 'value'
+			]
+			'file'	=> [
+				'path'	=> 'uploads/',
+				'overwrite'	=> true,
 			],
-			'relationship'	=> [
+			'image'	=> [
+				'path'	=> 'uploads/',
+				'overwrite'	=> true,
+				'resize'	=> false,
+			],
+			'relation'	=> [
 				'table'	=> 'table2',
 				'field_value'	=> 'id',
 				'field_text'	=> 'name',
 			],
 			'attributes'	=> [
-				'class'	=> 'mycss'
+				'attr'	=> 'value'
 			]
 		]
 	]
@@ -126,19 +135,26 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
   - `color`: hex color selector (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
   - `date`: only date tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
   - `datetime`: date and time (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
-  - `file`: file upload
+  - `enum`: select box for enum (mandatory to define the parameter `enum`)
+  - `file`: file upload (mandatory to define the parameter `file`)
   - `hidden`: field hidden used, by default, to the key fields
-  - `image`: file upload for only image (accepted extensions: .jpg, .jpeg, .png)
+  - `image`: file upload for only image (accepted extensions: .jpg, .jpeg, .png) (mandatory to define the parameter `image`)
   - `number`: number tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
-  - `select`: select tag for relationships
+  - `relation`: select box with the relation with another table (mandatory to define the parameter `relation`)
   - `tel`: telephone number (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
   - `text`: text tag for string
   - `url`: url tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
 - `in_list` (true|false): visibility in list
 - `in_edit` (true|false): visibility in edit and add record
+- `enum`: array `'key' => 'value'` for populate the select box
+- `file`: file details
+  - `path`: path of files uploaded
+  - `overwrite` (true|false): overwrite the file if it already exists
 - `image`: image details
   - `path`: path of images uploaded
-- `relationship`: relationship details
+  - `overwrite` (true|false): overwrite the file if it already exists
+  - `resize` (true|false): It determines if the uploaded image will be resized
+- `relation`: relationship details
   - `table`: name of relationship's table
   - `field_value`: name of value field of relationship's table
   - `field_text`: name of text field of relationship's table

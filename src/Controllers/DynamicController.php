@@ -82,10 +82,12 @@ class DynamicController extends MonkyzController
 	public function getEdit($section, $id=0)
 	{
 		$fields = $this->htables->getColumns($section);
+		$is_add_mode = true;
 
 		$model = new DynamicModel;
 		$model->setTable($section);
 		if ($id>0) {
+			$is_add_mode = false;
 			$record = $model->find($id);
 		} else {
 			$record = $model;
@@ -97,7 +99,7 @@ class DynamicController extends MonkyzController
 			}
 		}
 
-		return view('monkyz::dynamic.edit')->with(compact('record', 'fields'));
+		return view('monkyz::dynamic.edit')->with(compact('record', 'fields', 'is_add_mode'));
 	}
 
 	public function postSave(Request $request, $section)
@@ -117,10 +119,15 @@ class DynamicController extends MonkyzController
 			$model = new DynamicModel;
 			$model->setTable($section);
 
+			$fields_dates = [];
+			$config_input_from_type = config('lab1353.monkyz.db.input_from_type');
+			if (!empty($config_input_from_type['date'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['date']);
+			if (!empty($config_input_from_type['datetime'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['datetime']);
+
 			$record = (!empty($data[$field_key])) ? $model->find($data[$field_key]) : $model;
 			foreach ($fields as $field=>$params) {
 				if ($params['in_edit']) {
-					if (in_array($params['input'], ['date','datetime'])) {
+					if (in_array($params['input'], $fields_dates)) {
 						$dt = new Carbon($data[$field]);
 						$record->$field = $dt;
 					} else {

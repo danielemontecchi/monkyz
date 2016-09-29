@@ -3,6 +3,7 @@ namespace Lab1353\Monkyz\Helpers;
 
 use Carbon\Carbon;
 use Lab1353\Monkyz\Models\DynamicModel;
+use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 
 class FieldsHelper
 {
@@ -15,6 +16,45 @@ class FieldsHelper
 			$icon = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)).'.png';
 
 			return asset($path.$icon);
+		}
+	}
+
+	public static function getFileUrl($table, $field_name, $file)
+	{
+		if (empty($file)) {
+			return '';
+		} else {
+			$htables = new HTables();
+			$fields = $htables->getColumns($table);
+			$path = $fields[$field_name]['file']['url'];
+
+			return asset($path.$file);
+		}
+	}
+
+	public static function getImageUrl($table, $field_name, $file)
+	{
+		if (empty($file)) {
+			return '';
+		} else {
+			$htables = new HTables();
+			$fields = $htables->getColumns($table);
+			$path = $fields[$field_name]['image']['path'];
+
+			return asset($path.$file);
+		}
+	}
+
+	public static function getEnum($table, $field_name)
+	{
+		if (empty($table) || empty($field_name)) {
+			return '';
+		} else {
+			$htables = new HTables();
+			$fields = $htables->getColumns($table);
+			$enum = (array)$fields[$field_name]['enum'];
+
+			return $enum;
 		}
 	}
 
@@ -38,6 +78,9 @@ class FieldsHelper
 		    case 'datetime':
 		    	$echo .= self::renderDatetime($params, $value);
 		        break;
+		    case 'enum':
+		    	$echo .= self::renderEnum($params, $value);
+		        break;
 		    case 'file':
 		    	$echo .= self::renderFile($params, $value);
 		        break;
@@ -48,8 +91,8 @@ class FieldsHelper
 		    	$echo = '<td align="right">';
 		    	$echo .= self::renderNumber($params, $value);
 		        break;
-		    case 'select':
-		    	$echo .= self::renderSelect($params, $value);
+		    case 'relation':
+		    	$echo .= self::renderRelation($params, $value);
 		        break;
 		    case 'tel':
 		    	$echo .= self::renderTel($params, $value);
@@ -97,10 +140,17 @@ class FieldsHelper
 		}
 	}
 
+	private static function renderEnum($params, $value)
+	{
+		$enum = $params['enum'];
+
+		return  $enum[$value];
+	}
+
 	private static function renderFile($params, $value)
 	{
 		$icon = self::getUrlFileTypeIcon($value);
-		$img = '<img src="'.$icon.'" style="max-height: 50px;" />';
+		$img = '<img src="'.$icon.'" class="img-thumbnail" />';
 
 		return $img;
 	}
@@ -122,11 +172,12 @@ class FieldsHelper
 		return number_format($value, $decimal, $locale['decimal_point'], $locale['thousands_sep']);
 	}
 
-	private static function renderSelect($params, $value)
+	private static function renderRelation($params, $value)
 	{
 		$record = null;
-		$source_table = $params['relationship']['table'];
-		$field_value = $params['relationship']['field_value'];
+		$source_table = $params['relation']['table'];
+		$field_value = $params['relation']['field_value'];
+	    $field_text = $params['relation']['field_text'];
 		if (!empty($source_table) && !empty($field_value)) {
 	    	$model = new DynamicModel;
 			$model->setTable($source_table);
@@ -134,8 +185,6 @@ class FieldsHelper
 		}
 
     	if (!empty($record)) {
-	    	$field_text = $params['source']['field_text'];
-
 			return  $record->$field_text;
     	} else {
     		return '';

@@ -10,10 +10,10 @@
 	>
 		@php
 		$model = new Lab1353\Monkyz\Models\DynamicModel;
-		$model->setTable($params['relationship']['table']);
+		$model->setTable($params['relation']['table']);
 		$records_rel = $model->all();
-		$f_v = $params['relationship']['field_value'];
-		$f_t = $params['relationship']['field_text'];
+		$f_v = $params['relation']['field_value'];
+		$f_t = $params['relation']['field_text'];
 		@endphp
 		@foreach($records_rel as $r)
 			<option value="{{ $r->$f_v }}"

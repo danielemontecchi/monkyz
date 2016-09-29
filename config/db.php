@@ -37,7 +37,7 @@ return [
 		'datetime'	=> ['date','datetime','time','timestamp','year'],
 		'hidden'	=> ['key'],
 		'numeric'	=> ['tinyint','smallint','int','mediumint','bigint','decimal','float','double','real','bit','serial'],
-		'select'	=> ['enum'],
+		'enum'	=> ['enum'],
 		'text'	=> ['char','varchar'],
 		'textarea'	=> ['tinytext','mediumtext','text','longtext','tinyblob','mediumblob','blob','longblob'],
 	],
