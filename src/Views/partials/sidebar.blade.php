@@ -24,7 +24,7 @@
 								@if($params['visible'])
 									<li>
 										<a href="{{ route('monkyz.dynamic.list', $table) }}" class="@if($section_name==$table) active @endif">
-											{!! $params['icon'] !!}{{ $params['title'] }}
+											<i class="{!! $params['icon'] !!}" aria-hidden="true"></i>{{ $params['title'] }}
 										</a>
 									</li>
 								@endif

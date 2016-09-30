@@ -1,6 +1,6 @@
 <div class="form-group">
 	<label for="{{ $field }}">{{ $params['title'] }}@if(in_array('required', array_keys($params['attributes']))) <strong>*</strong>@endif</label>
-	<input type="file" class="form-control {{ $params['attributes']['class'] }}"
+	<input type="file" class="form-control @if(!empty($params['attributes']['class'])){{ $params['attributes']['class'] }}@endif"
 		id="{{ $field }}" name="{{ $field }}"
 		placeholder="{{ $params['title'] }}"  accept=".jpg,.jpeg,.png"
 		@foreach($params['attributes'] as $k=>$v)

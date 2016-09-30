@@ -8,30 +8,54 @@ class TablesHelper
 	protected $override_tables;
 	protected $input_from_type;
 	protected $input_from_name;
+
 	protected $tables;
+
+	protected $cache_key = 'monkyz-tables';
+	protected $cache_minutes = 60;
 
 	public function __construct()
 	{
-		$this->override_tables = (array)config('lab1353.monkyz.db.tables');
-		$this->input_from_type = (array)config('lab1353.monkyz.db.input_from_type');
-		$this->input_from_name = (array)config('lab1353.monkyz.db.input_from_name');
+		$this->override_tables = (array)config('lab1353.monkyz.db.tables', []);
+		$this->input_from_type = (array)config('lab1353.monkyz.db.input_from_type', []);
+		$this->input_from_name = (array)config('lab1353.monkyz.db.input_from_name', []);
 
-		if (Cache::has('monkyz-tables')) {
-			$this->tables = Cache::get('monkyz-tables');
+		if (Cache::has($this->cache_key)) {
+			$this->tables = Cache::get($this->cache_key);
 		}
+	}
+
+	public function clearCache()
+	{
+		Cache::forget($this->cache_key);
+		$this->tables = [];
+	}
+
+	public function getDb()
+	{
+		$this->clearCache();
+
+		$tables = $this->getTables();
+		foreach ($tables as $table=>$params) {
+			$this->getColumns($table);
+		}
+
+		return $this->tables;
 	}
 
 	public function getTables()
 	{
 		if (empty($this->tables)) {
+			$tables = [];
 			$override = $this->override_tables;
 			$db_tables = collect(\DB::select('SHOW TABLES'))->toArray();
 			foreach ($db_tables as $table) {
 				$table_name = array_values((array) $table)[0];
-				$tables[$table_name] = $this->getTable($table_name);
+				$params = $this->getTable($table_name);
+				$tables[$table_name] = $params;
 			}
 			$this->tables = $tables;
-			Cache::put('monkyz-tables', $tables, 60);
+			Cache::put($this->cache_key, $tables, $this->cache_minutes);
 		}
 
 		return $this->tables;
@@ -39,20 +63,20 @@ class TablesHelper
 
 	public function getTable($table_name)
 	{
-		$table_params = $this->tables[$table_name];
+		$table_params = (!empty($this->tables[$table_name])) ? $this->tables[$table_name] : [];
 		if (empty($table_params)) {
-			$override = $this->override_tables;
+			$override = (!empty($this->override_tables[$table_name])) ? $this->override_tables[$table_name] : [];
 
 			$t_title = ucwords(str_replace('_', ' ', $table_name));
-			if (isset($override[$table_name]['title'])) $t_title = $override[$table_name]['title'];
+			if (isset($override['title'])) $t_title = $override['title'];
 			$t_visible = true;
-			if (isset($override[$table_name]['visible'])) $t_visible = $override[$table_name]['visible'];
-			$t_icon = 'fa fa-table fa-fw';
-			if (isset($override[$table_name]['icon'])) $t_icon = $override[$table_name]['icon'];
+			if (isset($override['visible'])) $t_visible = $override['visible'];
+			$t_icon = 'fa fa-table';
+			if (isset($override['icon'])) $t_icon = $override['icon'];
 
 			$table_params = [
 				'title'	=> $t_title,
-				'icon'	=> '<i class="'.$t_icon.'" aria-hidden="true"></i>',
+				'icon'	=> $t_icon,
 				'visible'	=> $t_visible,
 			];
 		}
@@ -73,6 +97,8 @@ class TablesHelper
 			$fields = [];
 			foreach ($columns as $column) {
 				$c_name = $column->COLUMN_NAME;
+
+				$override = $override_table[$c_name];
 
 				$c_title = ucwords(str_replace('_', ' ', $c_name));
 				if (isset($override['title'])) $c_title = $override['title'];
@@ -96,8 +122,8 @@ class TablesHelper
 						return in_array($c_type, $value);
 					});
 				}
-				if (!in_array($c_input, ['block', 'checkbox', 'color', 'date', 'datetime', 'enum',
-										'file', 'hidden', 'image', 'number', 'relation', 'tel', 'text', 'url'])) {
+				if (!in_array($c_input, ['block', 'checkbox', 'color', 'date', 'datetime', 'editor', 'enum',
+										'file', 'hidden', 'image', 'number', 'relation', 'tel', 'text', 'textarea', 'url'])) {
 					$c_input = '';
 				}
 				if (empty($c_input)) $c_input = 'text';
@@ -105,7 +131,7 @@ class TablesHelper
 
 				$c_default = (!empty($column->COLUMN_DEFAULT)) ? $column->COLUMN_DEFAULT : '';
 
-				$c_in_list = (!in_array($c_type, ['text']));
+				$c_in_list = (!in_array($c_type, ['text', 'key']) && !in_array($c_name, $fields_name_hide_in_edit));
 				if (isset($override['in_list'])) $c_in_list = $override['in_list'];
 
 				$c_in_edit = (!in_array($c_name, $fields_name_hide_in_edit));
@@ -179,14 +205,15 @@ class TablesHelper
 				}
 
 				// attributes
-				$c_attributes = [
-					'class'	=> '',
-				];
+				$c_attributes = [];
 
-				$length = (int)($c_type=='int') ? $column->NUMERIC_PRECISION : $column->CHARACTER_MAXIMUM_LENGTH;
-				if ($length>0) $override['attributes']['maxlength'] = $length;
+				if (!in_array($c_input, ['textarea', 'editor'])) {
+					//TODO: controllare per i float
+					$length = (int)($c_type=='number') ? $column->NUMERIC_PRECISION : $column->CHARACTER_MAXIMUM_LENGTH;
+					if ($length>0) $override['attributes']['maxlength'] = $length;
+				}
 
-				if ($column->IS_NULLABLE=='NO' && empty($column->COLUMN_DEFAULT)) $c_attributes['required'] = 'required';
+				if ($column->IS_NULLABLE=='NO' && empty($column->COLUMN_DEFAULT) && $c_type!='key') $c_attributes['required'] = 'required';
 
 				if (isset($override['attributes'])) {
 					foreach ($override['attributes'] as $k=>$v) {
@@ -208,11 +235,16 @@ class TablesHelper
 					'relation'	=> $c_relation,
 					'attributes'	=> $c_attributes
 				];
+
+				// clean array
+				if ($c_input!='enum') unset($fields[$c_name]['enum']);
+				if ($c_input!='relation') unset($fields[$c_name]['relation']);
+				if ($c_input!='image') unset($fields[$c_name]['image']);
+				if ($c_input!='file') unset($fields[$c_name]['file']);
 			}
-				if ($section=='feeds') dump($fields);
 
 			$this->tables[$section]['fields'] = $fields;
-			Cache::put('monkyz-tables', $this->tables, 60);
+			Cache::put($this->cache_key, $this->tables, $this->cache_minutes);
 		}
 
 		return $this->tables[$section]['fields'];

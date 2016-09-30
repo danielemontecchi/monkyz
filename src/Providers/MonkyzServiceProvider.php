@@ -43,5 +43,9 @@ class MonkyzServiceProvider extends ServiceProvider
         include $path_src.'routes.php';
         // config
         $this->mergeConfigFrom($path_pkg.'config/main.php', 'lab1353/monkyz/main');
+        // commands
+        $this->commands([
+			\Lab1353\Monkyz\Commands\MonkyzGenerateDb::class
+		]);
     }
 }

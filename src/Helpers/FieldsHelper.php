@@ -158,8 +158,8 @@ class FieldsHelper
 	private static function renderImage($params, $value)
 	{
 		$path = '';
-		if (!empty($params['images']['path'])) str_finish($params['images']['path'], '/');
-		$url = asset($path.$value);
+		if (!empty($params['images']['path'])) $path = str_finish($params['images']['path'], '/');
+		$url = (!empty($path)) ? asset($path.$value) : $value;
 		$img = '<img data-original="'.$url.'" class="img-responsive img-thumbnail lazy" />';
 
 		return $img;
