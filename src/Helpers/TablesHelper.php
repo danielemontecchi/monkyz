@@ -162,11 +162,15 @@ class TablesHelper
 					'path'	=> 'uploads/',
 					'overwrite'	=> true,
 					'resize'	=> false,
+					'resize_height_px'	=> 1000,
+					'resize_width_px'	=> 1000,
 				];
 				if (isset($override['file']['disk'])) $c_file['disk'] = $override['file']['disk'];
 				if (isset($override['file']['path'])) $c_file['path'] = $override['file']['path'];
 				if (isset($override['file']['overwrite'])) $c_file['overwrite'] = (bool)$override['file']['overwrite'];
 				if (isset($override['file']['resize'])) $c_file['resize'] = (bool)$override['file']['resize'];
+				if (isset($override['file']['resize_height_px'])) $c_file['resize_height_px'] = (int)$override['file']['resize_height_px'];
+				if (isset($override['file']['resize_width_px'])) $c_file['resize_width_px'] = (int)$override['file']['resize_width_px'];
 
 				// relationships
 				$c_relation = [

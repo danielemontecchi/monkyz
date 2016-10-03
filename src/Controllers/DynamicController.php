@@ -182,9 +182,15 @@ class DynamicController extends MonkyzController
 								if (!Storage::disk($disk)->has($file_path.$file_name) || $params['file']['overwrite']) {
 									$request->file($field)->move($temp_path, $temp_file);
 									if ($params['input']=='image' && $params['file']['resize']) {
-										//TODO: if is image, resize if set
+										$h = $params['file']['resize_height_px'];
+										$w = $params['file']['resize_width_px'];
+										$img = Image::make($temp_path.$temp_file);
+										$img->resize($w, $h);
+										//TODO: resize dpi
+										$file_content = $img->stream();
+									} else {
+										$file_content = File::get($temp_path.$temp_file);
 									}
-									$file_content = File::get($temp_path.$temp_file);
 									Storage::disk($disk)->put($file_path.$file_name, $file_content);
 									File::delete($temp_path.$temp_file);
 								}

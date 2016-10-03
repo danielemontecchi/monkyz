@@ -178,7 +178,9 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
   - `disk`: disk name for `Storage` class, configured in config files `filesystems.php` (for more info see [Laravel Filesystem Documentation](https://laravel.com/docs/5.2/filesystem))
   - `path`: relative path of images uploaded
   - `overwrite` (true|false): overwrite the file if it already exists
-  - `resize` (true|false): If field is a image, determines if the uploaded image will be resized
+  - `resize` (true|false): if field is a image, determines if the uploaded image will be resized
+  - `resize_height_px`: pixel in height for resize image
+  - `resize_width_px`: pixel in width for resize image
 - `relation`: relationship field details
   - `table`: name of relationship's table
   - `field_value`: name of value field of relationship's table
