@@ -16,8 +16,8 @@ No configuration required: without writing a single line of code, your control p
 - [Installation](#installation)
   - [Information for assets files](#information-for-assets-files)
 - [Configuration](#configuration)
-  - [File `monkyz`](#file-monkyz)
-  - [File `monkyz-db`](#file-monkyz-db)
+  - [File `monkyz.php`](#file-monkyz-php)
+  - [File `monkyz-db.php`](#file-monkyz-php-db-php)
     - [Parameter `tables`](#parameter-tables)
     	- [Table Parameters](#table-parameters)
     	- [Fields Parameters](#fields-parameters)
@@ -87,7 +87,7 @@ The original file are: `/vendor/lab1353/monkyz/resources/assets/js/monkyz.js`.
 
 ## Configuration
 
-### File `monkyz`
+### File `monkyz.php`
 
 The file `config/monkyz.php` contains the configuration details of **Monkyz**:
 
@@ -96,7 +96,7 @@ The file `config/monkyz.php` contains the configuration details of **Monkyz**:
 - `cache_minutes`: minutes of duration of cache
 - `path_public_temp`: folder name, in `public` path, for temporary files
 
-### File `monkyz-db`
+### File `monkyz-db.php`
 
 The file `config/monkyz-db.php` contains parameters for generate the dynamic configuration of the DB structure:
 
@@ -130,6 +130,8 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
 				'path'	=> 'uploads/',
 				'overwrite'	=> true,
 				'resize'	=> false,
+				'resize_height_px'	=> 1000,
+				'resize_width_px'	=> 1000,
 			],
 			'relation'	=> [
 				'table'	=> 'table2',
@@ -163,7 +165,7 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
   - `enum`: select box for enum (mandatory to define the parameter `enum`)
   - `file`: file upload (mandatory to define the parameter `file`)
   - `hidden`: field hidden used, by default, to the key fields
-  - `image`: file upload for only image (accepted extensions: .jpg, .jpeg, .png) (mandatory to define the parameter `image`)
+  - `image`: file upload for only image (accepted extensions: .jpg, .jpeg, .png) (mandatory to define the parameter `file`)
   - `number`: number tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
   - `relation`: select box with the relation with another table (mandatory to define the parameter `relation`)
   - `tel`: telephone number (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
@@ -201,7 +203,7 @@ In automatically search for the type of the field input, it is to be more import
 php artisan monkyz:generate-db
 ```
 
-This command allows you to automatically fill in the [`monkyz-db.php` config file](#file-monkyz-db).
+This command allows you to automatically fill in the [`monkyz-db.php` config file](#file-monkyz-php-db-php).
 
 It will automatically create all the necessary references to **Monkyz** for the db structure.
 Not overwrite already entered parameters: only add the parameters have not been set.
@@ -240,7 +242,7 @@ touch custom.blade.php
 'table_name'	=> [	// name of table in db
 	'fields'	=> [
 		'field_name'	=> [	// name of field in db
-			'input'	=> 'custom',
+			'input'	=> 'custom',	// <-- change 'custom' with your custom field name
 ```
 
 ## Known Issues
@@ -249,7 +251,8 @@ To report a issues, use [GitHub Issues](https://github.com/lab1353/monkyz/issues
 
 These are the known issues that will be resolved on the next versions:
 
-- relationships: Monkeyz currently only supports one-to-one and many-to-one relationships
+- relationships: currently only supports one-to-one and many-to-one relationships
+- image upload resize: Resize the image does not change the dpi density
 
 ## Future Additions
 

@@ -29,6 +29,37 @@ class FileHelper
 		if (empty($this->disk_params['driver'])) $this->disk_params['driver'] = '';
 	}
 
+
+	/**
+	 * CONVERT
+	 */
+
+	public static function bytes2human($bytes) {
+		$bytes = floatval($unit);
+
+		$bytes_array = array(
+			'B' => 8,
+			'KB' => 1024,
+			'MB' => 1024 * 1024,
+			'GB' => 1024 * 1024 * 1024,
+			'TB' => 1024 * 1024 * 1024 * 1024,
+			'PB' => 1024 * 1024 * 1024 * 1024 * 1024,
+		);
+
+		if (preg_match('#([KMGTP]?B)$#si', $bytes, $matches) && !empty($bytes_array[$matches[1]])) {
+			$bytes *= $bytes_array[$matches[1]];
+		}
+
+		$bytes = intval(round($bytes, 2));
+
+		return $bytes;
+	}
+
+
+	/**
+	 * URL
+	 */
+
 	public function getUrlFileTypeIcon($file_name)
 	{
 		if (empty($file_name)) {
@@ -73,7 +104,7 @@ class FileHelper
 					if (!empty($adapter)) {
 						$client = $adapter->getClient();
 						if (!empty($client)) {
-							if (!starts_with($path, '/')) $path = '/'.$path;
+							$path = str_start($path, '/');
 							$url = $client->createTemporaryDirectLink($path.$file_name);
 							if (is_array($url)) $url = $url[0];
 						}
@@ -87,6 +118,11 @@ class FileHelper
 		return $url;
 	}
 
+
+	/**
+	 * DELETE
+	 */
+
 	public function delete($params, $file)
 	{
 		$path = $params['file']['path'];
@@ -97,7 +133,7 @@ class FileHelper
 		$driver = $this->disk_params['driver'];
 
 		if ($driver!='local') {
-			if (!starts_with($path, '/')) $path = '/'.$path;
+			$path = str_start($path, '/');
 		}
 		return Storage::disk($disk)->delete($path.$file);
 	}
