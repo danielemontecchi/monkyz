@@ -15,7 +15,8 @@ $(document).ready(function(){
 
 
 // lazy load
-function reloadLazyLoad() {
+function reloadLazyLoad(event_name) {
+	console.log('called reloadLazyLoad() from '+event_name);
     $("img.lazy").lazyload();
 };
 

@@ -32,7 +32,7 @@
 @toolbar_background: darken(@color_primary, 15%);
 @sidebar_background: darken(@color_primary, 10%);
 @border_color: lighten(@color_primary, 15%);
-@link_color: lighten(@color_primary, 15%);
+@link_color: lighten(@color_primary, 5%);
 
 @brand-primary: @color_blue;
 @brand-success: @color_green;
@@ -55,6 +55,11 @@ a {
 		color: darken(@link_color, 10%);
 		text-decoration: underline;
 	}
+
+	.fa {
+    	width: 1.5em;
+    	text-align: left;
+    }
 }
 
 // Typography
@@ -77,6 +82,11 @@ a {
     padding: 0 15px;
     min-height: 568px;
     background: @body_background;
+
+    h1 .fa {
+    	width: 1.2em;
+    	text-align: left
+    }
 }
 
 @media(min-width:768px) {
@@ -133,7 +143,7 @@ a {
 			color: @text_color_alt;
 
 			.fa {
-				width: 25px;
+				width: 2em;
 				text-align: left;
 
 				&.arrow {
@@ -366,10 +376,10 @@ table {
 }
 
 .transition {
-    -webkit-transform: scale(3);
-    -moz-transform: scale(3);
-    -o-transform: scale(3);
-    transform: scale(3);
+    -webkit-transform: scale(5);
+    -moz-transform: scale(5);
+    -o-transform: scale(5);
+    transform: scale(5);
 }
 
 // Chat Widget

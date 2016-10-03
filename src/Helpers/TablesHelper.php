@@ -16,9 +16,10 @@ class TablesHelper
 
 	public function __construct()
 	{
-		$this->override_tables = (array)config('lab1353.monkyz.db.tables', []);
-		$this->input_from_type = (array)config('lab1353.monkyz.db.input_from_type', []);
-		$this->input_from_name = (array)config('lab1353.monkyz.db.input_from_name', []);
+		$this->override_tables = (array)config('monkyz-db.tables', []);
+		$this->input_from_type = (array)config('monkyz-db.input_from_type', []);
+		$this->input_from_name = (array)config('monkyz-db.input_from_name', []);
+		$this->cache_minutes = (int)config('monkyz.cache_minutes', 60);
 
 		if (Cache::has($this->cache_key)) {
 			$this->tables = Cache::get($this->cache_key);
@@ -48,7 +49,14 @@ class TablesHelper
 		if (empty($this->tables)) {
 			$tables = [];
 			$override = $this->override_tables;
-			$db_tables = collect(\DB::select('SHOW TABLES'))->toArray();
+			$db_connection = config('database.default');
+			$db_name = config('database.connections.'.$db_connection.'.database');
+			if (!empty($db_name)) {
+				$query = 'SELECT table_name FROM information_schema.tables WHERE table_type = \'BASE TABLE\' AND table_schema=\''.$db_name.'\' ORDER BY table_name ASC';
+			} else {
+				$query = 'SHOW TABLES';
+			}
+			$db_tables = collect(\DB::select($query))->toArray();
 			foreach ($db_tables as $table) {
 				$table_name = array_values((array) $table)[0];
 				$params = $this->getTable($table_name);
@@ -91,14 +99,15 @@ class TablesHelper
 		$override_table = (!empty($this->override_tables[$section]['fields'])) ? $this->override_tables[$section]['fields'] : [];
 
 		if (empty($this->tables[$section]['fields'])) {
-			$fields_name_hide_in_edit = config('lab1353.monkyz.db.fields_name_hide_in_edit', []);
+			$fields_name_hide_in_edit = config('monkyz-db.fields_name_hide_in_edit', []);
 
 			$columns = \DB::select('SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`=\''.$section.'\'');
 			$fields = [];
 			foreach ($columns as $column) {
 				$c_name = $column->COLUMN_NAME;
 
-				$override = $override_table[$c_name];
+				$override = [];
+				if (!empty($override_table[$c_name])) $override = $override_table[$c_name];
 
 				$c_title = ucwords(str_replace('_', ' ', $c_name));
 				if (isset($override['title'])) $c_title = $override['title'];
@@ -122,10 +131,6 @@ class TablesHelper
 						return in_array($c_type, $value);
 					});
 				}
-				if (!in_array($c_input, ['block', 'checkbox', 'color', 'date', 'datetime', 'editor', 'enum',
-										'file', 'hidden', 'image', 'number', 'relation', 'tel', 'text', 'textarea', 'url'])) {
-					$c_input = '';
-				}
 				if (empty($c_input)) $c_input = 'text';
 				if (isset($override['input'])) $c_input = $override['input'];
 
@@ -139,9 +144,11 @@ class TablesHelper
 
 				// file
 				$c_file = [
+					'disk'	=> 'local',
 					'path'	=> 'uploads/',
 					'overwrite'	=> true,
 				];
+				if (isset($override['file']['disk'])) $c_file['disk'] = $override['file']['disk'];
 				if (isset($override['file']['path'])) $c_file['path'] = $override['file']['path'];
 				if (isset($override['file']['overwrite'])) $c_image['overwrite'] = (bool)$override['file']['overwrite'];
 
@@ -161,10 +168,12 @@ class TablesHelper
 
 				// image
 				$c_image = [
+					'disk'	=> 'local',
 					'path'	=> 'uploads/',
 					'overwrite'	=> true,
 					'resize'	=> false,
 				];
+				if (isset($override['image']['disk'])) $c_image['disk'] = $override['image']['disk'];
 				if (isset($override['image']['path'])) $c_image['path'] = $override['image']['path'];
 				if (isset($override['image']['overwrite'])) $c_image['overwrite'] = (bool)$override['image']['overwrite'];
 				if (isset($override['image']['resize'])) $c_image['resize'] = (bool)$override['image']['resize'];

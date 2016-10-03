@@ -11,7 +11,7 @@ class DashboardController extends MonkyzController
 
     public function __construct()
     {
-    	$this->storeViewShare();
+    	$this->init();
     }
 
     public function getIndex()

@@ -13,10 +13,17 @@ class MonkyzController extends Controller
 {
 	protected $htables;
 
+	public function init()
+	{
+		$this->middleware('Lab1353\Monkyz\Middleware\ForceSchema');
+		$this->storeViewShare();
+	}
+
     public function storeViewShare()
     {
     	// assets
-    	$monkyz_assets = str_replace(['http:','https:'], '', str_finish(url('/vendor/lab1353/monkyz/'), '/'));
+    	//$monkyz_assets = str_replace(['http:','https:'], '', str_finish(url('/vendor/monkyz/'), '/'));
+    	$monkyz_assets = '/vendor/monkyz/';
 
     	// sections
     	$this->htables = new HTables();
@@ -24,7 +31,7 @@ class MonkyzController extends Controller
 
 		// route name
 		$section_name = \Request::path();
-		$section_name = str_replace(config('lab1353.monkyz.main.prefix').'/', '', $section_name);
+		$section_name = str_replace(config('monkyz.prefix').'/', '', $section_name);
 		while (strpos($section_name, '/')!==false) {
 			$section_name = dirname($section_name);
 		}

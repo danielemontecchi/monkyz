@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => config('lab1353.monkyz.main.prefix')], function () {
+Route::group(['prefix' => config('monkyz.prefix')], function () {
 	Route::get('/', [ 'as'=>'monkyz.dashboard', 'uses'=>'Lab1353\Monkyz\Controllers\DashboardController@getIndex' ]);
 
 	// dynamic

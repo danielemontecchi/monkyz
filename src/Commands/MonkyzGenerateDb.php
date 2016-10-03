@@ -42,16 +42,17 @@ class MonkyzGenerateDb extends Command
 		$htables = new HTables();
 
 		// Read config file
-		$config_file = str_finish(config_path('lab1353/monkyz'), '/').'db.php';
+		$config_file = str_finish(config_path(), '/').'monkyz-db.php';
 		if (!File::exists($config_file)) {
-			//$config_vendor_file = str_finish(base_path('vendor/lab1353/monkyz/config/'), '/').'db.php';
-			$config_vendor_file = str_finish(base_path('packages/lab1353/monkyz/config/'), '/').'db.php';
+			$path_type = str_replace(str_finish(base_path(), '/'), '', __DIR__);
+			$path_type = str_replace('src/Commands', '', $path_type);
+			$config_vendor_file = str_finish(base_path($path_type.'/config/'), '/').'db.php';
 			if (!File::exists(dirname($config_vendor_file))) File::makeDirectory(dirname($config_vendor_file), 0775, true);
 			File::copy($config_vendor_file, $config_file);
-			$this->call('config:clear');
-			$this->call('config:cache');
+			$this->callSilent('config:clear');
+			$this->callSilent('config:cache');
 		}
-		$config = config('lab1353.monkyz.db');
+		$config = config('monkyz-db');
 
 		// DB struct
 		$this->line('Reading DB structure');
@@ -74,8 +75,8 @@ class MonkyzGenerateDb extends Command
 		// Write config file
 		$this->line('Writing config file');
 		if (File::put($config_file, $str)) {
-			$this->call('config:clear');
-			$this->call('config:cache');
+			$this->callSilent('config:clear');
+			$this->callSilent('config:cache');
 			$htables->clearCache();
 
 			$this->info('File '.$config_file.' updated correctly!');

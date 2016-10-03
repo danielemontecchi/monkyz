@@ -12,7 +12,7 @@
 			$key_value = $record->$field;
 			@endphp
 		@endif
-		@if(in_array($params['type'], ['file','image']))
+		@if(in_array($params['input'], ['file','image']))
 			@php
 			$fields_files = true;
 			@endphp

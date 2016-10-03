@@ -9,8 +9,8 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/metisMenu/1.1.3/metisMenu.min.js"></script>
 
-<!-- Lazy Load -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="{{ $monkyz_assets }}js/monkyz.min.js"></script>
 
 @if(!empty($scripts['datatables']))
 	<!--  Datatables     -->
@@ -20,6 +20,3 @@
 		{!! $scripts['datatables'] !!}
 	</script>
 @endif
-
-<!-- Custom Theme JavaScript -->
-<script src="{{ $monkyz_assets }}js/monkyz.js"></script>

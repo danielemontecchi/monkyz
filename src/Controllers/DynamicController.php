@@ -2,7 +2,9 @@
 
 namespace Lab1353\Monkyz\Controllers;
 
-use Cache;
+use Input;
+use File;
+use Storage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -13,7 +15,7 @@ use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 class DynamicController extends MonkyzController
 {
 	public function __construct() {
-    	$this->storeViewShare();
+		$this->init();
 
 		$fields = [];
 		$route = request()->route();
@@ -64,14 +66,8 @@ class DynamicController extends MonkyzController
 
 		$dt .= '
 			});
-		})
-		.on("page.dt", reloadLazyLoad())
-		.on("stateLoaded.dt", reloadLazyLoad())
-		.on("column-reorder", reloadLazyLoad())
-		.on("row-reordered", reloadLazyLoad())
-		.on("draw.dt", reloadLazyLoad())
-		;';
-		//TODO: check the correctly call of LazyLoad
+		});
+		';
 
 		$scripts['datatables'] = $dt;
 
@@ -89,12 +85,23 @@ class DynamicController extends MonkyzController
 		if ($id>0) {
 			$is_add_mode = false;
 			$record = $model->find($id);
+
+			foreach ($fields as $field=>$params) {
+				if (in_array($params['input'], ['datetime', 'date'])) {
+					$dt = new Carbon($record->$field);
+					$record->$field = $dt;
+				}
+			}
 		} else {
 			$record = $model;
 
 			foreach ($fields as $field=>$params) {
 				if (!empty($params['default'])) {
 					$record->$field = $params['default'];
+				}
+				if (in_array($params['input'], ['datetime', 'date'])) {
+					$dt = new Carbon($record->$field);
+					$record->$field = $dt;
 				}
 			}
 		}
@@ -120,23 +127,72 @@ class DynamicController extends MonkyzController
 			$model->setTable($section);
 
 			$fields_dates = [];
-			$config_input_from_type = config('lab1353.monkyz.db.input_from_type');
+			$config_input_from_type = config('monkyz-db.input_from_type');
 			if (!empty($config_input_from_type['date'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['date']);
 			if (!empty($config_input_from_type['datetime'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['datetime']);
 
 			$record = (!empty($data[$field_key])) ? $model->find($data[$field_key]) : $model;
 			foreach ($fields as $field=>$params) {
-				if ($params['in_edit']) {
+				if ($params['in_edit'] && !in_array($params['input'], ['file','image'])) {
+					$value = $data[$field];
 					if (in_array($params['input'], $fields_dates)) {
-						$dt = new Carbon($data[$field]);
-						$record->$field = $dt;
-					} else {
-						$record->$field = $data[$field];
+						$value = new Carbon($value);
+					} elseif ($params['input']=='password') {
+						$value = bcrypt($value);
 					}
+					$record->$field = $value;
 				}
 			}
 
 			if ($record->save()) {
+				//TODO: delete file if checked "delete image"
+				// save file
+				$file_upload = false;
+				$path_temp = config('monkyz.path_public_temp');
+				foreach ($fields as $field=>$params) {
+					if (in_array($params['input'], ['file','image'])) {
+						if (Input::file($field)->isValid()) {
+							// get file name
+							$file_ext = strtolower($request->file($field)->getClientOriginalExtension());
+							$file_name = strtolower($request->file($field)->getClientOriginalName());
+							$file_name = str_replace('.'.$file_ext, '', $file_name);
+							$file_name = str_slug($file_name);
+							if (!empty($file_ext)) $file_name .= '.'.$file_ext;
+
+							if (!empty($file_name)) {
+								$file_upload = true;
+
+								// get disk
+								$disk = 'local';
+								if (!empty($params[$params['input']]['disk'])) $disk = $params[$params['input']]['disk'];
+
+								// get correct path
+								$file_path = '';
+								if (!empty($params[$params['input']]['path'])) $file_path = $params[$params['input']]['path'];
+								$file_path = str_finish($file_path, '/');
+								if (!Storage::exists($file_path)) Storage::makeDirectory($file_path);
+
+								// put file upload in monkyz temp file
+								$temp_file = time().'_'.$file_name;
+								$temp_path = str_finish(public_path($path_temp), '/');
+								if (!File::exists($temp_path)) File::makeDirectory($temp_path, 0775, true);
+
+								// upload file
+								$request->file($field)->move($temp_path, $temp_file);
+								$file_content = File::get($temp_path.$temp_file);
+								Storage::disk($disk)->put($file_path.$file_name, $file_content);
+								File::delete($temp_path.$temp_file);
+
+								//TODO: if is image, resize if set
+
+								// save in model
+								$record->$field = $file_name;
+							}
+						}
+					}
+				}
+				if ($file_upload) $record->save();
+
 				return redirect()
 					->route('monkyz.dynamic.list', compact('section'))
 					->with('success', 'You have successfully Saved!')

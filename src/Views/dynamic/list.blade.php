@@ -3,7 +3,7 @@
 @section('content')
 				<div class="row page-header">
 					<div class="col-lg-8">
-						<h1>{{ $table['title'] }} <small>list</small></h1>
+						<h1><i class="{{ $table['icon'] }}"></i>{{ $table['title'] }} <small>list</small></h1>
 					</div>
 					<div class="col-lg-4 text-right">
 						<a href="{{ route('monkyz.dynamic.add', compact('section')) }}" class="btn btn-success">

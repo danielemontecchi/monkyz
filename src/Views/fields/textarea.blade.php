@@ -4,10 +4,12 @@
 		id="{{ $field }}" name="{{ $field }}"
 		placeholder="{{ $params['title'] }}"
 		rows="10"
-		@foreach($params['attributes'] as $k=>$v)
-			@if($k!='class' && !empty($v))
-				{{ $k }}="{{ $v }}"
-			@endif
-		@endforeach
+		@if(!empty($params['attributes']))
+			@foreach($params['attributes'] as $k=>$v)
+				@if(!empty($k))
+					{{ $k }}="{{ $v }}"
+				@endif
+			@endforeach
+		@endif
 	>{!! $record->$field !!}</textarea>
 </div>
