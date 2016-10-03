@@ -11,6 +11,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Lab1353\Monkyz\Models\DynamicModel;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
+use Lab1353\Monkyz\Helpers\FileHelper as HFile;
 
 class DynamicController extends MonkyzController
 {
@@ -178,12 +179,15 @@ class DynamicController extends MonkyzController
 								if (!File::exists($temp_path)) File::makeDirectory($temp_path, 0775, true);
 
 								// upload file
-								$request->file($field)->move($temp_path, $temp_file);
-								$file_content = File::get($temp_path.$temp_file);
-								Storage::disk($disk)->put($file_path.$file_name, $file_content);
-								File::delete($temp_path.$temp_file);
-
-								//TODO: if is image, resize if set
+								if (!Storage::disk($disk)->has($file_path.$file_name) || $params['file']['overwrite']) {
+									$request->file($field)->move($temp_path, $temp_file);
+									if ($params['input']=='image' && $params['file']['resize']) {
+										//TODO: if is image, resize if set
+									}
+									$file_content = File::get($temp_path.$temp_file);
+									Storage::disk($disk)->put($file_path.$file_name, $file_content);
+									File::delete($temp_path.$temp_file);
+								}
 
 								// save in model
 								$record->$field = $file_name;
@@ -218,14 +222,36 @@ class DynamicController extends MonkyzController
 
 		$fields = $this->htables->getColumns($section);
 		$field_key = 'id';
+		$files = [];
+		$useSoftDelete = false;
 		foreach ($fields as $field=>$params) {
 			if ($params['type']=='key') {
 				$field_key = $field;
-				break;
+			}
+			if (in_array($params['input'], ['file', 'image'])) {
+				$files[$field] = '';
+			}
+			if ($field=='deleted_at') {
+				$useSoftDelete = true;
 			}
 		}
 
-		if ($model->where($field_key, $id)->delete()) {
+		$record = $model->where($field_key, $id)->first();
+		foreach ($files as $field=>$file) {
+			$files[$field] = $record->$file;
+		}
+		if ($record->delete()) {
+
+			// delete files
+			if (!$useSoftDelete && !empty($files)) {
+				foreach ($files as $field=>$file) {
+					$field_params = $params['fields'][$field]['file'];
+
+					$hfile = new HFile($disk);
+					$hfile->delete($field_params, $file);
+				}
+			}
+
 			return redirect()
 				->route('monkyz.dynamic.list', compact('section'))
 				->with('success', 'You have successfully Deleted the record #'.$id.'!')

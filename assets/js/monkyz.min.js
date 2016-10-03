@@ -14,11 +14,12 @@ $(document).ready(function(){
 });
 
 
-// lazy load
-function reloadLazyLoad(event_name) {
-	console.log('called reloadLazyLoad() from '+event_name);
-    $("img.lazy").lazyload();
-};
+// delete button
+$(function() {
+	$('table .btn-delete-record').on('click', function() {
+		return confirm('Do you want to delete this record?');
+	});
+});
 
 
 //Loads the correct sidebar on window load,

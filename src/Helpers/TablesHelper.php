@@ -142,16 +142,6 @@ class TablesHelper
 				$c_in_edit = (!in_array($c_name, $fields_name_hide_in_edit));
 				if (isset($override['in_edit'])) $c_in_edit = $override['in_edit'];
 
-				// file
-				$c_file = [
-					'disk'	=> 'local',
-					'path'	=> 'uploads/',
-					'overwrite'	=> true,
-				];
-				if (isset($override['file']['disk'])) $c_file['disk'] = $override['file']['disk'];
-				if (isset($override['file']['path'])) $c_file['path'] = $override['file']['path'];
-				if (isset($override['file']['overwrite'])) $c_image['overwrite'] = (bool)$override['file']['overwrite'];
-
 				// enum
 				$c_enum = [];
 				if ($c_input=='enum') {
@@ -166,17 +156,17 @@ class TablesHelper
 				}
 				if (!empty($override['enum'])) $c_enum = $override['enum'];
 
-				// image
-				$c_image = [
+				// file/image
+				$c_file = [
 					'disk'	=> 'local',
 					'path'	=> 'uploads/',
 					'overwrite'	=> true,
 					'resize'	=> false,
 				];
-				if (isset($override['image']['disk'])) $c_image['disk'] = $override['image']['disk'];
-				if (isset($override['image']['path'])) $c_image['path'] = $override['image']['path'];
-				if (isset($override['image']['overwrite'])) $c_image['overwrite'] = (bool)$override['image']['overwrite'];
-				if (isset($override['image']['resize'])) $c_image['resize'] = (bool)$override['image']['resize'];
+				if (isset($override['file']['disk'])) $c_file['disk'] = $override['file']['disk'];
+				if (isset($override['file']['path'])) $c_file['path'] = $override['file']['path'];
+				if (isset($override['file']['overwrite'])) $c_file['overwrite'] = (bool)$override['file']['overwrite'];
+				if (isset($override['file']['resize'])) $c_file['resize'] = (bool)$override['file']['resize'];
 
 				// relationships
 				$c_relation = [
@@ -240,7 +230,6 @@ class TablesHelper
 					'in_edit'	=> $c_in_edit,
 					'enum'	=> $c_enum,
 					'file'	=> $c_file,
-					'image'	=> $c_image,
 					'relation'	=> $c_relation,
 					'attributes'	=> $c_attributes
 				];
@@ -248,8 +237,7 @@ class TablesHelper
 				// clean array
 				if ($c_input!='enum') unset($fields[$c_name]['enum']);
 				if ($c_input!='relation') unset($fields[$c_name]['relation']);
-				if ($c_input!='image') unset($fields[$c_name]['image']);
-				if ($c_input!='file') unset($fields[$c_name]['file']);
+				if (!in_array($c_input, ['file', 'image'])) unset($fields[$c_name]['file']);
 			}
 
 			$this->tables[$section]['fields'] = $fields;

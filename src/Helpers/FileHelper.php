@@ -43,9 +43,9 @@ class FileHelper
 
 	public function getUrlFromParams($params, $file)
 	{
-		$path = $params['image']['path'];
+		$path = $params['file']['path'];
 
-		$disk = $params['image']['disk'];
+		$disk = $params['file']['disk'];
 		$this->setDisk($disk);
 
 		return $this->generateUrl($path, $file);
@@ -85,5 +85,20 @@ class FileHelper
 		}
 
 		return $url;
+	}
+
+	public function delete($params, $file)
+	{
+		$path = $params['file']['path'];
+		$path = str_finish($path, '/');
+
+		$disk = $params['file']['disk'];
+		$this->setDisk($disk);
+		$driver = $this->disk_params['driver'];
+
+		if ($driver!='local') {
+			if (!starts_with($path, '/')) $path = '/'.$path;
+		}
+		return Storage::disk($disk)->delete($path.$file);
 	}
 }
