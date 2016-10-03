@@ -210,4 +210,31 @@ class DynamicController extends MonkyzController
 			;
 		}
 	}
+
+	public function getDelete($section, $id)
+	{
+		$model = new DynamicModel;
+		$model->setTable($section);
+
+		$fields = $this->htables->getColumns($section);
+		$field_key = 'id';
+		foreach ($fields as $field=>$params) {
+			if ($params['type']=='key') {
+				$field_key = $field;
+				break;
+			}
+		}
+
+		if ($model->where($field_key, $id)->delete()) {
+			return redirect()
+				->route('monkyz.dynamic.list', compact('section'))
+				->with('success', 'You have successfully Deleted the record #'.$id.'!')
+			;
+		} else {
+			return redirect()
+				->back()
+				->with('error', 'It was an error in the deleting!')
+			;
+		}
+	}
 }

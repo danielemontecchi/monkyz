@@ -13,8 +13,13 @@
 		@endif
 	>
 	@if(!empty($record->$field))
-		<a href="{{ Lab1353\Monkyz\Helpers\FieldsHelper::getFileUrl($section, $field, $record->$field) }}" target="_blank">
-			<img src="{{ Lab1353\Monkyz\Helpers\FieldsHelper::getUrlFileTypeIcon($record->$field) }}" class="img-thumbnail">
+		@php
+		$hfile = new Lab1353\Monkyz\Helpers\FileHelper();
+		$url = $hfile->getUrlFromParams($params, $record->$field);
+		$icon = $hfile->getUrlFileTypeIcon($record->$field);
+		@endphp
+		<a href="{{ $url }}" target="_blank">
+			<img src="{{ $icon }}" class="img-thumbnail">
 		</a>
 	@endif
 </div>

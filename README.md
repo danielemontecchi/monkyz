@@ -281,6 +281,7 @@ These are the known issues that will be resolved on the next versions:
 - [Bootstrap](http://getbootstrap.com/)
 - [jQuery](https://jquery.com/)
 - [DataTables](https://datatables.net/)
+- [Pace](http://github.hubspot.com/pace/docs/welcome/)
 - [metisMenu](https://github.com/onokumus/metisMenu)
 - [Lazy Load Plugin for jQuery](http://www.appelsiini.net/projects/lazyload)
 - [Google Fonts](https://fonts.google.com/)

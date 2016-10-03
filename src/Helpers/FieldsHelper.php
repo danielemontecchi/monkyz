@@ -6,81 +6,10 @@ use Storage;
 use Carbon\Carbon;
 use Lab1353\Monkyz\Models\DynamicModel;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
+use Lab1353\Monkyz\Helpers\FileHelper as HFile;
 
 class FieldsHelper
 {
-	public static function getUrlFileTypeIcon($file_name)
-	{
-		if (empty($file_name)) {
-			return '';
-		} else {
-			$path = 'vendor/monkyz/images/ext/';
-			$icon = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)).'.png';
-
-			return asset($path.$icon);
-		}
-	}
-
-	public static function getFileUrl($table, $field_name, $file)
-	{
-		if (empty($file)) {
-			return '';
-		} else {
-			$htables = new HTables();
-			$fields = $htables->getColumns($table);
-			$path = $fields[$field_name]['file']['path'];
-			$path = str_finish($path, '/');
-
-			return asset($path.$file);
-		}
-	}
-
-	public static function getImageUrl($table, $field_name, $image)
-	{
-		if (empty($image)) {
-			return '';
-		} else {
-			$htables = new HTables();
-			$fields = $htables->getColumns($table);
-			return self::generateImageUrl($fields[$field_name], $image);
-		}
-	}
-	public static function generateImageUrl($params, $image)
-	{
-		$url = '';
-		if (!empty($image)) {
-			$disk = $params['image']['disk'];
-			$driver = config('filesystems.disks.'.$disk.'.driver', '');
-			$path = $params['image']['path'];
-			$path = str_finish($path, '/');
-
-			$cache_key = 'monkyz-images_'.$disk.'_'.str_slug($path).'_'.str_slug($image);
-
-			if (Cache::has($cache_key)) {
-				$url = Cache::get($cache_key);
-			} else {
-				if ($driver=='local') {
-					$url = Storage::disk($disk)->url($path.$image);
-					$url = str_replace('/storage', '', $url);
-					$url = asset($url);
-				} else {
-					$adapter = Storage::disk($disk)->getAdapter();
-					if (!empty($adapter)) {
-						$client = $adapter->getClient();
-						if (!empty($client)) {
-							if (!starts_with($path, '/')) $path = '/'.$path;
-							$url = $client->createTemporaryDirectLink($path.$image);
-							if (is_array($url)) $url = $url[0];
-						}
-					}
-				}
-
-				Cache::put($cache_key, $url, (int)config('monkyz.cache_minutes', 60));
-			}
-		}
-
-		return $url;
-	}
 
 	public static function getEnum($table, $field_name)
 	{
@@ -186,7 +115,9 @@ class FieldsHelper
 
 	private static function renderFile($params, $value)
 	{
-		$icon = self::getUrlFileTypeIcon($value);
+		$hfile = new HFile();
+
+		$icon = $hfile->getUrlFileTypeIcon($value);
 		$img = '<img src="'.$icon.'" class="img-thumbnail" />';
 
 		return $img;
@@ -194,8 +125,9 @@ class FieldsHelper
 
 	private static function renderImage($params, $value)
 	{
+		$hfile = new HFile();
 		$img = '';
-		$url = self::generateImageUrl($params, $value);
+		$url = $hfile->getUrlFromParams($params, $value);
 		if (!empty($url)) $img = '<img src="'.$url.'" data-src="'.$value.'" class="img-responsive img-thumbnail" />';
 
 		return $img;
