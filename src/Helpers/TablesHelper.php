@@ -92,6 +92,20 @@ class TablesHelper
 		return $table_params;
 	}
 
+	public function findKeyFieldName($table)
+	{
+		$key_field = 'id';
+		$columns = $this->getColumns($table);
+		foreach ($columns as $column => $params) {
+			if ($params['type']=='key') {
+				$key_field = $column;
+				break;
+			}
+		}
+
+		return $key_field;
+	}
+
 	public function getColumns($section)
 	{
 		$input_from_type = collect($this->input_from_type);

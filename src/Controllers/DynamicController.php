@@ -85,9 +85,10 @@ class DynamicController extends MonkyzController
 
 		$model = new DynamicModel;
 		$model->setTable($section);
-		if ($id>0) {
+		if (!empty($id)) {
+			$field_key = $this->htables->findKeyFieldName($section);
 			$is_add_mode = false;
-			$record = $model->find($id);
+			$record = $model->where($field_key, $id)->first();
 
 			foreach ($fields as $field=>$params) {
 				if (in_array($params['input'], ['datetime', 'date'])) {
@@ -120,42 +121,39 @@ class DynamicController extends MonkyzController
 
 		if (!empty($data)) {
 			$fields = $this->htables->getColumns($section);
-			$field_key = 'id';
-			foreach ($fields as $field=>$params) {
-				if ($params['type']=='key') {
-					$field_key = $field;
-					break;
-				}
-			}
 
-			$model = new DynamicModel;
-			$model->setTable($section);
+			$model = new DynamicModel($section);
+			$field_key = $model->getPrimaryKey();
 
 			$fields_dates = [];
 			$config_input_from_type = config('monkyz-db.input_from_type');
 			if (!empty($config_input_from_type['date'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['date']);
 			if (!empty($config_input_from_type['datetime'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['datetime']);
 
-			$record = (!empty($data[$field_key])) ? $model->find($data[$field_key]) : $model;
+			$files_upload = [];
+			$record = (!empty($data[$field_key])) ? $model->where($field_key, $data[$field_key])->first() : $model;
 			foreach ($fields as $field=>$params) {
-				if ($params['in_edit'] && !in_array($params['input'], ['file','image'])) {
+				if ($params['in_edit']) {
 					$value = $data[$field];
-					if (in_array($params['input'], $fields_dates)) {
-						$value = new Carbon($value);
-					} elseif ($params['input']=='password') {
-						$value = bcrypt($value);
+					if (in_array($params['input'], ['file','image'])) {
+						$files_upload[$field] = $params;
+					} else {
+						if (in_array($params['input'], $fields_dates)) {
+							$value = new Carbon($value);
+						} elseif ($params['input']=='password') {
+							$value = bcrypt($value);
+						}
+						$record->$field = $value;
 					}
-					$record->$field = $value;
 				}
 			}
 
 			if ($record->save()) {
 				//TODO: delete file if checked "delete image"
 				// save file
-				$file_upload = false;
-				$path_temp = config('monkyz.path_public_temp');
-				foreach ($fields as $field=>$params) {
-					if (in_array($params['input'], ['file','image'])) {
+				if (!empty($files_upload)) {
+					$path_temp = config('monkyz.path_public_temp');
+					foreach ($files_upload as $field=>$params) {
 						if (Input::file($field)->isValid()) {
 							// get file name
 							$file_ext = strtolower($request->file($field)->getClientOriginalExtension());
@@ -204,8 +202,8 @@ class DynamicController extends MonkyzController
 							}
 						}
 					}
+					$record->save();
 				}
-				if ($file_upload) $record->save();
 
 				return redirect()
 					->route('monkyz.dynamic.list', compact('section'))
@@ -231,13 +229,10 @@ class DynamicController extends MonkyzController
 		$model->setTable($section);
 
 		$fields = $this->htables->getColumns($section);
-		$field_key = 'id';
+		$field_key = $this->htables->findKeyFieldName($section);
 		$files = [];
 		$useSoftDelete = false;
 		foreach ($fields as $field=>$params) {
-			if ($params['type']=='key') {
-				$field_key = $field;
-			}
 			if (in_array($params['input'], ['file', 'image'])) {
 				$files[$field] = '';
 			}

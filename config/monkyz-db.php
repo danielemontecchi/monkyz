@@ -21,8 +21,9 @@ return [
 		'email'	=> ['email'],
 		'hidden'	=> ['id','created_at','updated_at','deleted_at'],
 		'image'	=> ['image'],
+		'number'	=> ['cap','postalcode','quantity','amount'],
 		'password'	=> ['password'],
-		'tel'	=> ['tel','fax','telephone'],
+		'tel'	=> ['tel','fax','telephone','phone','cel','mobile','cellular'],
 		'url'	=> ['url'],
 	],
 
