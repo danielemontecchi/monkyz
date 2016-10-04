@@ -15,6 +15,10 @@ class MonkyzController extends Controller
 
 	public function init()
 	{
+		if(!\DB::connection()->getDatabaseName())
+		{
+			abort(404, 'Database connection refused!');
+		}
 		$this->middleware('Lab1353\Monkyz\Middleware\ForceSchema');
 		$this->storeViewShare();
 	}
@@ -35,7 +39,8 @@ class MonkyzController extends Controller
 		while (strpos($section_name, '/')!==false) {
 			$section_name = dirname($section_name);
 		}
+		$page_title = 'Monkyz <small>for '.$_SERVER['HTTP_HOST'].'</small>';
 
-    	view()->share(compact('monkyz_assets', 'tables', 'section_name'));
+    	view()->share(compact('monkyz_assets', 'tables', 'section_name', 'page_title'));
     }
 }

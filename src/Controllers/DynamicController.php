@@ -72,8 +72,10 @@ class DynamicController extends MonkyzController
 
 		$scripts['datatables'] = $dt;
 
+		$page_title = ucfirst($section).' <small>list</small>'
 
-		return view('monkyz::dynamic.list')->with(compact('records', 'scripts'));
+
+		return view('monkyz::dynamic.list')->with(compact('records', 'scripts', 'page_title'));
 	}
 
 	public function getEdit($section, $id=0)
@@ -106,6 +108,8 @@ class DynamicController extends MonkyzController
 				}
 			}
 		}
+
+		$page_title = ucfirst($section).' <small>'.($id>0 ? 'edit' : 'create').'</small>'
 
 		return view('monkyz::dynamic.edit')->with(compact('record', 'fields', 'is_add_mode'));
 	}

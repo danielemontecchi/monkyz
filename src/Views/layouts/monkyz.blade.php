@@ -5,28 +5,29 @@
 </head>
 
 <body>
-    <div id="wrapper">
+	<div id="wrapper">
 
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-			@include('monkyz::partials.header')
+		<!-- Navigation -->
+		<div class="sidebar" data-background-color="brown" data-active-color="warning">
 
 			@include('monkyz::partials.sidebar')
-        </nav>
+		</nav>
 
-        <!-- Page Content -->
-        <div id="page-wrapper">
-            <div class="container-fluid">
-            	@include('monkyz::partials.messages')
+		<div class="main-panel">
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					@include('monkyz::partials.header')
+	        </nav>
+	        <div class="content">
+	            <div class="container-fluid">
+					@include('monkyz::partials.messages')
 
-				@yield('content')
-            </div>
-            <!-- /.container-fluid -->
-        </div>
-        <!-- /#page-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
+					@yield('content')
+				</div>
+			</div>
+			@include('monkyz::partials.footer')
+	    </div>
+	</div>
 
 	@include('monkyz::partials.scripts')
 </body>

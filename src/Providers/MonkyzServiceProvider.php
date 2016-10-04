@@ -41,7 +41,7 @@ class MonkyzServiceProvider extends ServiceProvider
 
 		// routes
         include $path_src.'routes.php';
-
+        
         // config
         $this->mergeConfigFrom($path_pkg.'config/monkyz.php', 'monkyz');
 
