@@ -194,6 +194,8 @@ In automatically search for the type of the field input, it is to be more import
 > **!!! ATTENTION !!!**
 > **Monkyz** currently only supports one-to-one and many-to-one relationships.
 > All tables of many-to-many relationship will have to be defined in [config file `monkyz-db.php`](#table-parameters) and setting the parameter `visible` to `false`.
+> 
+> The primary key of the table must be called `id`.
 
 ## Artisan Command
 
@@ -253,6 +255,7 @@ These are the known issues that will be resolved on the next versions:
 
 - relationships: currently only supports one-to-one and many-to-one relationships
 - image upload resize: Resize the image does not change the dpi density
+- the primary key of the table must be called id
 
 ## Future Additions
 

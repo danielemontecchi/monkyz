@@ -2,7 +2,7 @@
 
 return [
 	'prefix'	=> 'monkyz',	// prefix of url for access at Monkyz
-	'use_https'	=> true,	// force chema https
+	'use_https'	=> false,	// force chema https
 
 	'cache_minutes'	=> 60,	// minutes of duration of cache
 
