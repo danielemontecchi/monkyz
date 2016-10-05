@@ -3,20 +3,19 @@
 <head>
 	@include('monkyz::partials.head')
 </head>
-
 <body>
 	<div id="wrapper">
 
 		<!-- Navigation -->
 		<div class="sidebar" data-background-color="brown" data-active-color="warning">
-
 			@include('monkyz::partials.sidebar')
-		</nav>
+		</div>
 
 		<div class="main-panel">
 			<nav class="navbar navbar-default">
 				<div class="container-fluid">
 					@include('monkyz::partials.header')
+				</div>
 	        </nav>
 	        <div class="content">
 	            <div class="container-fluid">

@@ -1,7 +1,7 @@
 
 			<div class="logo">
 				<a href="{{ route('monkyz.dashboard') }}" class="simple-text">
-					<img src="{{ $monkyz_assets }}images/logo/monkyz_logo_white_80.png" height="40" />
+					<img src="{{ $monkyz_assets }}images/logo/monkyz_logo_white_80.png" />
 				</a>
 			</div>
 	    	<div class="sidebar-wrapper">
@@ -24,7 +24,7 @@
 	                </div>
 	            </div>
 	            <ul class="nav">
-					<li class="@if($section_name=='monkyz') active @endif">
+					<li @if($section_name=='monkyz')class="active"@endif>
 						<a href="{{ route('monkyz.dashboard') }}"><i class="fa fa-dashboard fa-fw"></i>Dashboard</a>
 					</li>
 					<!--
@@ -43,7 +43,7 @@
 					@foreach($tables as $table => $params)
 						@if(!empty($table))
 							@if($params['visible'])
-								<li class="@if($section_name==$table) active @endif">
+								<li @if($section_name==$table)class="active"@endif>
 									<a href="{{ route('monkyz.dynamic.list', $table) }}">
 										<i class="{!! $params['icon'] !!}" aria-hidden="true"></i>{{ $params['title'] }}
 									</a>
@@ -51,7 +51,5 @@
 							@endif
 						@endif
 					@endforeach
-					</ul>
 	            </ul>
 	    	</div>
-	    </div>
