@@ -25,7 +25,7 @@
 	            </div>
 	            <ul class="nav">
 					<li @if($section_name=='monkyz')class="active"@endif>
-						<a href="{{ route('monkyz.dashboard') }}"><i class="fa fa-dashboard fa-fw"></i>Dashboard</a>
+						<a href="{{ route('monkyz.dashboard') }}"><i class="fa fa-dashboard"></i>Dashboard</a>
 					</li>
 					<!--
 					<li>

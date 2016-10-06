@@ -1,5 +1,10 @@
-.perfect-scrollbar-off .sidebar .sidebar-wrapper,
-.perfect-scrollbar-off .main-panel {
+.logo {
+	img {
+		height: 40px;
+	}
+}
+
+.perfect-scrollbar-off .sidebar .sidebar-wrapper {
     overflow: hidden;
     /*overflow-y: scroll;*/
 }

@@ -39,7 +39,7 @@ class MonkyzController extends Controller
 		while (strpos($section_name, '/')!==false) {
 			$section_name = dirname($section_name);
 		}
-		$page_title = 'Monkyz <small>for '.$_SERVER['HTTP_HOST'].'</small>';
+		$page_title = '<i class="fa fa-dashboard"></i>'.'Monkyz <small>for '.$_SERVER['HTTP_HOST'].'</small>';
 
     	view()->share(compact('monkyz_assets', 'tables', 'section_name', 'page_title'));
     }

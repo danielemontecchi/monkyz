@@ -11,6 +11,8 @@
 
 @if(!empty($scripts['datatables']))
 	<!--  Datatables     -->
+	{{-- //cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js --}}
+	{{-- //cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js --}}
 	<script src="//cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js"></script>
 
 	<script>

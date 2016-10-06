@@ -22,7 +22,9 @@
 
 @if(!empty($scripts['datatables']))
 	<!--  Datatables     -->
-	<link href="//cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css" rel="stylesheet">
+	{{-- //cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css --}}
+	{{-- //cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css --}}
+	<link href="//cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css">
 @endif
 
 <!-- Custom CSS -->

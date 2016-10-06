@@ -44,6 +44,9 @@ class DynamicController extends MonkyzController
 
 		if(\App::getLocale()=='it') {
 			$dt.='
+	            "pagingType": "full_numbers",
+	            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+	            responsive: true,
 				"language": {
 					"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Italian.json"
 				},';
@@ -72,7 +75,8 @@ class DynamicController extends MonkyzController
 
 		$scripts['datatables'] = $dt;
 
-		$page_title = ucfirst($section).' <small>list</small>'
+		$table_params = $this->htables->getTable($section);
+		$page_title = '<i class="'.$table_params['icon'].'"></i>'.ucfirst($section).' <small>list</small>';
 
 
 		return view('monkyz::dynamic.list')->with(compact('records', 'scripts', 'page_title'));
@@ -110,9 +114,10 @@ class DynamicController extends MonkyzController
 			}
 		}
 
-		$page_title = ucfirst($section).' <small>'.($id>0 ? 'edit' : 'create').'</small>'
+		$table_params = $this->htables->getTable($section);
+		$page_title = '<i class="'.$table_params['icon'].'"></i>'.ucfirst($section).' <small>&gt; '.($id>0 ? 'edit #'.$id : 'create').'</small>';
 
-		return view('monkyz::dynamic.edit')->with(compact('record', 'fields', 'is_add_mode'));
+		return view('monkyz::dynamic.edit')->with(compact('record', 'fields', 'is_add_mode', 'page_title'));
 	}
 
 	public function postSave(Request $request, $section)

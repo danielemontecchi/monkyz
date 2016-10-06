@@ -1,24 +1,19 @@
 @extends('monkyz::layouts.monkyz')
 
 @section('content')
-				<div class="row page-header">
-					<div class="col-lg-8">
-						<h1><i class="{{ $table['icon'] }}"></i>{{ $table['title'] }} <small>list</small></h1>
+	<div class="row">
+		<div class="col-md-12">
+			@php
+				$htables = new Lab1353\Monkyz\Helpers\TablesHelper();
+				$key = $htables->findKeyFieldName($section);
+			@endphp
+			<div class="card">
+				<div class="content">
+					<div class="toolbar">
+						<!--Here you can write extra buttons/actions for the toolbar-->
 					</div>
-					<div class="col-lg-4 text-right">
-						<a href="{{ route('monkyz.dynamic.add', compact('section')) }}" class="btn btn-success">
-							<i class="fa fa-plus" aria-hidden="true"></i>Create
-						</a>
-					</div>
-				</div>
-
-				@php
-					$htables = new Lab1353\Monkyz\Helpers\TablesHelper();
-					$key = $htables->findKeyFieldName($section);
-				@endphp
-				<div class="row">
-					<div class="col-lg-12">
-						<table class="table table-striped table-hover">
+					<div class="fresh-datatables">
+						<table id="datatables" class="table table-striped table-no-bordered table-hover">
 							<thead>
 								<tr>
 									@foreach($fields as $field=>$params)
@@ -48,4 +43,7 @@
 						</table>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
 @endsection

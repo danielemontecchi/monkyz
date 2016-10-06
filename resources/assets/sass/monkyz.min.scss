@@ -4,10 +4,7 @@
 
 //plugins css
 /*
-@import "monkyz/plugins/animate";
 @import "monkyz/plugins/sweetalert2";
-@import "monkyz/plugins/bootstrap-table";
-@import "monkyz/plugins/datatables.net";
 @import "monkyz/plugins/fullcalendar";
 @import "monkyz/plugins/chartist";
 @import "monkyz/plugins/perfect-scrollbar";
@@ -15,6 +12,9 @@
 @import "monkyz/plugins/bootstrap-select";
 @import "monkyz/plugins/datetime-picker";
 */
+@import "monkyz/plugins/animate";
+@import "monkyz/plugins/bootstrap-table";
+@import "monkyz/plugins/datatables.net";
 
 // Core CSS
 @import "monkyz/typography";
