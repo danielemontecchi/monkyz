@@ -1,0 +1,58 @@
+
+@import "monkyz/variables";
+@import "monkyz/mixins";
+
+//plugins css
+/*
+@import "monkyz/plugins/animate";
+@import "monkyz/plugins/sweetalert2";
+@import "monkyz/plugins/bootstrap-table";
+@import "monkyz/plugins/datatables.net";
+@import "monkyz/plugins/fullcalendar";
+@import "monkyz/plugins/chartist";
+@import "monkyz/plugins/perfect-scrollbar";
+@import "monkyz/plugins/jquery.jvectormap";
+@import "monkyz/plugins/bootstrap-select";
+@import "monkyz/plugins/datetime-picker";
+*/
+
+// Core CSS
+@import "monkyz/typography";
+@import "monkyz/sidebar-and-main-panel";
+@import "monkyz/buttons";
+@import "monkyz/misc";
+@import "monkyz/inputs";
+@import "monkyz/progress-bars";
+@import "monkyz/sliders";
+@import "monkyz/forms";
+@import "monkyz/alerts";
+@import "monkyz/tables";
+@import "monkyz/tooltips-and-popovers";
+@import "monkyz/navbars";
+@import "monkyz/footers";
+@import "monkyz/cards";
+@import "monkyz/timeline";
+@import "monkyz/labels";
+@import "monkyz/chat-message";
+@import "monkyz/checkbox-radio";
+
+// Fancy Stuff
+@import "monkyz/dropdown";
+@import "monkyz/social";
+@import "monkyz/tags";
+@import "monkyz/collapse";
+@import "monkyz/carousel";
+@import "monkyz/animated-buttons";
+@import "monkyz/switch";
+
+//SCSS for Pages
+@import "monkyz/pages";
+
+@import "monkyz/tabs-navs-pagination";
+@import "monkyz/circlechart";
+
+@import "monkyz/responsive";
+
+@import "custom/elements";
+@import "custom/header";
+@import "custom/sidebar";

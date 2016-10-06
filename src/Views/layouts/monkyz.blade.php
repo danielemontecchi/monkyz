@@ -4,7 +4,7 @@
 	@include('monkyz::partials.head')
 </head>
 <body>
-	<div id="wrapper">
+	<div class="wrapper">
 
 		<!-- Navigation -->
 		<div class="sidebar" data-background-color="brown" data-active-color="warning">
@@ -24,7 +24,11 @@
 					@yield('content')
 				</div>
 			</div>
-			@include('monkyz::partials.footer')
+            <footer class="footer">
+                <div class="container-fluid">
+					@include('monkyz::partials.footer')
+                </div>
+            </footer>
 	    </div>
 	</div>
 
