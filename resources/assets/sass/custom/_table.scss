@@ -1,0 +1,18 @@
+table.table {
+	thead {
+		tr {
+			th:last-child {
+				width: 180px;
+				text-align: center;
+			}
+		}
+	}
+	tbody {
+		tr {
+			td:last-child {
+				width: 180px;
+				text-align: right;
+			}
+		}
+	}
+}

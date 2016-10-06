@@ -4,7 +4,7 @@
 					<img src="{{ $monkyz_assets }}images/logo/monkyz_logo_white_80.png" />
 				</a>
 			</div>
-	    	<div class="sidebar-wrapper">
+	    	<div class="sidebar-wrapper" id="scroll-sidebar">
 				<div class="user">
 	                <div class="photo">
 	                    <img src="{{ Lab1353\Monkyz\Helpers\UserHelper::gravatar('d.montecchi@yahoo.it', 72) }}" />

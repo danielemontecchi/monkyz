@@ -33,8 +33,7 @@ class DynamicController extends MonkyzController
 
 	public function getList($section)
 	{
-		$model = new DynamicModel;
-		$model->setTable($section);
+		$model = new DynamicModel($section);
 		$records = $model->get()->toArray();
 
 		// datatables
@@ -87,8 +86,7 @@ class DynamicController extends MonkyzController
 		$fields = $this->htables->getColumns($section);
 		$is_add_mode = true;
 
-		$model = new DynamicModel;
-		$model->setTable($section);
+		$model = new DynamicModel($section);
 		if (!empty($id)) {
 			$field_key = $this->htables->findKeyFieldName($section);
 			$is_add_mode = false;
@@ -230,8 +228,7 @@ class DynamicController extends MonkyzController
 
 	public function getDelete($section, $id)
 	{
-		$model = new DynamicModel;
-		$model->setTable($section);
+		$model = new DynamicModel($section);
 
 		$fields = $this->htables->getColumns($section);
 		$field_key = $this->htables->findKeyFieldName($section);

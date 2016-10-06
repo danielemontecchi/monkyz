@@ -33,8 +33,8 @@
 											@endif
 										@endforeach
 										<td align="right">
-											<a href="{{ route('monkyz.dynamic.edit', [ 'id'=>$record[$key], 'section'=>$section ]) }}" class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i>Edit</a>
-											<a href="{{ route('monkyz.dynamic.delete', [ 'id'=>$record[$key], 'section'=>$section ]) }}" class="btn btn-xs btn-danger btn-delete-record"><i class="fa fa-trash"></i>Delete</a>
+											<a href="{{ route('monkyz.dynamic.edit', [ 'id'=>$record[$key], 'section'=>$section ]) }}" class="btn btn-sm btn-fill btn-primary"><i class="fa fa-pencil"></i>Edit</a>
+											<a href="{{ route('monkyz.dynamic.delete', [ 'id'=>$record[$key], 'section'=>$section ]) }}" class="btn btn-sm btn-fill btn-danger btn-delete-record"><i class="fa fa-trash"></i>Delete</a>
 										</td>
 									</tr>
 								@endforeach

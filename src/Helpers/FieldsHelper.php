@@ -147,8 +147,7 @@ class FieldsHelper
 		$field_value = $params['relation']['field_value'];
 	    $field_text = $params['relation']['field_text'];
 		if (!empty($source_table) && !empty($field_value)) {
-	    	$model = new DynamicModel;
-			$model->setTable($source_table);
+	    	$model = new DynamicModel($source_table);
 			$record = $model->where($field_value, $value)->first();
 		}
 

@@ -61,7 +61,7 @@ class DynamicModel extends Model
 
 	/**
 	 * TABLE
-	 *
+	 */
 	public function setTable($table)
 	{
 		self::$_table = $table;
@@ -69,5 +69,5 @@ class DynamicModel extends Model
 	public function getTable()
 	{
 		return self::$_table;
-	}*/
+	}
 }

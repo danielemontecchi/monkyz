@@ -12,6 +12,11 @@
 
 						<ul class="nav navbar-nav navbar-right">
 							<li>
+								<a href="#">
+									<img src="{{ $monkyz_assets }}images/flags/{{ strtoupper(Lang::getLocale()) }}.png" alt="" />
+								</a>
+							</li>
+							<li>
 								<a href="{{ config('app.url') }}" target="_blank">
 									<i class="fa fa-external-link"></i>Go to website
 								</a>

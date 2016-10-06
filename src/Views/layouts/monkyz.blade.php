@@ -11,7 +11,7 @@
 			@include('monkyz::partials.sidebar')
 		</div>
 
-		<div class="main-panel">
+		<div class="main-panel" id="scroll-body">
 			<nav class="navbar navbar-default">
 				<div class="container-fluid">
 					@include('monkyz::partials.header')
