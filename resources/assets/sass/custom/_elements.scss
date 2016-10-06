@@ -1,7 +1,19 @@
+body, h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, a, .td-name, td {
+	font-family: 'Open Sans', 'Roboto', 'Muli', "Helvetica", Arial, sans-serif;
+}
+
 a, .btn {
 	.fa {
 		width: 1.4em;
 		text-align: left;
+	}
+}
+
+.text-right, .text-center {
+	a, .btn {
+		.fa {
+			text-align: right;
+		}
 	}
 }
 

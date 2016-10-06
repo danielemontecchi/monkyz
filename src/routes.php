@@ -1,6 +1,7 @@
 <?php
 
 Route::group(['prefix' => config('monkyz.prefix')], function () {
+	// dashboard
 	Route::get('/', [ 'as'=>'monkyz.dashboard', 'uses'=>'Lab1353\Monkyz\Controllers\DashboardController@getIndex' ]);
 
 	// dynamic
@@ -9,4 +10,7 @@ Route::group(['prefix' => config('monkyz.prefix')], function () {
 	Route::get('/{section}/edit/{id}', [ 'as'=>'monkyz.dynamic.edit', 'uses'=>'Lab1353\Monkyz\Controllers\DynamicController@getEdit' ]);
 	Route::post('/{section}/save', [ 'as'=>'monkyz.dynamic.save', 'uses'=>'Lab1353\Monkyz\Controllers\DynamicController@postSave' ]);
 	Route::get('/{section}/delete/{id}', [ 'as'=>'monkyz.dynamic.delete', 'uses'=>'Lab1353\Monkyz\Controllers\DynamicController@getDelete' ]);
+
+	// settings
+	Route::get('/settings/dashboard', [ 'as'=>'monkyz.settings.dashboard', 'uses'=>'Lab1353\Monkyz\Controllers\SettingsController@getDashboard' ]);
 });

@@ -14,7 +14,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
 
 <!-- Goolge Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
 
 <!--  Fonts and icons     -->
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">

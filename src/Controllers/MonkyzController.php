@@ -34,6 +34,8 @@ class MonkyzController extends Controller
 		$tables = $this->htables->getTables();
 
 		// route name
+		$route_name = \Request::route()->getName();
+		$route_name = str_replace('monkyz.', '', $route_name);
 		$section_name = \Request::path();
 		$section_name = str_replace(config('monkyz.prefix').'/', '', $section_name);
 		while (strpos($section_name, '/')!==false) {
@@ -41,6 +43,6 @@ class MonkyzController extends Controller
 		}
 		$page_title = '<i class="fa fa-dashboard"></i>'.'Monkyz <small>for '.$_SERVER['HTTP_HOST'].'</small>';
 
-    	view()->share(compact('monkyz_assets', 'tables', 'section_name', 'page_title'));
+    	view()->share(compact('monkyz_assets', 'tables', 'section_name', 'route_name', 'page_title'));
     }
 }
