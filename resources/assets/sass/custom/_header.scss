@@ -1,8 +1,37 @@
-.navbar-header {
-	a {
-		small {
-			font-weight: normal;
-			font-style: italic;
+#scroll-body {
+	.navbar-header {
+		a {
+			small {
+				font-weight: normal;
+				font-style: italic;
+			}
+		}
+	}
+
+	.navbar {
+		& > .container-fluid {
+			padding-right: 0px;
+
+			#gotosite {
+				background-color: rgba(122, 194, 154, 0.7);
+
+				a {
+					color: #FFFFFF;
+				}
+			}
+
+			#logout {
+				background-color: rgba(235, 94, 40, 0.7);
+
+				a {
+					padding: 5px 15px;
+
+					.fa {
+						color: #FFFFFF;
+						text-align: center;
+					}
+				}
+			}
 		}
 	}
 }

@@ -16,9 +16,14 @@
 									<img src="{{ $monkyz_assets }}images/flags/{{ strtoupper(Lang::getLocale()) }}.png" alt="" />
 								</a>
 							</li>
-							<li>
+							<li id="gotosite">
 								<a href="{{ config('app.url') }}" target="_blank">
 									<i class="fa fa-external-link"></i>Go to website
+								</a>
+							</li>
+							<li id="logout">
+								<a href="#">
+									<i class="fa fa-power-off fa-2x"></i>
 								</a>
 							</li>
 						</ul>
