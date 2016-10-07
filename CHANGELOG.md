@@ -1,12 +1,9 @@
 # CHANGE LOGS:
------------
 
-# Versions
+## Versions
 
-* [Version 1.x](#version1x)
-  * [1.0.0](#100)
+* [1.0.0 (2016-10)](#100-2016-10)
 
-## Version 0.x
+### 1.0.0 (2016-10)
 
-### 0.1.0
 * Initial release.

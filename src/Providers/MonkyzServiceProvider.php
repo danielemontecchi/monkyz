@@ -47,7 +47,7 @@ class MonkyzServiceProvider extends ServiceProvider
 
 		// commands
 		$this->commands([
-			\Lab1353\Monkyz\Commands\MonkyzGenerateDb::class
+			\Lab1353\Monkyz\Commands\MonkyzTables::class
 		]);
 	}
 }

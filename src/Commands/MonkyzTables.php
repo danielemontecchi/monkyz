@@ -6,21 +6,21 @@ use File;
 use Illuminate\Console\Command;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 
-class MonkyzGenerateDb extends Command
+class MonkyzTables extends Command
 {
 	/**
 	 * The name and signature of the console command.
 	 *
 	 * @var string
 	 */
-	protected $signature = 'monkyz:generate-db';
+	protected $signature = 'monkyz:tables';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Generate the structure db and save in config file db.php';
+	protected $description = 'Generate the structure db and save in config file monkyz-db.php';
 
 	/**
 	 * Create a new command instance.
@@ -46,7 +46,7 @@ class MonkyzGenerateDb extends Command
 		if (!File::exists($config_file)) {
 			$path_type = str_replace(str_finish(base_path(), '/'), '', __DIR__);
 			$path_type = str_replace('src/Commands', '', $path_type);
-			$config_vendor_file = str_finish(base_path($path_type.'/config/'), '/').'db.php';
+			$config_vendor_file = str_finish(base_path($path_type.'/config/'), '/').'monkyz-db.php';
 			if (!File::exists(dirname($config_vendor_file))) File::makeDirectory(dirname($config_vendor_file), 0775, true);
 			File::copy($config_vendor_file, $config_file);
 			$this->callSilent('config:clear');

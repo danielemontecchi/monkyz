@@ -1,9 +1,15 @@
-![Monkyz](https://raw.githubusercontent.com/lab1353/monkyz/master/assets/images/logo/monkyz_logo_grey_100.png)
+![Monkyz](https://raw.githubusercontent.com/lab1353/monkyz/master/assets/images/logo/monkyz_dark_80.png)
 
 > **!!! ATTENTION !!!**
 > This package is in development to complete at a first working version. Do not install it yet, but come to see us often to find out when it is released :)
 
-# ![monkyz logo](https://raw.githubusercontent.com/lab1353/monkyz/master/assets/images/logo/monkyz_24.png) Monkyz [![lab1353](https://img.shields.io/badge/powered%20by-lab1353-brightgreen.svg)](http://1353.it)
+# ![monkyz logo](https://raw.githubusercontent.com/lab1353/monkyz/master/assets/images/logo/monkyz_24.png) Monkyz :: dynamic admin panel
+
+[![lab1353](https://img.shields.io/badge/powered%20by-lab1353-brightgreen.svg)](http://1353.it)
+[![Total Downloads](https://poser.pugx.org/lab1353/monkyz/downloads)](https://packagist.org/packages/lab1353/monkyz)
+[![Latest Stable Version](https://poser.pugx.org/lab1353/monkyz/v/stable)](https://packagist.org/packages/lab1353/monkyz)
+[![Latest Unstable Version](https://poser.pugx.org/lab1353/monkyz/v/unstable)](https://packagist.org/packages/lab1353/monkyz)
+[![License](https://poser.pugx.org/lab1353/monkyz/license)](https://packagist.org/packages/lab1353/monkyz)
 
 **Monkyz** is a dynamic and autonomous Administration Panel for *Laravel 5.2* .
 
@@ -18,16 +24,18 @@ No configuration required: without writing a single line of code, your control p
     - [Assets Files](#assets-files)
     - [Tables Relationships](#tables-relationships)
 - [Configuration](#configuration)
-  - [File `monkyz.php`](#file-monkyz-php)
-  - [File `monkyz-db.php`](#file-monkyz-php-db-php)
+  - [File `monkyz.php`](#file-monkyzphp)
+  - [File `monkyz-db.php`](#file-monkyz-dbphp)
     - [Parameter `tables`](#parameter-tables)
     	- [Table Parameters](#table-parameters)
     	- [Fields Parameters](#fields-parameters)
-- [Artisan Command](#artisan-command)
-- [Creating Custom Fields](#creating-custom-fields)
-- [Known Issues](#known-issues)
-- [Change log](#change-log)
-- [Future Additions](#future-additions)
+- [Artisan Commands](#artisan-commands)
+  - [`monkyz:tables`](#monkyz-tables)
+- [Customize](#customize)
+  - [Custom Fields](#custom-fields)
+- [Troubleshooting](#troubleshooting)
+- [Change Log](#change-log)
+- [Into The Future](#into-the-future)
 - [Credits](#credits)
   - [Vendors](#vendors)
 - [Copyright and License](#copyright-and-license)
@@ -208,18 +216,22 @@ In automatically search for the type of the field input, it is to be more import
 
 ## Artisan Command
 
+### `monkyz:tables`
+
 **Monkyz** provides the artisan command:
 
 ```bash
-php artisan monkyz:generate-db
+php artisan monkyz:tables
 ```
 
-This command allows you to automatically fill in the [`monkyz-db.php` config file](#file-monkyz-php-db-php).
+This command allows you to automatically fill in the [`monkyz-db.php` config file](#file-monkyz-dbphp).
 
 It will automatically create all the necessary references to **Monkyz** for the db structure.
 Not overwrite already entered parameters: only add the parameters have not been set.
 
-## Creating Custom Fields
+## Customize
+
+### Custom Fields
 
 **Monkyz** allows the creation of types of custom fields in the edit page of the record.
 
@@ -256,21 +268,17 @@ touch custom.blade.php
 			'input'	=> 'custom',	// <-- change 'custom' with your custom field name
 ```
 
-## Known Issues
+## Troubleshooting
 
 To report a issues, use [GitHub Issues](https://github.com/lab1353/monkyz/issues).
 
-These are the known issues that will be resolved on the next versions:
+For help with common problems, see [`ISSUES.md`](https://github.com/lab1353/monkyz/blob/master/ISSUES.md).
 
-- relationships: currently only supports one-to-one and many-to-one relationships
-- image upload resize: Resize the image does not change the dpi density
-- the primary key of the table must be called id
+## Change Log
 
-## Change log
+Please see [`CHANGELOG.md`](https://github.com/lab1353/monkyz/blob/master/CHANGELOG.md) for more information what has changed recently.
 
-Please see [`CHANGELOG`](https://github.com/lab1353/monkyz/blob/master/CHANGELOG.md) for more information what has changed recently.
-
-## Future Additions
+## Into The Future
 
 - manage useSoftDelete
 - compatibility with [Laravel 5.3](https://laravel.com/docs/5.3/upgrade#upgrade-5.3.0)
@@ -278,8 +286,6 @@ Please see [`CHANGELOG`](https://github.com/lab1353/monkyz/blob/master/CHANGELOG
 - [Laravel validation rules](https://laravel.com/docs/5.2/validation) for fields
 - roles for access sections
 - multi files uploads
-- integrate [Bootstrap Select](https://silviomoreto.github.io/bootstrap-select/examples/)
-- integrate [Bootstrap Switch](http://www.bootstrap-switch.org/)
 - widgets, counters and graph
 - integrate [Google Analytics](https://www.google.com/analytics/)
 
@@ -294,12 +300,10 @@ Please see [`CHANGELOG`](https://github.com/lab1353/monkyz/blob/master/CHANGELOG
 - [jQuery](https://jquery.com/)
 - [DataTables](https://datatables.net/)
 - [Pace](http://github.hubspot.com/pace/docs/welcome/)
-- [metisMenu](https://github.com/onokumus/metisMenu)
-- [Lazy Load Plugin for jQuery](http://www.appelsiini.net/projects/lazyload)
 - [Google Fonts](https://fonts.google.com/)
 - [Font Awesome](http://fontawesome.io/)
 
-All vendors files are load with CDN.
+All vendors files are loaded in CDN.
 
 ## Copyright and License
 
