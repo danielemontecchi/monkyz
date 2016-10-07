@@ -129,7 +129,7 @@ class DynamicController extends MonkyzController
 			$field_key = $model->getPrimaryKey();
 
 			$fields_dates = [];
-			$config_input_from_type = config('monkyz-db.input_from_type');
+			$config_input_from_type = config('monkyz-tables.input_from_type');
 			if (!empty($config_input_from_type['date'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['date']);
 			if (!empty($config_input_from_type['datetime'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['datetime']);
 

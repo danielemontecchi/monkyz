@@ -23,7 +23,7 @@ class ForceSchema
         if (!$request->isSecure() && $use_https) {
         	return redirect()->secure($request->getRequestUri());
         } elseif ($request->isSecure() && !$use_https) {
-        	return redirect()->to($request->getRequestUri(), 302, array(), false);;
+        	return redirect()->to($request->getRequestUri(), 302, []], false);
         }
         return $next($request);
 	}

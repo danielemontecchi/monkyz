@@ -24,9 +24,10 @@ class DashboardController extends MonkyzController
         if (Cache::has($cache_key)) {
             $counters = Cache::get($cache_key);
         } else {
+            $c_counters = config('monkyz-widgets.counters', []);
         	$tables = $this->htables->getTables();
         	foreach ($tables as $table => $params) {
-        		if ($params['visible']) {
+        		if ($params['visible'] && in_array($table, $c_counters)) {
         			$m = new DynamicModel($table);
         			$c = $m->count();
 

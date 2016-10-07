@@ -16,9 +16,9 @@ class TablesHelper
 
 	public function __construct()
 	{
-		$this->override_tables = (array)config('monkyz-db.tables', []);
-		$this->input_from_type = (array)config('monkyz-db.input_from_type', []);
-		$this->input_from_name = (array)config('monkyz-db.input_from_name', []);
+		$this->override_tables = (array)config('monkyz-tables.tables', []);
+		$this->input_from_type = (array)config('monkyz-tables.input_from_type', []);
+		$this->input_from_name = (array)config('monkyz-tables.input_from_name', []);
 		$this->cache_minutes = (int)config('monkyz.cache_minutes', 60);
 
 		if (Cache::has($this->cache_key)) {
@@ -113,7 +113,7 @@ class TablesHelper
 		$override_table = (!empty($this->override_tables[$section]['fields'])) ? $this->override_tables[$section]['fields'] : [];
 
 		if (empty($this->tables[$section]['fields'])) {
-			$fields_name_hide_in_edit = config('monkyz-db.fields_name_hide_in_edit', []);
+			$fields_name_hide_in_edit = config('monkyz-tables.fields_name_hide_in_edit', []);
 
 			$columns = \DB::select('SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`=\''.$section.'\'');
 			$fields = [];

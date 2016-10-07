@@ -20,7 +20,7 @@ class MonkyzTables extends Command
 	 *
 	 * @var string
 	 */
-	protected $description = 'Generate the structure db and save in config file monkyz-db.php';
+	protected $description = 'Generate the structure db and save in config file monkyz-tables.php';
 
 	/**
 	 * Create a new command instance.
@@ -42,17 +42,17 @@ class MonkyzTables extends Command
 		$htables = new HTables();
 
 		// Read config file
-		$config_file = str_finish(config_path(), '/').'monkyz-db.php';
+		$config_file = str_finish(config_path(), '/').'monkyz-tables.php';
 		if (!File::exists($config_file)) {
 			$path_type = str_replace(str_finish(base_path(), '/'), '', __DIR__);
 			$path_type = str_replace('src/Commands', '', $path_type);
-			$config_vendor_file = str_finish(base_path($path_type.'/config/'), '/').'monkyz-db.php';
+			$config_vendor_file = str_finish(base_path($path_type.'/config/'), '/').'monkyz-tables.php';
 			if (!File::exists(dirname($config_vendor_file))) File::makeDirectory(dirname($config_vendor_file), 0775, true);
 			File::copy($config_vendor_file, $config_file);
 			$this->callSilent('config:clear');
 			$this->callSilent('config:cache');
 		}
-		$config = config('monkyz-db');
+		$config = config('monkyz-tables');
 
 		// DB struct
 		$this->line('Reading DB structure');

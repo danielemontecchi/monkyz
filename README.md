@@ -25,12 +25,13 @@ No configuration required: without writing a single line of code, your control p
     - [Tables Relationships](#tables-relationships)
 - [Configuration](#configuration)
   - [File `monkyz.php`](#file-monkyzphp)
-  - [File `monkyz-db.php`](#file-monkyz-dbphp)
+  - [File `monkyz-tables.php`](#file-monkyz-tablesphp)
     - [Parameter `tables`](#parameter-tables)
     	- [Table Parameters](#table-parameters)
     	- [Fields Parameters](#fields-parameters)
+  - [File `monkyz-widgets.php`](#file-monkyz-widgetsphp)
 - [Artisan Commands](#artisan-commands)
-  - [`monkyz:tables`](#monkyz-tables)
+  - [`monkyz:tables`](#monkyztables)
 - [Customize](#customize)
   - [Custom Fields](#custom-fields)
 - [Troubleshooting](#troubleshooting)
@@ -115,9 +116,9 @@ The file `config/monkyz.php` contains the configuration details of **Monkyz**:
 - `cache_minutes`: minutes of duration of cache
 - `path_public_temp`: folder name, in `public` path, for temporary files
 
-### File `monkyz-db.php`
+### File `monkyz-tables.php`
 
-The file `config/monkyz-db.php` contains parameters for generate the dynamic configuration of the DB structure:
+The file `config/monkyz-tables.php` contains parameters for generate the dynamic configuration of the DB structure:
 
 - `input_from_type`: array to find the relative input according to the field type defined on the database
 - `input_from_name`: array to find the relative input according to the name of field
@@ -212,9 +213,16 @@ In automatically search for the type of the field input, it is to be more import
 
 > **!!! ATTENTION !!!**
 > **Monkyz** currently only supports one-to-one and many-to-one relationships.
-> All tables of many-to-many relationship will have to be defined in [config file `monkyz-db.php`](#table-parameters) and setting the parameter `visible` to `false`.
+> All tables of many-to-many relationship will have to be defined in [config file `monkyz-tables.php`](#table-parameters) and setting the parameter `visible` to `false`.
 
-## Artisan Command
+### File `monkyz-widgets.php`
+
+The file `config/monkyz-widgets.php` define the widgets in Dashboard.
+The parameters are:
+
+- `counters`: array containing the names of the tables for which you want to display the counter of records
+
+## Artisan Commands
 
 ### `monkyz:tables`
 
@@ -224,7 +232,7 @@ In automatically search for the type of the field input, it is to be more import
 php artisan monkyz:tables
 ```
 
-This command allows you to automatically fill in the [`monkyz-db.php` config file](#file-monkyz-dbphp).
+This command allows you to automatically fill in the [`monkyz-tables.php` config file](#file-monkyz-tablesphp).
 
 It will automatically create all the necessary references to **Monkyz** for the db structure.
 Not overwrite already entered parameters: only add the parameters have not been set.
