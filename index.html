@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Monkyz by lab1353</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Monkyz</h1>
+        <h2>Monkyz is a dynamic and autonomous Administration Panel for Laravel 5.2</h2>
+        <a href="https://github.com/lab1353/monkyz" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p><img src="https://raw.githubusercontent.com/lab1353/monkyz/master/assets/images/logo/monkyz_dark_80.png" alt="Monkyz"></p>
+
+<blockquote>
+<p><strong>!!! ATTENTION !!!</strong>
+This package is in development to complete at a first working version. Do not install it yet, but come to see us often to find out when it is released :)</p>
+</blockquote>
+
+<h1>
+<a id="-monkyz-" class="anchor" href="#-monkyz-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><img src="https://raw.githubusercontent.com/lab1353/monkyz/master/assets/images/logo/monkyz_24.png" alt="monkyz logo"> Monkyz <a href="http://1353.it"><img src="https://img.shields.io/badge/powered%20by-lab1353-brightgreen.svg" alt="lab1353"></a>
+</h1>
+
+<p><strong>Monkyz</strong> is a dynamic and autonomous Administration Panel for <em>Laravel 5.2</em> .</p>
+
+<p>It adapts to existing database by creating a full CRUD management for any table existing.
+No configuration required: without writing a single line of code, your control panel is ready for use.</p>
+
+<h2>
+<a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table of Contents</h2>
+
+<ul>
+<li><a href="#requirements">Requirements</a></li>
+<li>
+<a href="#installation">Installation</a>
+
+<ul>
+<li>
+<a href="#general-informations">General Informations</a>
+
+<ul>
+<li><a href="#assets-files">Assets Files</a></li>
+<li><a href="#tables-relationships">Tables Relationships</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#configuration">Configuration</a>
+
+<ul>
+<li><a href="#file-monkyz-php">File <code>monkyz.php</code></a></li>
+<li>
+<a href="#file-monkyz-php-db-php">File <code>monkyz-db.php</code></a>
+
+<ul>
+<li>
+<a href="#parameter-tables">Parameter <code>tables</code></a>
+
+<ul>
+<li><a href="#table-parameters">Table Parameters</a></li>
+<li><a href="#fields-parameters">Fields Parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#artisan-command">Artisan Command</a></li>
+<li><a href="#creating-custom-fields">Creating Custom Fields</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+<li><a href="#change-log">Change log</a></li>
+<li><a href="#future-additions">Future Additions</a></li>
+<li>
+<a href="#credits">Credits</a>
+
+<ul>
+<li><a href="#vendors">Vendors</a></li>
+</ul>
+</li>
+<li><a href="#copyright-and-license">Copyright and License</a></li>
+</ul>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
+
+<p>The requirements are:</p>
+
+<ul>
+<li>PHP &gt;= 5.5.9</li>
+<li>Laravel 5.2</li>
+</ul>
+
+<h3>
+<a id="optional" class="anchor" href="#optional" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Optional</h3>
+
+<p><strong>Monkyz</strong> gives the option to not use the log in to access the administration panel.
+If you want to have user authentication before accessing the administration panel, then you must create the <code>users</code> table using <code>migrations</code> that Laravel has inside.</p>
+
+<p>For more information read the <a href="https://www.laravel.com/docs/5.2/authentication">documentation Laravel</a>.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>First, pull in the package through Composer:</p>
+
+<div class="highlight highlight-source-shell"><pre>php composer.phar require lab1353/monkyz</pre></div>
+
+<p>or, for the latest version, in development:</p>
+
+<div class="highlight highlight-source-shell"><pre>php composer.phar require lab1353/monkyz:dev-master</pre></div>
+
+<p>And then, within <code>config/app.php</code>, include the service provider:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>providers<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">    <span class="pl-c1">Lab1353\Monkyz\Providers\</span><span class="pl-c1">MonkyzServiceProvider</span><span class="pl-k">::</span><span class="pl-c1">class</span>,</span>
+<span class="pl-s1">];</span></pre></div>
+
+<p>Finally, publish the assets:</p>
+
+<div class="highlight highlight-source-shell"><pre>php artisan vendor:publish --provider=<span class="pl-s"><span class="pl-pds">"</span>Lab1353\Monkyz\Providers\MonkyzServiceProvider<span class="pl-pds">"</span></span></pre></div>
+
+<p>The following files will be published with the commands <code>php artisan vendor:publish</code>:</p>
+
+<ul>
+<li>views in: <code>/resources/views/vendor/monkyz</code>
+</li>
+<li>configuration files: <code>/config/lab1353/monkyz</code>
+</li>
+<li>assets: <code>/public/vendor/monkyz</code>
+</li>
+</ul>
+
+<h3>
+<a id="general-informations" class="anchor" href="#general-informations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>General Informations</h3>
+
+<h4>
+<a id="assets-files" class="anchor" href="#assets-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Assets Files</h4>
+
+<p>The file <code>css/monkyz.min.css</code> was generated by a SCSS file.
+If you are interested in changing the SCSS source files, you can find here: <code>/vendor/lab1353/monkyz/resources/assets/scss/</code>.</p>
+
+<p>The file <code>js/monkyz.min.js</code> has been compressed.
+The original file are: <code>/vendor/lab1353/monkyz/resources/assets/js/monkyz.js</code>.</p>
+
+<h4>
+<a id="tables-relationships" class="anchor" href="#tables-relationships" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tables Relationships</h4>
+
+<p>Relations between tables must follow directions imposed by Eloquent. For more information read the section <a href="https://laravel.com/docs/5.2/eloquent-relationships">Eloquent: Relationships</a></p>
+
+<blockquote>
+<p><strong>Monkyz</strong> currently only supports one-to-one and many-to-one relationships.</p>
+</blockquote>
+
+<h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h2>
+
+<h3>
+<a id="file-monkyzphp" class="anchor" href="#file-monkyzphp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>File <code>monkyz.php</code>
+</h3>
+
+<p>The file <code>config/monkyz.php</code> contains the configuration details of <strong>Monkyz</strong>:</p>
+
+<ul>
+<li>
+<code>prefix</code>: prefix of url for access at <strong>Monkyz</strong>
+</li>
+<li>
+<code>use_https</code> (true|false): force chema https</li>
+<li>
+<code>cache_minutes</code>: minutes of duration of cache</li>
+<li>
+<code>path_public_temp</code>: folder name, in <code>public</code> path, for temporary files</li>
+</ul>
+
+<h3>
+<a id="file-monkyz-dbphp" class="anchor" href="#file-monkyz-dbphp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>File <code>monkyz-db.php</code>
+</h3>
+
+<p>The file <code>config/monkyz-db.php</code> contains parameters for generate the dynamic configuration of the DB structure:</p>
+
+<ul>
+<li>
+<code>input_from_type</code>: array to find the relative input according to the field type defined on the database</li>
+<li>
+<code>input_from_name</code>: array to find the relative input according to the name of field</li>
+<li>
+<code>fields_name_hide_in_edit</code>: array of field's name that will be hidden in edit (such as: created_at, updated_at, deleted_at)</li>
+<li>
+<code>tables</code>: <a href="#parameter-tables">view the details</a>
+</li>
+</ul>
+
+<p>This file can be automatically generated with the <a href="#artisan-command">artisan command <code>monkyz:generate-db</code></a></p>
+
+<h4>
+<a id="parameter-tables" class="anchor" href="#parameter-tables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parameter <code>tables</code>
+</h4>
+
+<p>The <code>tables</code> parameter are the ovveride array of dynamic DB structure:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>table_name<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> [    <span class="pl-c">// name of table in db</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Table<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>icon<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>fa fa-table fa-fw<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>visible<span class="pl-pds">'</span></span>   <span class="pl-k">=&gt;</span> <span class="pl-c1">true</span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>fields<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>field_name<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> [    <span class="pl-c">// name of field in db</span></span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Column<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>input<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>in_list<span class="pl-pds">'</span></span>   <span class="pl-k">=&gt;</span> <span class="pl-c1">true</span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>in_edit<span class="pl-pds">'</span></span>   <span class="pl-k">=&gt;</span> <span class="pl-c1">true</span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>enum<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>attr<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">            ]</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>file<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>disk<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>local<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>path<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>uploads/<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>overwrite<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">true</span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>resize<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> <span class="pl-c1">false</span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>resize_height_px<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-c1">1000</span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>resize_width_px<span class="pl-pds">'</span></span>   <span class="pl-k">=&gt;</span> <span class="pl-c1">1000</span>,</span>
+<span class="pl-s1">            ],</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>relation<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>table<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>table2<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>field_value<span class="pl-pds">'</span></span>   <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>id<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>field_text<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            ],</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>attributes<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>attr<span class="pl-pds">'</span></span>  <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span></span>
+<span class="pl-s1">            ]</span>
+<span class="pl-s1">        ]</span>
+<span class="pl-s1">    ]</span>
+<span class="pl-s1">],</span></pre></div>
+
+<h5>
+<a id="table-parameters" class="anchor" href="#table-parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table parameters</h5>
+
+<ul>
+<li>
+<code>title</code>: title of table</li>
+<li>
+<code>icon</code>: the <a href="http://fontawesome.io/icons/">fontawesome icon</a>
+</li>
+<li>
+<code>visible</code> (true|false): visibility of table in the sidebar menù</li>
+<li>
+<code>fields</code>: list of fields in table</li>
+</ul>
+
+<h5>
+<a id="fields-parameters" class="anchor" href="#fields-parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Fields parameters</h5>
+
+<ul>
+<li>
+<code>title</code>: title of column</li>
+<li>
+<code>input</code>: The values for this parameter are:
+
+<ul>
+<li>
+<code>block</code>: the <code>&lt;pre&gt;</code> block to display formatted text</li>
+<li>
+<code>checkbox</code>: checkbox true/false</li>
+<li>
+<code>color</code>: hex color selector (for details see: <a href="http://www.w3schools.com/html/html_forms.asp">W3C HTML Forms</a>)</li>
+<li>
+<code>date</code>: only date tag (for details see: <a href="http://www.w3schools.com/html/html_forms.asp">W3C HTML Forms</a>)</li>
+<li>
+<code>datetime</code>: date and time (for details see: <a href="http://www.w3schools.com/html/html_forms.asp">W3C HTML Forms</a>)</li>
+<li>
+<code>enum</code>: select box for enum (mandatory to define the parameter <code>enum</code>)</li>
+<li>
+<code>file</code>: file upload (mandatory to define the parameter <code>file</code>)</li>
+<li>
+<code>hidden</code>: field hidden used, by default, to the key fields</li>
+<li>
+<code>image</code>: file upload for only image (accepted extensions: .jpg, .jpeg, .png) (mandatory to define the parameter <code>file</code>)</li>
+<li>
+<code>number</code>: number tag (for details see: <a href="http://www.w3schools.com/html/html_forms.asp">W3C HTML Forms</a>)</li>
+<li>
+<code>relation</code>: select box with the relation with another table (mandatory to define the parameter <code>relation</code>)</li>
+<li>
+<code>tel</code>: telephone number (for details see: <a href="http://www.w3schools.com/html/html_forms.asp">W3C HTML Forms</a>)</li>
+<li>
+<code>text</code>: text tag for string</li>
+<li>
+<code>textarea</code>: textarea tag</li>
+<li>
+<code>url</code>: url tag (for details see: <a href="http://www.w3schools.com/html/html_forms.asp">W3C HTML Forms</a>)</li>
+<li>(You can create <a href="#creating-custom-fields">your own custom fields</a>)</li>
+</ul>
+</li>
+<li>
+<code>in_list</code> (true|false): visibility in list</li>
+<li>
+<code>in_edit</code> (true|false): visibility in edit and add record</li>
+<li>
+<code>enum</code>: array <code>'key' =&gt; 'value'</code> for populate the select box</li>
+<li>
+<code>file</code>: file/image field details
+
+<ul>
+<li>
+<code>disk</code>: disk name for <code>Storage</code> class, configured in config files <code>filesystems.php</code> (for more info see <a href="https://laravel.com/docs/5.2/filesystem">Laravel Filesystem Documentation</a>)</li>
+<li>
+<code>path</code>: relative path of images uploaded</li>
+<li>
+<code>overwrite</code> (true|false): overwrite the file if it already exists</li>
+<li>
+<code>resize</code> (true|false): if field is a image, determines if the uploaded image will be resized</li>
+<li>
+<code>resize_height_px</code>: pixel in height for resize image</li>
+<li>
+<code>resize_width_px</code>: pixel in width for resize image</li>
+</ul>
+</li>
+<li>
+<code>relation</code>: relationship field details
+
+<ul>
+<li>
+<code>table</code>: name of relationship's table</li>
+<li>
+<code>field_value</code>: name of value field of relationship's table</li>
+<li>
+<code>field_text</code>: name of text field of relationship's table</li>
+</ul>
+</li>
+<li>
+<code>attributes</code>: array (<code>'key' =&gt; 'value'</code>) of extra attributes in input</li>
+</ul>
+
+<p>In automatically search for the type of the field input, it is to be more important to the <code>input_from_name</code> parameter rather than a <code>input_from_type</code>.</p>
+
+<blockquote>
+<p><strong>!!! ATTENTION !!!</strong>
+<strong>Monkyz</strong> currently only supports one-to-one and many-to-one relationships.
+All tables of many-to-many relationship will have to be defined in <a href="#table-parameters">config file <code>monkyz-db.php</code></a> and setting the parameter <code>visible</code> to <code>false</code>.</p>
+</blockquote>
+
+<h2>
+<a id="artisan-command" class="anchor" href="#artisan-command" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Artisan Command</h2>
+
+<p><strong>Monkyz</strong> provides the artisan command:</p>
+
+<div class="highlight highlight-source-shell"><pre>php artisan monkyz:generate-db</pre></div>
+
+<p>This command allows you to automatically fill in the <a href="#file-monkyz-php-db-php"><code>monkyz-db.php</code> config file</a>.</p>
+
+<p>It will automatically create all the necessary references to <strong>Monkyz</strong> for the db structure.
+Not overwrite already entered parameters: only add the parameters have not been set.</p>
+
+<h2>
+<a id="creating-custom-fields" class="anchor" href="#creating-custom-fields" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating Custom Fields</h2>
+
+<p><strong>Monkyz</strong> allows the creation of types of custom fields in the edit page of the record.</p>
+
+<p>To create it, follow these steps:</p>
+
+<p>1) If you have not already done so, to publish the views:</p>
+
+<div class="highlight highlight-source-shell"><pre>php artisan vendor:publish --provider=<span class="pl-s"><span class="pl-pds">"</span>Lab1353\Monkyz\Providers\MonkyzServiceProvider<span class="pl-pds">"</span></span></pre></div>
+
+<p>The following command will be published the views files in: <code>/resources/views/vendor/monkyz</code></p>
+
+<p>2) Go to the <code>/resources/views/vendor/monkyz</code> folder and create a new <a href="https://www.laravel.com/docs/5.2/blade">file blade</a>,
+appointing him as your new field (for example: <code>custom</code>):</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> resources/views/vendor/monkyz
+touch custom.blade.php</pre></div>
+
+<p>3) Edit the new file as you prefer. Know that, the view, the following variables are passed:</p>
+
+<ul>
+<li>
+<code>$field</code>: name of database column</li>
+<li>
+<code>$record</code>: the <a href="https://www.laravel.com/docs/5.2/eloquent">Eloquent Model</a> (to retrieve the value of the field then use: <code>$record-&gt;$field</code>)</li>
+<li>
+<code>$params</code>: array of field parameters</li>
+</ul>
+
+<p>4) Now you can use your personal type of field, setting the parameter of the <code>input</code> fields:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>table_name<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> [    <span class="pl-c">// name of table in db</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>fields<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>field_name<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> [    <span class="pl-c">// name of field in db</span></span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>input<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>custom<span class="pl-pds">'</span></span>,    <span class="pl-c">// &lt;-- change 'custom' with your custom field name</span></span></pre></div>
+
+<h2>
+<a id="known-issues" class="anchor" href="#known-issues" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Known Issues</h2>
+
+<p>To report a issues, use <a href="https://github.com/lab1353/monkyz/issues">GitHub Issues</a>.</p>
+
+<p>These are the known issues that will be resolved on the next versions:</p>
+
+<ul>
+<li>relationships: currently only supports one-to-one and many-to-one relationships</li>
+<li>image upload resize: Resize the image does not change the dpi density</li>
+<li>the primary key of the table must be called id</li>
+</ul>
+
+<h2>
+<a id="change-log" class="anchor" href="#change-log" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Change log</h2>
+
+<p>Please see <a href="https://github.com/lab1353/monkyz/blob/master/CHANGELOG.md"><code>CHANGELOG</code></a> for more information what has changed recently.</p>
+
+<h2>
+<a id="future-additions" class="anchor" href="#future-additions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Future Additions</h2>
+
+<ul>
+<li>manage useSoftDelete</li>
+<li>compatibility with <a href="https://laravel.com/docs/5.3/upgrade#upgrade-5.3.0">Laravel 5.3</a>
+</li>
+<li>dynamic settings</li>
+<li>
+<a href="https://laravel.com/docs/5.2/validation">Laravel validation rules</a> for fields</li>
+<li>roles for access sections</li>
+<li>multi files uploads</li>
+<li>integrate <a href="https://silviomoreto.github.io/bootstrap-select/examples/">Bootstrap Select</a>
+</li>
+<li>integrate <a href="http://www.bootstrap-switch.org/">Bootstrap Switch</a>
+</li>
+<li>widgets, counters and graph</li>
+<li>integrate <a href="https://www.google.com/analytics/">Google Analytics</a>
+</li>
+</ul>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Credits</h2>
+
+<h3>
+<a id="vendors" class="anchor" href="#vendors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vendors</h3>
+
+<p><strong>Monkyz</strong> was made using the following css/js:</p>
+
+<ul>
+<li><a href="https://laravel.com/">Laravel</a></li>
+<li><a href="http://getbootstrap.com/">Bootstrap</a></li>
+<li><a href="https://jquery.com/">jQuery</a></li>
+<li><a href="https://datatables.net/">DataTables</a></li>
+<li><a href="http://github.hubspot.com/pace/docs/welcome/">Pace</a></li>
+<li><a href="https://github.com/onokumus/metisMenu">metisMenu</a></li>
+<li><a href="http://www.appelsiini.net/projects/lazyload">Lazy Load Plugin for jQuery</a></li>
+<li><a href="https://fonts.google.com/">Google Fonts</a></li>
+<li><a href="http://fontawesome.io/">Font Awesome</a></li>
+</ul>
+
+<p>All vendors files are load with CDN.</p>
+
+<h2>
+<a id="copyright-and-license" class="anchor" href="#copyright-and-license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Copyright and License</h2>
+
+<p>Administrator was written by <strong>Daniele Montecchi</strong> of <a href="http://1353.it"><strong>lab1353</strong></a>.</p>
+
+<p>Administrator is released under the MIT License. See the <a href="https://github.com/lab1353/monkyz/blob/master/LICENSE.md"><code>LICENSE.md</code> file</a> for details.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/lab1353/monkyz/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/lab1353/monkyz/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/lab1353/monkyz"></a> is maintained by <a href="https://github.com/lab1353">lab1353</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
