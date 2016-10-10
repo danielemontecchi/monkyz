@@ -13,7 +13,7 @@
 						<ul class="nav navbar-nav navbar-right">
 							{{-- <li>
 								<a href="#">
-									<img src="{{ $monkyz_assets }}images/flags/{{ strtoupper(Lang::getLocale()) }}.png" alt="" />
+									<img src="{{ $monkyz_assets }}images/flags/{{ Lang::getLocale() }}.png" alt="" />
 								</a>
 							</li> --}}
 							<li id="gotosite" class="icon">

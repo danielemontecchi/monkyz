@@ -1,5 +1,7 @@
 ![Monkyz](https://raw.githubusercontent.com/lab1353/monkyz/master/assets/images/logo/monkyz_dark_80.png)
 
+![screenshot](https://raw.githubusercontent.com/lab1353/monkyz/master/resources/assets/images/readme/screenshot.png)
+
 # ![monkyz logo](https://raw.githubusercontent.com/lab1353/monkyz/master/assets/images/logo/monkyz_24.png) Monkyz :: dynamic admin panel
 
 [![lab1353](https://img.shields.io/badge/powered%20by-lab1353-brightgreen.svg)](http://1353.it)
