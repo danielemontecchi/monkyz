@@ -292,14 +292,14 @@ Please see [`CHANGELOG.md`](https://github.com/lab1353/monkyz/blob/master/CHANGE
 
 ## Into The Future
 
-- manage useSoftDelete
-- compatibility with [Laravel 5.3](https://laravel.com/docs/5.3/upgrade#upgrade-5.3.0)
-- dynamic settings
-- [Laravel validation rules](https://laravel.com/docs/5.2/validation) for fields
-- roles for access sections
-- multi files uploads
+- manage useSoftDelete in model
 - widgets, counters and graph
+- dynamic settings
 - integrate [Google Analytics](https://www.google.com/analytics/)
+- roles for access sections
+- compatibility with [Laravel 5.3](https://laravel.com/docs/5.3/upgrade#upgrade-5.3.0)
+- [Laravel validation rules](https://laravel.com/docs/5.2/validation) for fields
+- multi files uploads
 
 ## Credits
 

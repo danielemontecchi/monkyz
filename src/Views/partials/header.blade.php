@@ -9,7 +9,6 @@
 						<a class="navbar-brand" href="#">{!! $page_title !!}</a>
 	                </div>
 	                <div class="collapse navbar-collapse">
-
 						<ul class="nav navbar-nav navbar-right">
 							{{-- <li>
 								<a href="#">
@@ -18,7 +17,7 @@
 							</li> --}}
 							<li id="gotosite" class="icon">
 								<a href="{{ config('app.url') }}" target="_blank">
-									<i class="fa fa-external-link"></i>
+									<i class="fa fa-external-link"></i><span>Go to site</span>
 								</a>
 							</li>
 							@if (config('monkyz.use_auth'))
@@ -31,7 +30,7 @@
 								</li>
 								<li id="logout" class="icon">
 									<a href="{{route('monkyz.users.logout')}}">
-										<i class="fa fa-power-off"></i>
+										<i class="fa fa-power-off"></i><span>Logout</span>
 									</a>
 								</li>
 							@endif

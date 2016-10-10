@@ -20,6 +20,10 @@
 					.fa {
 						color: #FFFFFF;
 					}
+					span {
+						visibility: hidden;
+						display: none;
+					}
 				}
 				&.image {
 					a {
@@ -60,5 +64,36 @@
 .wrapper-full-page {
 	.card .header {
 		padding: 0px 15px 10px;
+	}
+}
+
+@media (max-width: 992px) {
+	.perfect-scrollbar-off .main-panel {
+	    overflow: auto;
+	    overflow-x: hidden;
+	}
+	.nav-mobile-menu {
+		border-bottom: 1px solid #9A9A9A;
+    	padding-bottom: 25px;
+		
+		li {
+			&.spacer {
+				visibility: hidden;
+				display: none;
+			}
+
+			a {
+				padding: 10px 15px;
+
+				img {
+					height: 30px;
+					margin-right: 7px;
+				}
+				span {
+					visibility: visible;
+					display: inline-block;
+				}
+			}
+		}
 	}
 }

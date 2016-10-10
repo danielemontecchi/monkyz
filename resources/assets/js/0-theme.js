@@ -1,5 +1,4 @@
-$(function() {
-
+$(document).ready(function(){
 
 	// enlarge image
 	$('.img-thumbnail').hover(function() {
@@ -17,7 +16,7 @@ $(function() {
 
 	// logout
 	$('#logout a').on('click', function() {
-		return confirm('Do you want to logout?');
+		return logout();
 	});
 
 

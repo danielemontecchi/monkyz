@@ -1,8 +1,8 @@
 # COMMANDS
 
-**Copy css files to public**
+**Copy assets files to public**
 
-cp packages/lab1353/monkyz/assets/css/* public/vendor/monkyz/css/
+cp -R packages/lab1353/monkyz/assets/* public/vendor/monkyz/
 
 **Generate monkyz.min.js**
 
