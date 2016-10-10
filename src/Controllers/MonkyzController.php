@@ -22,7 +22,7 @@ class MonkyzController extends Controller
 			abort(404, 'Database connection refused!');
 		}
 		$this->middleware('Lab1353\Monkyz\Middleware\ForceSchema');
-		$this->middleware('Lab1353\Monkyz\Middleware\AdminAccess')->except(['getLogin','postLogin']);
+		if (config('monkyz.use_auth')) $this->middleware('Lab1353\Monkyz\Middleware\AdminAccess')->except(['getLogin','postLogin']);
 		$this->storeViewShare();
 	}
 

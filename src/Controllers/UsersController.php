@@ -24,8 +24,9 @@ class UsersController extends MonkyzController
 	{
 		$email = $request->input('email');
 		$password = $request->input('password');
+		$remember = (!empty($request->input('remember'))) ? true : false;
 
-		if (Auth::attempt(compact('email', 'password')))
+		if (Auth::attempt(compact('email', 'password'), $remember))
 		{
 			return redirect()->route('monkyz.dashboard');
 		}

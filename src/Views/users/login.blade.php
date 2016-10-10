@@ -26,6 +26,11 @@
                                             <label>Password</label>
                                             <input type="password" name="password" id="password" placeholder="Password" class="form-control input-no-border">
                                         </div>
+                                        <div class="form-group">
+                                            <label class="checkbox">
+                                                <input type="checkbox" id="remember" name="remember" value="1" data-toggle="checkbox" /> Remember me
+                                            </label>
+                                        </div>
                                     </div>
                                     <div class="footer text-center">
                                         <button type="submit" class="btn btn-fill btn-success btn-wd ">Let's go</button>

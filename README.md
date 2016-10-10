@@ -30,6 +30,7 @@ No configuration required: without writing a single line of code, your control p
     	- [Table Parameters](#table-parameters)
     	- [Fields Parameters](#fields-parameters)
   - [File `monkyz-widgets.php`](#file-monkyz-widgetsphp)
+- [Authentication](#authentication)
 - [Artisan Commands](#artisan-commands)
   - [`monkyz:tables`](#monkyztables)
 - [Customize](#customize)
@@ -106,6 +107,7 @@ The file `config/monkyz.php` contains the configuration details of **Monkyz**:
 
 - `prefix`: prefix of url for access at **Monkyz**
 - `use_https` (true|false): force chema https
+- `use_auth` (true|false): laravel authentication, otherwise access to panel is automatically
 - `cache_minutes`: minutes of duration of cache
 - `path_public_temp`: folder name, in `public` path, for temporary files
 
@@ -217,8 +219,13 @@ The parameters are:
 
 ## Authentication
 
-By default, admin module uses [Laravel authentication](https://laravel.com/docs/5.2/authentication).
+You can decide whether or not to use authentication to access the administration panel.
+You can define it with `use_auth` parameter in the configuration [file `monkyz.php`](#file-monkyzphp).
+
+If `use_auth` parameters is `true`, **Monkyz** uses [Laravel authentication](https://laravel.com/docs/5.2/authentication).
 If you want to use auth, you can run artisan command `php artisan make:auth`.
+
+Otherwise, if `use_auth` is `false`, the access to **Monkyz** is automatic.
 
 ## Artisan Commands
 

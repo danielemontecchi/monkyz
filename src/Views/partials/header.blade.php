@@ -21,17 +21,19 @@
 									<i class="fa fa-external-link"></i>
 								</a>
 							</li>
-							<li class="spacer"></li>
-							<li id="user" class="image">
-								<a href="#">
-									<img src="{{ $user['image'] }}" class="img-circle" />
-									{{ $user['name'] }}
-								</a>
-							</li>
-							<li id="logout" class="icon">
-								<a href="{{route('monkyz.users.logout')}}">
-									<i class="fa fa-power-off"></i>
-								</a>
-							</li>
+							@if (config('monkyz.use_auth'))
+								<li class="spacer"></li>
+								<li id="user" class="image">
+									<a href="#">
+										<img src="{{ $user['image'] }}" class="img-circle" />
+										{{ $user['name'] }}
+									</a>
+								</li>
+								<li id="logout" class="icon">
+									<a href="{{route('monkyz.users.logout')}}">
+										<i class="fa fa-power-off"></i>
+									</a>
+								</li>
+							@endif
 						</ul>
 	                </div>
