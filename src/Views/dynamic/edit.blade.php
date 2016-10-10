@@ -22,7 +22,8 @@
 		<div class="col-md-12">
 			<div class="card">
 				<form action="{{ route('monkyz.dynamic.save', compact('section')) }}" method="post" @if($fields_files) enctype="multipart/form-data" @endif>
-		            <div class="content">
+					<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+					<div class="content">
 						@foreach($fields as $field=>$params)
 							@if($params['in_edit'])
 								@if (view()->exists('monkyz::fields.'.$params['input']))
@@ -37,13 +38,25 @@
 						<a href="{{ route('monkyz.dynamic.list', compact('section')) }}" class="btn btn-info">
 							<i class="fa fa-chevron-left" aria-hidden="true"></i>Back to list
 						</a>
-						<button type="submit" class="btn btn-success">
+						<button type="submit" class="btn btn-success" id="submitClose" name="submitClose" value="true">
 							@if ($is_add_mode)
-								<i class="fa fa-plus" aria-hidden="true"></i>Create
+								<i class="fa fa-plus" aria-hidden="true"></i>Create and close
 							@else
-								<i class="fa fa-floppy-o" aria-hidden="true"></i>Save
+								<i class="fa fa-floppy-o" aria-hidden="true"></i>Save and close
 							@endif
 						</button>
+						<button type="submit" class="btn btn-success" id="submitContinue" name="submitContinue" value="true">
+							@if ($is_add_mode)
+								<i class="fa fa-plus" aria-hidden="true"></i>Create and edit
+							@else
+								<i class="fa fa-floppy-o" aria-hidden="true"></i>Save and continue edit
+							@endif
+						</button>
+						@if (!$is_add_mode && !$last_edit)
+							<button type="submit" class="btn btn-success" id="submitNext" name="submitNext" value="true">
+								<i class="fa fa-floppy-o" aria-hidden="true"></i>Save and edit next&nbsp;<i class="fa fa-angle-double-right" aria-hidden="true"></i>
+							</button>
+						@endif
 					</div>
 				</form>
 			</div>

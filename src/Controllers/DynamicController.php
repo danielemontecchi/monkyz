@@ -88,12 +88,13 @@ class DynamicController extends MonkyzController
 	{
 		$fields = $this->htables->getColumns($section);
 		$is_add_mode = true;
+		$last_edit = false;
 
 		$model = new DynamicModel($section);
 		if (!empty($id)) {
 			$field_key = $this->htables->findKeyFieldName($section);
 			$is_add_mode = false;
-			$record = $model->where($field_key, $id)->first();
+			$record = $model->find($id);
 
 			foreach ($fields as $field=>$params) {
 				if (in_array($params['input'], ['datetime', 'date'])) {
@@ -101,6 +102,10 @@ class DynamicController extends MonkyzController
 					$record->$field = $dt;
 				}
 			}
+
+			$model = new DynamicModel($section);
+			$model = $model->orderBy('id', 'desc')->first();
+			$last_edit = ($model->id==$id);
 		} else {
 			$record = $model;
 
@@ -118,7 +123,7 @@ class DynamicController extends MonkyzController
 		$table_params = $this->htables->getTable($section);
 		$page_title = '<i class="'.$table_params['icon'].'"></i>'.ucfirst($section).' <small>&gt; '.($id>0 ? 'edit #'.$id : 'create').'</small>';
 
-		return view('monkyz::dynamic.edit')->with(compact('record', 'fields', 'is_add_mode', 'page_title'));
+		return view('monkyz::dynamic.edit')->with(compact('record', 'fields', 'is_add_mode', 'page_title', 'last_edit'));
 	}
 
 	public function postSave(Request $request, $section)
@@ -135,9 +140,10 @@ class DynamicController extends MonkyzController
 			$config_input_from_type = config('monkyz-tables.input_from_type');
 			if (!empty($config_input_from_type['date'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['date']);
 			if (!empty($config_input_from_type['datetime'])) $fields_dates = array_merge($fields_dates, $config_input_from_type['datetime']);
+			$id = $data[$field_key];
 
 			$files_upload = [];
-			$record = (!empty($data[$field_key])) ? $model->where($field_key, $data[$field_key])->first() : $model;
+			$record = (!empty($id)) ? $model->find($id) : $model;
 			foreach ($fields as $field=>$params) {
 				if ($params['in_edit']) {
 					$value = $data[$field];
@@ -236,10 +242,29 @@ class DynamicController extends MonkyzController
 					$record->save();
 				}
 
-				return redirect()
-					->route('monkyz.dynamic.list', compact('section'))
-					->with('success', 'You have successfully Saved!')
-				;
+				$redirect = redirect()
+						->route('monkyz.dynamic.list', compact('section'))
+						->with('success', 'You have successfully Saved!')
+					;
+				$mode = 'close';
+				if (!empty($request->input('submitContinue'))) $mode = 'continue';
+				if (!empty($request->input('submitNext'))) $mode = 'next';
+
+				if ($mode!='close') {
+					$id = $record->id;
+					if ($mode!='continue') {
+						// go to next record?
+						$next = new DynamicModel($section);
+						$next = $next->where($field_key, '>', $id)->orderBy('id')->first();
+						$id = $next->id;
+					}
+
+					$redirect = redirect()->route('monkyz.dynamic.edit', compact('section','id'))
+						->with('success', 'You have successfully Saved!')
+					;
+				}
+
+				return $redirect;
 			} else {
 				return redirect()
 					->back()
