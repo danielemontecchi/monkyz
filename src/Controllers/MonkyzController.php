@@ -2,11 +2,13 @@
 
 namespace Lab1353\Monkyz\Controllers;
 
+use Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
+use Lab1353\Monkyz\Helpers\UserHelper as HUser;
 use Illuminate\Support\Facades\Route;
 
 class MonkyzController extends Controller
@@ -20,6 +22,7 @@ class MonkyzController extends Controller
 			abort(404, 'Database connection refused!');
 		}
 		$this->middleware('Lab1353\Monkyz\Middleware\ForceSchema');
+		$this->middleware('Lab1353\Monkyz\Middleware\AdminAccess')->except(['getLogin','postLogin']);
 		$this->storeViewShare();
 	}
 
@@ -41,8 +44,15 @@ class MonkyzController extends Controller
 		while (strpos($section_name, '/')!==false) {
 			$section_name = dirname($section_name);
 		}
-		$page_title = '<i class="fa fa-dashboard"></i>'.'Monkyz <small>for '.$_SERVER['HTTP_HOST'].'</small>';
+		$page_title = '<i class="fa fa-dashboard"></i>'.$_SERVER['HTTP_HOST'];
 
-    	view()->share(compact('monkyz_assets', 'tables', 'section_name', 'route_name', 'page_title'));
+		// user
+		$user = [];
+		if (Auth::check()) {
+			$user = Auth::user()->toArray();
+			if (empty($user['image'])) $user['image'] = HUser::gravatar($user['email'], 48);
+		}
+
+    	view()->share(compact('monkyz_assets', 'tables', 'section_name', 'route_name', 'page_title', 'user'));
     }
 }

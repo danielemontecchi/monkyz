@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => config('monkyz.prefix')], function () {
+Route::group(['prefix' => config('monkyz.prefix'), 'middleware'=>['web'] ], function () {
 	// dashboard
 	Route::get('/', [ 'as'=>'monkyz.dashboard', 'uses'=>'Lab1353\Monkyz\Controllers\DashboardController@getIndex' ]);
 
@@ -13,4 +13,9 @@ Route::group(['prefix' => config('monkyz.prefix')], function () {
 
 	// settings
 	Route::get('/settings/dashboard', [ 'as'=>'monkyz.settings.dashboard', 'uses'=>'Lab1353\Monkyz\Controllers\SettingsController@getDashboard' ]);
+
+	// users
+	Route::get('/users/login', [ 'as'=>'monkyz.users.login', 'uses'=>'Lab1353\Monkyz\Controllers\UsersController@getLogin' ]);
+	Route::post('/users/login', [ 'as'=>'monkyz.users.login', 'uses'=>'Lab1353\Monkyz\Controllers\UsersController@postLogin' ]);
+	Route::get('/users/logout', [ 'as'=>'monkyz.users.logout', 'uses'=>'Lab1353\Monkyz\Controllers\UsersController@getLogout' ]);
 });

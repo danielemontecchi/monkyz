@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{Lang::getLocale()}}">
 <head>
 	@include('monkyz::partials.head')
 </head>

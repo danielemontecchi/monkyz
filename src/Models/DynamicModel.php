@@ -1,5 +1,4 @@
 <?php
-
 namespace Lab1353\Monkyz\Models;
 
 use Cache;
@@ -50,8 +49,8 @@ class DynamicModel extends Model
 		$this->timestamps = ($f_created && $f_updated);
 		$this->dates = $f_dates;
 		/*
-		$this->primaryKey = $f_key_name;
 		$this->setKeyName($f_key_name);
+		$this->primaryKey = $f_key_name;
 		$this->keyType = $f_key_type;
 		$this->setIncrementing((bool)($f_key_type=='int'));
 		$this->dates = $f_dates;

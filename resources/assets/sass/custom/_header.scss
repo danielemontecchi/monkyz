@@ -12,26 +12,53 @@
 		& > .container-fluid {
 			padding-right: 0px;
 
-			#gotosite {
-				background-color: rgba(122, 194, 154, 0.7);
-
+			li {
 				a {
+					font-size: 1.4em;
+					padding: 0px 20px;
 					color: #FFFFFF;
-				}
-			}
-
-			#logout {
-				background-color: rgba(235, 94, 40, 0.7);
-
-				a {
-					padding: 5px 15px;
-
 					.fa {
 						color: #FFFFFF;
-						text-align: center;
 					}
+				}
+				&.image {
+					a {
+						margin: 16px 0px;
+						img {
+							height: 42px;
+							margin-right: 10px;
+						}
+					}
+				}
+				&.icon {
+					a {
+						font-size: 1.85em;
+
+						.fa {
+							text-align: center;
+						}
+					}
+				}
+				&.spacer {
+					width: 5em;
+					min-height: 10px;
+				}
+				&#user {
+					background-color: rgba(122, 194, 154, 0.7);
+				}
+				&#logout {
+					background-color: rgba(235, 94, 40, 0.7);
+				}
+				&#gotosite {
+					background-color: rgba(104, 179, 200, 0.7);
 				}
 			}
 		}
+	}
+}
+
+.wrapper-full-page {
+	.card .header {
+		padding: 0px 15px 10px;
 	}
 }

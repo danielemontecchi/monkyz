@@ -16,14 +16,21 @@
 									<img src="{{ $monkyz_assets }}images/flags/{{ strtoupper(Lang::getLocale()) }}.png" alt="" />
 								</a>
 							</li>
-							<li id="gotosite">
+							<li id="gotosite" class="icon">
 								<a href="{{ config('app.url') }}" target="_blank">
-									<i class="fa fa-external-link"></i>Go to website
+									<i class="fa fa-external-link"></i>
 								</a>
 							</li>
-							<li id="logout">
+							<li class="spacer"></li>
+							<li id="user" class="image">
 								<a href="#">
-									<i class="fa fa-power-off fa-2x"></i>
+									<img src="{{ $user['image'] }}" class="img-circle" />
+									{{ $user['name'] }}
+								</a>
+							</li>
+							<li id="logout" class="icon">
+								<a href="{{route('monkyz.users.logout')}}">
+									<i class="fa fa-power-off"></i>
 								</a>
 							</li>
 						</ul>

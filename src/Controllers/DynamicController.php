@@ -1,5 +1,4 @@
 <?php
-
 namespace Lab1353\Monkyz\Controllers;
 
 use Input;
@@ -55,7 +54,11 @@ class DynamicController extends MonkyzController
 		$dt .= '"columns": [ ';
 		foreach ($this->htables->getColumns($section) as $column=>$params) {
 			if ($params['in_list']) {
-				$dt .= '{"orderable": true}, ';
+				if (in_array($params['input'], ['checkbox','color','file','image'])) {
+					$dt .= '{"orderable": false}, ';
+				} else {
+					$dt .= '{"orderable": true}, ';
+				}
 				if ($params['input']=='text' && empty($dt_order)) {
 					$dt_order .= '
 						"order": [[ '.$i.', "asc" ]],
@@ -126,7 +129,7 @@ class DynamicController extends MonkyzController
 			$fields = $this->htables->getColumns($section);
 
 			$model = new DynamicModel($section);
-			$field_key = $model->getPrimaryKey();
+			$field_key = $model->getKeyName();
 
 			$fields_dates = [];
 			$config_input_from_type = config('monkyz-tables.input_from_type');
@@ -138,15 +141,40 @@ class DynamicController extends MonkyzController
 			foreach ($fields as $field=>$params) {
 				if ($params['in_edit']) {
 					$value = $data[$field];
-					if (in_array($params['input'], ['file','image'])) {
-						$files_upload[$field] = $params;
-					} else {
-						if (in_array($params['input'], $fields_dates)) {
-							$value = new Carbon($value);
-						} elseif ($params['input']=='password') {
-							$value = bcrypt($value);
-						}
-						$record->$field = $value;
+					switch ($params['input']) {
+						case 'checkbox':
+							$record->$field = (!empty($value)) ? true : false;
+							break;
+						
+						case 'date':
+						case 'datetime':
+							$dt = new Carbon($value);
+							$record->$field = $dt;
+							break;
+
+						case 'hidden':
+							// is hide...
+							break;
+
+						case 'file':
+						case 'image':
+							$files_upload[$field] = $params;
+							break;
+						
+						case 'password':
+							if (!empty($value)) {
+								$record->$field = bcrypt($value);
+							}
+							break;
+							
+						default:
+							if (in_array($params['input'], $fields_dates)) {
+								$value = new Carbon($value);
+							} elseif ($params['input']=='password') {
+								$value = bcrypt($value);
+							}
+							$record->$field = $value;
+							break;
 					}
 				}
 			}

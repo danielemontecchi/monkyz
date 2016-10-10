@@ -48,13 +48,6 @@ The requirements are:
 - PHP >= 5.5.9
 - Laravel 5.2
 
-### Optional
-
-**Monkyz** gives the option to not use the log in to access the administration panel.
-If you want to have user authentication before accessing the administration panel, then you must create the `users` table using `migrations` that Laravel has inside.
-
-For more information read the [documentation Laravel](https://www.laravel.com/docs/5.2/authentication).
-
 ## Installation
 
 First, pull in the package through Composer:
@@ -221,6 +214,11 @@ The file `config/monkyz-widgets.php` define the widgets in Dashboard.
 The parameters are:
 
 - `counters`: array containing the names of the tables for which you want to display the counter of records
+
+## Authentication
+
+By default, admin module uses [Laravel authentication](https://laravel.com/docs/5.2/authentication).
+If you want to use auth, you can run artisan command `php artisan make:auth`.
 
 ## Artisan Commands
 

@@ -2,7 +2,6 @@
 
 namespace Lab1353\Monkyz\Middleware;
 
-use Config;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -23,7 +22,7 @@ class ForceSchema
         if (!$request->isSecure() && $use_https) {
         	return redirect()->secure($request->getRequestUri());
         } elseif ($request->isSecure() && !$use_https) {
-        	return redirect()->to($request->getRequestUri(), 302, []], false);
+        	return redirect()->to($request->getRequestUri(), 302, [], false);
         }
         return $next($request);
 	}
