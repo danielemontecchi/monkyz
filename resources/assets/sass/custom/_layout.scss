@@ -1,0 +1,17 @@
+.main-panel > .content {
+	min-height: calc(100% - 126px);
+}
+.footer .copyright {
+	text-align: right;
+	margin: 5px 3px;
+}
+.full-page {
+	&> .content {
+		/*min-height: calc(100vh - 93px);*/
+	}
+	footer {
+		.copyright {
+			text-align: center;
+		}
+	}
+}

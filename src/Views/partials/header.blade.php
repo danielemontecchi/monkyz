@@ -11,11 +11,11 @@
 	                <div class="collapse navbar-collapse">
 
 						<ul class="nav navbar-nav navbar-right">
-							<li>
+							{{-- <li>
 								<a href="#">
 									<img src="{{ $monkyz_assets }}images/flags/{{ strtoupper(Lang::getLocale()) }}.png" alt="" />
 								</a>
-							</li>
+							</li> --}}
 							<li id="gotosite" class="icon">
 								<a href="{{ config('app.url') }}" target="_blank">
 									<i class="fa fa-external-link"></i>

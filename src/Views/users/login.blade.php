@@ -44,9 +44,7 @@
 
         	<footer class="footer footer-transparent">
                 <div class="container">
-                    <div class="copyright">
-						@include('monkyz::partials.footer')
-                    </div>
+					@include('monkyz::partials.footer')
                 </div>
             </footer>
         </div>
