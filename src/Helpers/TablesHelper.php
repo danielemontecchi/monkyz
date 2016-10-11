@@ -1,7 +1,7 @@
 <?php
 namespace Lab1353\Monkyz\Helpers;
 
-use Cache;
+use Illuminate\Support\Facades\Cache;
 
 class TablesHelper
 {
@@ -229,7 +229,8 @@ class TablesHelper
 					if ($length>0) $override['attributes']['maxlength'] = $length;
 				}
 
-				if ($column->IS_NULLABLE=='NO' && empty($column->COLUMN_DEFAULT) && $c_type!='key') $c_attributes['required'] = 'required';
+				if ($column->IS_NULLABLE=='NO' && is_null($column->COLUMN_DEFAULT) && $c_type!='key') $c_attributes['required'] = 'required';
+				if (empty($override['attributes']['required'])) unset($c_attributes['required']);
 
 				if (isset($override['attributes'])) {
 					foreach ($override['attributes'] as $k=>$v) {

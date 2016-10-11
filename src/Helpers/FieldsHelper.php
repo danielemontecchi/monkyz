@@ -1,8 +1,8 @@
 <?php
 namespace Lab1353\Monkyz\Helpers;
 
-use Cache;
-use Storage;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Lab1353\Monkyz\Models\DynamicModel;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;

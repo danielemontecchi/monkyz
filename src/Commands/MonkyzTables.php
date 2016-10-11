@@ -2,7 +2,7 @@
 
 namespace Lab1353\Monkyz\Commands;
 
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Console\Command;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 

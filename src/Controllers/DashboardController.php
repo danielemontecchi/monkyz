@@ -2,7 +2,7 @@
 
 namespace Lab1353\Monkyz\Controllers;
 
-use Cache;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

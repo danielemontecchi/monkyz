@@ -2,6 +2,7 @@
 <html lang="{{Lang::getLocale()}}">
 <head>
 	@include('monkyz::partials.head')
+	@yield('css')
 </head>
 <body>
 	<div class="wrapper">
@@ -33,5 +34,6 @@
 	</div>
 
 	@include('monkyz::partials.scripts')
+	@yield('scripts')
 </body>
 </html>

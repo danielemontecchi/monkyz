@@ -3,7 +3,7 @@
 namespace Lab1353\Monkyz\Middleware;
 
 use Closure;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAccess
 {

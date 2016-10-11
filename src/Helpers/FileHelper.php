@@ -1,8 +1,8 @@
 <?php
 namespace Lab1353\Monkyz\Helpers;
 
-use Cache;
-use Storage;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 
 class FileHelper

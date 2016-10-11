@@ -176,6 +176,7 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
   - `color`: hex color selector (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
   - `date`: only date tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
   - `datetime`: date and time (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
+  - `editor`: a simple wysihtml5 for bootstrap
   - `enum`: select box for enum (mandatory to define the parameter `enum`)
   - `file`: file upload (mandatory to define the parameter `file`)
   - `hidden`: field hidden used, by default, to the key fields
@@ -314,6 +315,8 @@ Please see [`CHANGELOG.md`](https://github.com/lab1353/monkyz/blob/master/CHANGE
 - [Pace](http://github.hubspot.com/pace/docs/welcome/)
 - [Google Fonts](https://fonts.google.com/)
 - [Font Awesome](http://fontawesome.io/)
+- [Paper Dashboard](http://www.creative-tim.com/product/paper-dashboard)
+- [Bootstrap3 Wysiwyg](https://bootstrap-wysiwyg.github.io/bootstrap3-wysiwyg/)
 
 All vendors files are loaded in CDN.
 

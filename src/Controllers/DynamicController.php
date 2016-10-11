@@ -1,9 +1,9 @@
 <?php
 namespace Lab1353\Monkyz\Controllers;
 
-use Input;
-use File;
-use Storage;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -138,7 +138,7 @@ class DynamicController extends MonkyzController
 			$record = (!empty($id)) ? $model->find($id) : $model;
 			foreach ($fields as $field=>$params) {
 				if ($params['in_edit']) {
-					$value = $data[$field];
+					$value = (!empty($data[$field])) ? $data[$field] : '';
 					switch ($params['input']) {
 						case 'checkbox':
 							$record->$field = (!empty($value)) ? true : false;
@@ -156,7 +156,7 @@ class DynamicController extends MonkyzController
 
 						case 'file':
 						case 'image':
-							$files_upload[$field] = $params;
+							if (!empty($value)) $files_upload[$field] = $params;
 							break;
 						
 						case 'password':
@@ -183,7 +183,7 @@ class DynamicController extends MonkyzController
 				if (!empty($files_upload)) {
 					$path_temp = config('monkyz.path_public_temp');
 					foreach ($files_upload as $field=>$params) {
-						if (Input::file($field)->isValid()) {
+						if (!empty(Input::file($field)) && Input::file($field)->isValid()) {
 							// get file name
 							$file_ext = strtolower($request->file($field)->getClientOriginalExtension());
 							$file_name = strtolower($request->file($field)->getClientOriginalName());
