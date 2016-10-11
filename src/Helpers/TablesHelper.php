@@ -48,7 +48,6 @@ class TablesHelper
 	{
 		if (empty($this->tables)) {
 			$tables = [];
-			$override = $this->override_tables;
 			$db_connection = config('database.default');
 			$db_name = config('database.connections.'.$db_connection.'.database');
 			if (!empty($db_name)) {

@@ -24,8 +24,6 @@ class MonkyzTables extends Command
 
 	/**
 	 * Create a new command instance.
-	 *
-	 * @return void
 	 */
 	public function __construct()
 	{
@@ -87,16 +85,16 @@ class MonkyzTables extends Command
 
 	private function arrayoToString($array, $level=1)
 	{
+		$str = '';
 		if (is_array($array)) {
 			$str = "[";
 			$i = 1;
 			$c = count($array);
 			foreach ($array as $k=>$v) {
-				//if (strlen($k)==1) echo "$k = $v || ".'is_array($v): '.(is_array($v) ? 'true' : 'false').' || is_int($k): '.(is_int($k) ? 'true' : 'false')."\n";
 				if (is_array($v)) {
-					if ($i===1) $str .= "\n".str_repeat('	', $level);
+					if ($i==1) $str .= "\n".str_repeat('	', $level);
 					$str .= "'$k'	=> ".$this->arrayoToString($v, $level+1)."\n";
-					if ($i===$c) {
+					if ($i==$c) {
 						$str .= str_repeat('	', $level-1);
 					} else {
 						$str .= str_repeat('	', $level);
@@ -113,7 +111,7 @@ class MonkyzTables extends Command
 						} else {
 							$str .= "'$v'";
 						}
-						if ($i===$c) {
+						if ($i==$c) {
 							$str .= ",\n".str_repeat('	', $level-1);
 						} else {
 							$str .= ",\n".str_repeat('	', $level);

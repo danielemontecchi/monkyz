@@ -14,7 +14,7 @@ class AdminAccess
 	 * @param  \Closure  $next
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next, $guard = null)
+	public function handle($request, Closure $next)
 	{
 		if (!Auth::check()) {
 			if ($request->ajax() || $request->wantsJson()) {

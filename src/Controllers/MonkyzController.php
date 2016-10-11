@@ -29,8 +29,7 @@ class MonkyzController extends Controller
     public function storeViewShare()
     {
     	// assets
-    	//$monkyz_assets = str_replace(['http:','https:'], '', str_finish(url('/vendor/monkyz/'), '/'));
-    	$monkyz_assets = '/vendor/monkyz/';
+    	$monkyz_assets = str_finish(asset('vendor/monkyz/'), '/');
 
     	// sections
     	$this->htables = new HTables();

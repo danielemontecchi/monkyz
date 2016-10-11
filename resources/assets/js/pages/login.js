@@ -1,14 +1,14 @@
 
 var checkFullPageBackgroundImage = function(){
-	$page = $('.full-page');
-	image_src = $page.data('image');
+	var page = $('.full-page');
+	var image_src = page.data('image');
 
 	if(image_src !== undefined){
-		image_container = '<div class="full-page-background" style="background-image: url(' + image_src + ') "/>'
-		$page.append(image_container);
+		var image_container = '<div class="full-page-background" style="background-image: url(' + image_src + ') "/>'
+		page.append(image_container);
 	}
 };
-$().ready(function(){
+$(document).ready(function(){
 	checkFullPageBackgroundImage();
 
 	setTimeout(function(){

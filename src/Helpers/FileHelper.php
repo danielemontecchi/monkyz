@@ -34,25 +34,10 @@ class FileHelper
 	 * CONVERT
 	 */
 
-	public static function bytes2human($bytes) {
-		$bytes = floatval($unit);
-
-		$bytes_array = array(
-			'B' => 8,
-			'KB' => 1024,
-			'MB' => 1024 * 1024,
-			'GB' => 1024 * 1024 * 1024,
-			'TB' => 1024 * 1024 * 1024 * 1024,
-			'PB' => 1024 * 1024 * 1024 * 1024 * 1024,
-		);
-
-		if (preg_match('#([KMGTP]?B)$#si', $bytes, $matches) && !empty($bytes_array[$matches[1]])) {
-			$bytes *= $bytes_array[$matches[1]];
-		}
-
-		$bytes = intval(round($bytes, 2));
-
-		return $bytes;
+	public static function bytes2human($bytes, $decimals = 2) {
+		$size = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
+		$factor = floor((strlen($bytes) - 1) / 3);
+		return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
 	}
 
 

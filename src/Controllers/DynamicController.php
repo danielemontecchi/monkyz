@@ -17,7 +17,6 @@ class DynamicController extends MonkyzController
 	public function __construct() {
 		$this->init();
 
-		$fields = [];
 		$route = request()->route();
 		$section = $route->getParameter('section');
 		if (\Schema::hasTable($section)) {
@@ -75,13 +74,13 @@ class DynamicController extends MonkyzController
 		});
 		';
 
-		$scripts['datatables'] = $dt;
+		$scripts_datatables = $dt;
 
 		$table_params = $this->htables->getTable($section);
 		$page_title = '<i class="'.$table_params['icon'].'"></i>'.ucfirst($section).' <small>list</small>';
 
 
-		return view('monkyz::dynamic.list')->with(compact('records', 'scripts', 'page_title'));
+		return view('monkyz::dynamic.list')->with(compact('records', 'scripts_datatables', 'page_title'));
 	}
 
 	public function getEdit($section, $id=0)
@@ -92,31 +91,24 @@ class DynamicController extends MonkyzController
 
 		$model = new DynamicModel($section);
 		if (!empty($id)) {
-			$field_key = $this->htables->findKeyFieldName($section);
 			$is_add_mode = false;
 			$record = $model->find($id);
 
-			foreach ($fields as $field=>$params) {
-				if (in_array($params['input'], ['datetime', 'date'])) {
-					$dt = new Carbon($record->$field);
-					$record->$field = $dt;
-				}
-			}
-
+			// check if is the last record in table
 			$model = new DynamicModel($section);
 			$model = $model->orderBy('id', 'desc')->first();
 			$last_edit = ($model->id==$id);
 		} else {
 			$record = $model;
+		}
 
-			foreach ($fields as $field=>$params) {
-				if (!empty($params['default'])) {
-					$record->$field = $params['default'];
-				}
-				if (in_array($params['input'], ['datetime', 'date'])) {
-					$dt = new Carbon($record->$field);
-					$record->$field = $dt;
-				}
+		foreach ($fields as $field=>$params) {
+			if ($is_add_mode && !empty($params['default'])) {
+				$record->$field = $params['default'];
+			}
+			if (in_array($params['input'], ['datetime', 'date'])) {
+				$dt = new Carbon($record->$field);
+				$record->$field = $dt;
 			}
 		}
 
@@ -134,7 +126,7 @@ class DynamicController extends MonkyzController
 			$fields = $this->htables->getColumns($section);
 
 			$model = new DynamicModel($section);
-			$field_key = $model->getKeyName();
+			$field_key = $model->getKeyName();	// $this->htables->findKeyFieldName($section)
 
 			$fields_dates = [];
 			$config_input_from_type = config('monkyz-tables.input_from_type');
@@ -197,11 +189,9 @@ class DynamicController extends MonkyzController
 							$file_name = strtolower($request->file($field)->getClientOriginalName());
 							$file_name = str_replace('.'.$file_ext, '', $file_name);
 							$file_name = str_slug($file_name);
-							if (!empty($file_ext)) $file_name .= '.'.$file_ext;
+							$file_name .= '.'.$file_ext;
 
 							if (!empty($file_name)) {
-								$file_upload = true;
-
 								// get disk
 								$disk = 'local';
 								if (!empty($params[$params['input']]['disk'])) $disk = $params[$params['input']]['disk'];
@@ -305,10 +295,13 @@ class DynamicController extends MonkyzController
 			// delete files
 			if (!$useSoftDelete && !empty($files)) {
 				foreach ($files as $field=>$file) {
-					$field_params = $params['fields'][$field]['file'];
+					$field_params = $fields['fields'][$field]['file'];
+					$disk = $field_params['disk'];
 
-					$hfile = new HFile($disk);
-					$hfile->delete($field_params, $file);
+					if (!empty($disk)) {
+						$hfile = new HFile($disk);
+						$hfile->delete($field_params, $file);
+					}
 				}
 			}
 
