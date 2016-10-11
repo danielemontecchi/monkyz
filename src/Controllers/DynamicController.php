@@ -181,52 +181,11 @@ class DynamicController extends MonkyzController
 				//TODO: delete file if checked "delete image"
 				// save file
 				if (!empty($files_upload)) {
-					$path_temp = config('monkyz.path_public_temp');
 					foreach ($files_upload as $field=>$params) {
-						if (!empty(Input::file($field)) && Input::file($field)->isValid()) {
-							// get file name
-							$file_ext = strtolower($request->file($field)->getClientOriginalExtension());
-							$file_name = strtolower($request->file($field)->getClientOriginalName());
-							$file_name = str_replace('.'.$file_ext, '', $file_name);
-							$file_name = str_slug($file_name);
-							$file_name .= '.'.$file_ext;
-
-							if (!empty($file_name)) {
-								// get disk
-								$disk = 'local';
-								if (!empty($params[$params['input']]['disk'])) $disk = $params[$params['input']]['disk'];
-
-								// get correct path
-								$file_path = '';
-								if (!empty($params[$params['input']]['path'])) $file_path = $params[$params['input']]['path'];
-								$file_path = str_finish($file_path, '/');
-								if (!Storage::exists($file_path)) Storage::makeDirectory($file_path);
-
-								// put file upload in monkyz temp file
-								$temp_file = time().'_'.$file_name;
-								$temp_path = str_finish(public_path($path_temp), '/');
-								if (!File::exists($temp_path)) File::makeDirectory($temp_path, 0775, true);
-
-								// upload file
-								if (!Storage::disk($disk)->has($file_path.$file_name) || $params['file']['overwrite']) {
-									$request->file($field)->move($temp_path, $temp_file);
-									if ($params['input']=='image' && $params['file']['resize']) {
-										$h = $params['file']['resize_height_px'];
-										$w = $params['file']['resize_width_px'];
-										$img = Image::make($temp_path.$temp_file);
-										$img->resize($w, $h);
-										//TODO: resize dpi
-										$file_content = $img->stream();
-									} else {
-										$file_content = File::get($temp_path.$temp_file);
-									}
-									Storage::disk($disk)->put($file_path.$file_name, $file_content);
-									File::delete($temp_path.$temp_file);
-								}
-
-								// save in model
-								$record->$field = $file_name;
-							}
+						$filename = $this->saveFile($field, $params);
+						if (!empty($filename)) {
+							// save in model
+							$record->$field = $filename;
 						}
 					}
 					$record->save();
@@ -250,7 +209,7 @@ class DynamicController extends MonkyzController
 					}
 
 					$redirect = redirect()->route('monkyz.dynamic.edit', compact('section','id'))
-						->with('success', 'You have successfully Saved!')
+						->with('success', 'You have successfully saved #'.$id.'!')
 					;
 				}
 
@@ -267,6 +226,60 @@ class DynamicController extends MonkyzController
 				->with('error', 'No data received!')
 			;
 		}
+	}
+
+	private function saveFile($field, $params)
+	{
+		$file_name = '';
+
+		if (!empty(Input::file($field)) && Input::file($field)->isValid()) {
+			$path_temp = config('monkyz.path_public_temp');
+			
+			// get file name
+			$file_ext = strtolower($request->file($field)->getClientOriginalExtension());
+			$file_name = strtolower($request->file($field)->getClientOriginalName());
+			$file_name = str_replace('.'.$file_ext, '', $file_name);
+			$file_name = str_slug($file_name);
+			$file_name .= '.'.$file_ext;
+
+			if (!empty($file_name)) {
+				$input_type = $params['input'];
+				// get disk
+				$disk = 'local';
+				if (!empty($params[$input_type]['disk'])) $disk = $params[$input_type]['disk'];
+
+				// get correct path
+				$file_path = '';
+				if (!empty($params[$input_type]['path'])) $file_path = $params[$input_type]['path'];
+				$file_path = str_finish($file_path, '/');
+				if (!Storage::exists($file_path)) Storage::makeDirectory($file_path);
+
+				// put file upload in monkyz temp file
+				$temp_file = time().'_'.$file_name;
+				$temp_path = str_finish(public_path($path_temp), '/');
+				if (!File::exists($temp_path)) File::makeDirectory($temp_path, 0775, true);
+
+				// upload file
+				if (!Storage::disk($disk)->has($file_path.$file_name) || $params['file']['overwrite']) {
+					$request->file($field)->move($temp_path, $temp_file);
+					if ($input_type=='image' && $params['file']['resize']) {
+						$h = $params['file']['resize_height_px'];
+						$w = $params['file']['resize_width_px'];
+						$img = Image::make($temp_path.$temp_file);
+						$img->resize($w, $h);
+						//TODO: resize dpi
+						$file_content = $img->stream();
+					} else {
+						$file_content = File::get($temp_path.$temp_file);
+					}
+					Storage::disk($disk)->put($file_path.$file_name, $file_content);
+					File::delete($temp_path.$temp_file);
+				}
+
+			}
+		}
+
+		return $file_name;
 	}
 
 	public function getDelete($section, $id)

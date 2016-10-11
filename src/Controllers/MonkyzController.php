@@ -43,7 +43,7 @@ class MonkyzController extends Controller
 		while (strpos($section_name, '/')!==false) {
 			$section_name = dirname($section_name);
 		}
-		$page_title = '<i class="fa fa-dashboard"></i>'.$_SERVER['HTTP_HOST'];
+		$page_title = '<i class="fa fa-dashboard"></i>'.request()->server('HTTP_HOST');
 
 		// user
 		$user = [];
