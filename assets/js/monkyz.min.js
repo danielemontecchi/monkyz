@@ -15,6 +15,9 @@ $(document).ready(function(){
 
 
 	// logout
+	function logout() {
+		return confirm('Do you want to logout?');
+	}
 	$('#logout a').on('click', function() {
 		return logout();
 	});
