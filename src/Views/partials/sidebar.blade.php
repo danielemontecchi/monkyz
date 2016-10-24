@@ -53,5 +53,9 @@
 							</ul>
 						</div>
 					</li>
+
+					<li @if($route_name=='info')class="active"@endif>
+						<a href="{{ route('monkyz.info') }}"><i class="fa fa-info fa-fw" aria-hidden="true"></i>Information</a>
+					</li>
 				</ul>
 			</div>

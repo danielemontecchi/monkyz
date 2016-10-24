@@ -17,11 +17,13 @@ class ToolsController extends MonkyzController
 
     public function getFiles()
     {
+        $page_title = '<i class="fa fa-files-o"></i>Tools <small>files</small>';
+
         $folder_temp = config('monkyz.path_public_temp');
         $folder_temp = public_path($folder_temp);
         $c_files = HFile::countFilesInFolder($folder_temp);
         
-        return view('monkyz::tools.files')->with(compact('c_files'));
+        return view('monkyz::tools.files')->with(compact('c_files', 'page_title'));
     }
 
     public function getFilesClean() {
@@ -29,6 +31,6 @@ class ToolsController extends MonkyzController
         $folder_temp = public_path($folder_temp);
         HFile::cleanDirectory($folder_temp);
 
-        return back()->with('success', 'Clean temporary folder');
+        return back()->with('success', 'Temporary files cleaned!');
     }
 }

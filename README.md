@@ -320,8 +320,12 @@ Please see [`CHANGELOG.md`](https://github.com/lab1353/monkyz/blob/master/CHANGE
 
 All vendors files are loaded in CDN.
 
+### Tools
+
+- [wimg.ca](http://wimg.ca)
+
 ## Copyright and License
 
-Administrator was written by **Daniele Montecchi** of [**lab1353**](http://1353.it).
+**Monkyz** was written by **Daniele Montecchi** of [**lab1353**](http://1353.it).
 
-Administrator is released under the MIT License. See the [`LICENSE.md` file](https://github.com/lab1353/monkyz/blob/master/LICENSE.md) for details.
+**Monkyz** is released under the MIT License. See the [`LICENSE.md` file](https://github.com/lab1353/monkyz/blob/master/LICENSE.md) for details.

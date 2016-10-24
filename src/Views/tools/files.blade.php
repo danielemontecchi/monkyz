@@ -12,7 +12,7 @@
 					</div>
 					<div class="content">
 						@if($c_files>0)
-							<p class="text-warning"><strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{$c_files}} temporary files</strong></p>
+							<p class="text-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>{{$c_files}}</b> temporary files</p>
 							<p>Cleaning temporary files uploaded.</p>
 							<button type="submit" class="btn btn-fill btn-info"><i class="fa fa-trash" aria-hidden="true"></i>Clean</button>
 						@else

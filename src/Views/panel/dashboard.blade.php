@@ -22,7 +22,7 @@
  				@php
 				$colors = ['success','info','warning','danger'];
 				@endphp
-				<h2 class="hr">Counters</h2>
+				<p>&nbsp;</p>
 				<div class="row">
 					@foreach($counters as $section=>$params)
 						<div class="col-lg-3 col-sm-6">

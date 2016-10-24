@@ -1,8 +1,9 @@
 <?php
 
 Route::group(['prefix' => config('monkyz.prefix'), 'middleware'=>['web'] ], function () {
-	// dashboard
-	Route::get('/', [ 'as'=>'monkyz.dashboard', 'uses'=>'Lab1353\Monkyz\Controllers\DashboardController@getIndex' ]);
+	// panel
+	Route::get('/', [ 'as'=>'monkyz.dashboard', 'uses'=>'Lab1353\Monkyz\Controllers\PanelController@getDashboard' ]);
+	Route::get('/info', [ 'as'=>'monkyz.info', 'uses'=>'Lab1353\Monkyz\Controllers\PanelController@getInfo' ]);
 
 	// dynamic
 	Route::get('/{section}/list', [ 'as'=>'monkyz.dynamic.list', 'uses'=>'Lab1353\Monkyz\Controllers\DynamicController@getList' ]);
