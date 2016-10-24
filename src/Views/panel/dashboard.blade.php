@@ -5,16 +5,22 @@
 				{{-- DATA --}}
 				<div class="row">
 					<div class="col-sm-4">
-						<img src="http://wimg.ca/{{ config('app.url') }}"><br>
+						<img src="http://wimg.ca/{{ config('app.url') }}" class="img-rounded img-responsive">
 						<small><em>by <a href="http://wimg.ca/" target="_blank">wimg.ca</a></em></small>
 					</div>
 					<div class="col-sm-8">
-						<h4 style="margin-top: 0px;">{{ config('app.url') }}</h4>
-						<dl class="dl-horizontal">
-							<dt>php</dt><dd>{{$data['php']}}</dd>
-							<dt>web server</dt><dd>{{$data['web']}}</dd>
-							<dt>server</dt><dd>{{$data['server']}}</dd>
-						</dl>
+						<div class="card">
+							<div class="header">
+								<h4 class="title"><i class="fa fa-server" aria-hidden="true"></i> Server Info</h4>
+							</div>
+							<div class="content">
+								<dl class="dl-horizontal">
+									@foreach($server as $k=>$v)
+										<dt>{{$k}}</dt><dd>{{$v}}</dd>
+									@endforeach
+								</dl>
+							</div>
+						</div>
 					</div>
 				</div>
 

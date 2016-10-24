@@ -38,7 +38,9 @@ No configuration required: without writing a single line of code, your control p
 - [Change Log](#change-log)
 - [Into The Future](#into-the-future)
 - [Credits](#credits)
+  - [Links](#links)
   - [Vendors](#vendors)
+  - [Tools](#tools)
 - [Copyright and License](#copyright-and-license)
 
 ## Requirements
@@ -294,8 +296,7 @@ Please see [`CHANGELOG.md`](https://github.com/lab1353/monkyz/blob/master/CHANGE
 ## Into The Future
 
 - manage useSoftDelete in model
-- widgets, counters and graph
-- dynamic settings
+- widgets and graph
 - integrate [Google Analytics](https://www.google.com/analytics/)
 - roles for access sections
 - compatibility with [Laravel 5.3](https://laravel.com/docs/5.3/upgrade#upgrade-5.3.0)
@@ -303,6 +304,13 @@ Please see [`CHANGELOG.md`](https://github.com/lab1353/monkyz/blob/master/CHANGE
 - multi files uploads
 
 ## Credits
+
+### Links
+
+- [1353](http://1353.it/)
+- [Packagist](https://packagist.org/packages/lab1353/monkyz)
+- [Packalyst](http://packalyst.com/packages/package/lab1353/monkyz)
+- [GitHub](https://github.com/lab1353/monkyz)
 
 ### Vendors
 

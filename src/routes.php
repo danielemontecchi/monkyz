@@ -13,7 +13,8 @@ Route::group(['prefix' => config('monkyz.prefix'), 'middleware'=>['web'] ], func
 	Route::get('/{section}/delete/{id}', [ 'as'=>'monkyz.dynamic.delete', 'uses'=>'Lab1353\Monkyz\Controllers\DynamicController@getDelete' ]);
 
 	// settings
-	Route::get('/settings/dashboard', [ 'as'=>'monkyz.settings.dashboard', 'uses'=>'Lab1353\Monkyz\Controllers\SettingsController@getDashboard' ]);
+	Route::get('/settings', [ 'as'=>'monkyz.settings', 'uses'=>'Lab1353\Monkyz\Controllers\SettingsController@getIndex' ]);
+	Route::post('/settings/counters', [ 'as'=>'monkyz.settings.counters', 'uses'=>'Lab1353\Monkyz\Controllers\SettingsController@postCounters' ]);
 
 	// tools
 	Route::get('/tools/files', [ 'as'=>'monkyz.tools.files', 'uses'=>'Lab1353\Monkyz\Controllers\ToolsController@getFiles' ]);

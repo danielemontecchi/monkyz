@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Lab1353\Monkyz\Models\DynamicModel;
+use Lab1353\Monkyz\Helpers\SettingsHelper as HSettings;
 
 class PanelController extends MonkyzController
 {
@@ -19,14 +20,17 @@ class PanelController extends MonkyzController
 
 	public function getDashboard()
 	{
+		// settings
+		$hsettings = new HSettings();
+		$c_counters = $hsettings->getCounters();
+
 		// counters
-		$cache_key = 'monkyz-counters';
+		$cache_key = $hsettings->cache_key_counters;
 		$counters = [];
 
 		if (Cache::has($cache_key)) {
 			$counters = Cache::get($cache_key);
 		} else {
-			$c_counters = config('monkyz-widgets.counters', []);
 			$tables = $this->htables->getTables();
 			foreach ($tables as $table => $params) {
 				if ($params['visible'] && in_array($table, $c_counters)) {
@@ -42,25 +46,62 @@ class PanelController extends MonkyzController
 			Cache::put($cache_key, $counters, (int)config('monkyz.cache_minutes', 60));
 		}
 
-		$data = [
-			'php'   => request()->server('PHP_VERSION'),
-			'server'   => request()->server('SERVER_ADDR'),
-			'web'   => request()->server('SERVER_SOFTWARE'),
+		$server = [
+			'url'	=> config('app.url'),
+			'php version'   => request()->server('PHP_VERSION'),
+			'server ip'   => request()->server('SERVER_ADDR'),
+			'web server'   => request()->server('SERVER_SOFTWARE'),
 		];
 
-		return view('monkyz::panel.dashboard')->with(compact('counters','data'));
+		return view('monkyz::panel.dashboard')->with(compact('counters','server', 'settings'));
 	}
 
 	public function getInfo()
 	{
 		$path = dirname(dirname(__DIR__));
+
+		// CHANGELOG
 		$file = str_finish($path, '/').'CHANGELOG.md';
 		$content = File::get($file);
 		$content = substr($content, strpos($content, '[')+1);
 		$version = substr($content, 0, strpos($content, ' '));
-		
+
+		// README
+		$file = str_finish($path, '/').'README.md';
+		$content = File::get($file);
+		$content = substr($content, strpos($content, '### Links'));
+		$content = substr($content, 0, strpos($content, "\n## "));
+		$content = str_replace("\n", '', $content);
+
+		$md_links = substr($content, strpos($content, '### Links')+9);
+		$md_links = substr($md_links, 0, strpos($md_links, '### Vendors'));
+		$md_vendors = substr($content, strpos($content, '### Vendors')+11);
+		$md_vendors = substr($md_vendors, strpos($md_vendors, ':')+1);
+		$md_vendors = substr($md_vendors, 0, strpos($md_vendors, '### Tools'));
+		$md_tools = substr($content, strpos($content, '### Tools')+9);
+
+		$links = $this->convertMDListToArray($md_links);
+		$vendors = $this->convertMDListToArray($md_vendors);
+		$tools = $this->convertMDListToArray($md_tools);
+
+		// PAGE TITLE		
 		$page_title = '<i class="fa fa-info"></i>Monkyz <small>'.$version.'</small>';
 
-		return view('monkyz::panel.info')->with(compact('version', 'page_title'));
+		return view('monkyz::panel.info')->with(compact('page_title', 'links', 'vendors', 'tools'));
+	}
+
+	private function convertMDListToArray($md)
+	{
+		$arr = [];
+		$t = explode('- ', $md);
+		foreach ($t as $v) {
+			if (!empty($v)) {
+				$name = substr($v, 1, strpos($v, ']')-1);
+				$link = substr($v, strpos($v, '(')+1, strpos($v, ')')-strpos($v, '(')-1);
+				$arr[$name]	= $link;
+			}
+		}
+
+		return $arr;
 	}
 }
