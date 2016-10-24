@@ -1,9 +1,28 @@
 @extends('monkyz::layouts.monkyz')
 
 @section('content')
-				@php
+
+				{{-- DATA --}}
+				<div class="row">
+					<div class="col-sm-4">
+						<img src="http://wimg.ca/{{ config('app.url') }}"><br>
+						<small><em>by <a href="http://wimg.ca/" target="_blank">wimg.ca</a></em></small>
+					</div>
+					<div class="col-sm-8">
+						<h4 style="margin-top: 0px;">{{ config('app.url') }}</h4>
+						<dl class="dl-horizontal">
+							<dt>php</dt><dd>{{$data['php']}}</dd>
+							<dt>web server</dt><dd>{{$data['web']}}</dd>
+							<dt>server</dt><dd>{{$data['server']}}</dd>
+						</dl>
+					</div>
+				</div>
+
+				{{-- COUNTERS --}}
+ 				@php
 				$colors = ['success','info','warning','danger'];
 				@endphp
+				<h2 class="hr">Counters</h2>
 				<div class="row">
 					@foreach($counters as $section=>$params)
 						<div class="col-lg-3 col-sm-6">

@@ -14,6 +14,10 @@ Route::group(['prefix' => config('monkyz.prefix'), 'middleware'=>['web'] ], func
 	// settings
 	Route::get('/settings/dashboard', [ 'as'=>'monkyz.settings.dashboard', 'uses'=>'Lab1353\Monkyz\Controllers\SettingsController@getDashboard' ]);
 
+	// tools
+	Route::get('/tools/files', [ 'as'=>'monkyz.tools.files', 'uses'=>'Lab1353\Monkyz\Controllers\ToolsController@getFiles' ]);
+	Route::get('/tools/files/clean', [ 'as'=>'monkyz.tools.files.clean', 'uses'=>'Lab1353\Monkyz\Controllers\ToolsController@getFilesClean' ]);
+
 	// users
 	Route::get('/users/login', [ 'as'=>'monkyz.users.login', 'uses'=>'Lab1353\Monkyz\Controllers\UsersController@getLogin' ]);
 	Route::post('/users/login', [ 'as'=>'monkyz.users.login', 'uses'=>'Lab1353\Monkyz\Controllers\UsersController@postLogin' ]);

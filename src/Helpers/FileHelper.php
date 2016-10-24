@@ -1,6 +1,7 @@
 <?php
 namespace Lab1353\Monkyz\Helpers;
 
+use File;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
@@ -15,6 +16,15 @@ class FileHelper
 		$this->setDisk($disk);
 	}
 
+
+	/***********
+	 * PRIVATE *
+	 ***********/
+
+	/**
+	 * Setting the disk of Storage to use
+	 * @param string $disknew name of disk to use
+	 */
 	private function setDisk($disknew)
 	{
 		$disk = config('filesystems.default');
@@ -30,10 +40,37 @@ class FileHelper
 	}
 
 
-	/**
-	 * CONVERT
-	 */
+	/***************
+	 * DIRECTORIES *
+	 ***************/
+	
+	public static function countFilesInFolder($folder)
+	{
+		$files = self::filesInFolder($folder);
+		return count($files);
+	}
+	
+	public static function filesInFolder($folder)
+	{
+		return File::files($folder);
+	}
 
+	public static function cleanDirectory($folder)
+	{
+		return File::cleanDirectory($folder);
+	}
+
+
+	/***********
+	 * CONVERT *
+	 ***********/
+
+	/**
+	 * Convert bytes to human readable
+	 * @param  integer $bytes    bytes to convert
+	 * @param  integer $decimals number of decimals
+	 * @return string            the readable string
+	 */
 	public static function bytes2human($bytes, $decimals = 2) {
 		$size = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
 		$factor = floor((strlen($bytes) - 1) / 3);
@@ -41,9 +78,9 @@ class FileHelper
 	}
 
 
-	/**
-	 * URL
-	 */
+	/*******
+	 * URL *
+	 *******/
 
 	public function getUrlFileTypeIcon($file_name)
 	{
@@ -104,9 +141,9 @@ class FileHelper
 	}
 
 
-	/**
-	 * DELETE
-	 */
+	/**********
+	 * DELETE *
+	 **********/
 
 	public function delete($params, $file)
 	{

@@ -18,6 +18,7 @@ class DashboardController extends MonkyzController
 
     public function getIndex()
     {
+        // counters
         $cache_key = 'monkyz-counters';
     	$counters = [];
 
@@ -40,6 +41,12 @@ class DashboardController extends MonkyzController
             Cache::put($cache_key, $counters, (int)config('monkyz.cache_minutes', 60));
         }
 
-    	return view('monkyz::dashboard.index')->with(compact('counters'));
+        $data = [
+            'php'   => request()->server('PHP_VERSION'),
+            'server'   => request()->server('SERVER_ADDR'),
+            'web'   => request()->server('SERVER_SOFTWARE'),
+        ];
+
+    	return view('monkyz::dashboard.index')->with(compact('counters','data'));
     }
 }
