@@ -236,7 +236,6 @@ class DynamicController extends MonkyzController
 			$path_temp = config('monkyz.path_public_temp');
 			
 			// get file name
-			dd($request->file($field));
 			$file_ext = strtolower($request->file($field)->getClientOriginalExtension());
 			$file_name = strtolower($request->file($field)->getClientOriginalName());
 			$file_name = str_replace('.'.$file_ext, '', $file_name);

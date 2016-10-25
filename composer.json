@@ -1,7 +1,8 @@
 {
     "name": "lab1353/monkyz",
     "description": "Dynamic and autonomous Administration Panel for Laravel 5",
-    "keywords": ["laravel", "laravel5", "admin", "panel", "dynamic", "autonomous", "crud"],
+    "homepage": "http://1353.it",
+    "keywords": ["laravel", "laravel5", "admin", "administrator", "panel", "dynamic", "autonomous", "crud"],
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -12,6 +13,7 @@
     ],
     "require": {
 	    "php": ">=5.5.9",
+        "intervention/image": "2.*",
 	    "illuminate/database": "~5.2",
 	    "illuminate/support": "~5.2"
     },

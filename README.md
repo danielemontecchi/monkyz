@@ -28,7 +28,6 @@ No configuration required: without writing a single line of code, your control p
     - [Parameter `tables`](#parameter-tables)
     	- [Table Parameters](#table-parameters)
     	- [Fields Parameters](#fields-parameters)
-  - [File `monkyz-widgets.php`](#file-monkyz-widgetsphp)
 - [Authentication](#authentication)
 - [Artisan Commands](#artisan-commands)
   - [`monkyz:tables`](#monkyztables)
@@ -121,7 +120,7 @@ The file `config/monkyz-tables.php` contains parameters for generate the dynamic
 - `fields_name_hide_in_edit`: array of field's name that will be hidden in edit (such as: created_at, updated_at, deleted_at)
 - `tables`: [view the details](#parameter-tables)
 
-This file can be automatically generated with the [artisan command `monkyz:generate-db`](#artisan-command)
+This file can be automatically generated with the [artisan command `monkyz:generate-db`](#artisan-commands)
 
 #### Parameter `tables`
 
@@ -189,7 +188,7 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
   - `text`: text tag for string
   - `textarea`: textarea tag
   - `url`: url tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
-  - (You can create [your own custom fields](#creating-custom-fields))
+  - (You can create [your own custom fields](#custom-fields))
 - `in_list` (true|false): visibility in list
 - `in_edit` (true|false): visibility in edit and add record
 - `enum`: array `'key' => 'value'` for populate the select box
@@ -211,13 +210,6 @@ In automatically search for the type of the field input, it is to be more import
 > **!!! ATTENTION !!!**
 > **Monkyz** currently only supports one-to-one and many-to-one relationships.
 > All tables of many-to-many relationship will have to be defined in [config file `monkyz-tables.php`](#table-parameters) and setting the parameter `visible` to `false`.
-
-### File `monkyz-widgets.php`
-
-The file `config/monkyz-widgets.php` define the widgets in Dashboard.
-The parameters are:
-
-- `counters`: array containing the names of the tables for which you want to display the counter of records
 
 ## Authentication
 
