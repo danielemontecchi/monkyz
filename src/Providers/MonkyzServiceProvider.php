@@ -49,5 +49,8 @@ class MonkyzServiceProvider extends ServiceProvider
 		$this->commands([
 			\Lab1353\Monkyz\Commands\MonkyzTables::class
 		]);
+
+		// dependency
+		//$this->app->register('Barryvdh\Elfinder\ElfinderServiceProvider');
 	}
 }
