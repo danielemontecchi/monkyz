@@ -64,15 +64,16 @@ class PanelController extends MonkyzController
 		$path = dirname(dirname(__DIR__));
 
 		// CHANGELOG
-		$file = str_finish($path, '/').'CHANGELOG.md';
-		$content = File::get($file);
+		$content = File::get(str_finish($path, '/').'CHANGELOG.md');
 		$content = substr($content, strpos($content, '#development)')+13);
 		$content = substr($content, strpos($content, '[')+1);
 		$version = substr($content, 0, strpos($content, ' '));
+		
+		// PAGE TITLE		
+		$page_title = '<i class="fa fa-info"></i>Monkyz <small>'.$version.'</small>';
 
 		// README
-		$file = str_finish($path, '/').'README.md';
-		$content = File::get($file);
+		$content = File::get(str_finish($path, '/').'README.md');
 		$content = substr($content, strpos($content, '### Links'));
 		$content = substr($content, 0, strpos($content, "\n## "));
 		$content = str_replace("\n", '', $content);
@@ -84,14 +85,13 @@ class PanelController extends MonkyzController
 		$md_vendors = substr($md_vendors, 0, strpos($md_vendors, '### Tools'));
 		$md_tools = substr($content, strpos($content, '### Tools')+9);
 
-		$links = $this->convertMDListToArray($md_links);
-		$vendors = $this->convertMDListToArray($md_vendors);
-		$tools = $this->convertMDListToArray($md_tools);
+		$urls = [
+			'links' => $this->convertMDListToArray($md_links),
+			'vendors' => $this->convertMDListToArray($md_vendors),
+			'tools' => $this->convertMDListToArray($md_tools),
+		];
 
-		// PAGE TITLE		
-		$page_title = '<i class="fa fa-info"></i>Monkyz <small>'.$version.'</small>';
-
-		return view('monkyz::panel.info')->with(compact('page_title', 'links', 'vendors', 'tools'));
+		return view('monkyz::panel.info')->with(compact('page_title', 'urls'));
 	}
 
 	private function convertMDListToArray($md)

@@ -16,29 +16,15 @@
 				No configuration required: without writing a single line of code, your control panel is ready for use.
 			</p>
 
-			<h3>Links</h3>
-			<dl class="dl-horizontal">
-				@foreach($links as $name=>$link)
-					<dt>{{$name}}</dt>
-					<dd><a href="{{$link}}" target="_blank">{{$link}}</a></dd>
-				@endforeach
-			</dl>
-
-			<h3>Vendors</h3>
-			<dl class="dl-horizontal">
-				@foreach($vendors as $name=>$link)
-					<dt>{{$name}}</dt>
-					<dd><a href="{{$link}}" target="_blank">{{$link}}</a></dd>
-				@endforeach
-			</dl>
-
-			<h3>Tools</h3>
-			<dl class="dl-horizontal">
-				@foreach($tools as $name=>$link)
-					<dt>{{$name}}</dt>
-					<dd><a href="{{$link}}" target="_blank">{{$link}}</a></dd>
-				@endforeach
-			</dl>
+			@foreach($urls as $title=>$values)
+				<h3>{{ ucfirst($title) }}</h3>
+				<dl class="dl-horizontal">
+					@foreach($values as $name=>$link)
+						<dt>{{$name}}</dt>
+						<dd><a href="{{$link}}" target="_blank">{{$link}}</a></dd>
+					@endforeach
+				</dl>
+			@endforeach
 		</div>
 	</div>
 @endsection

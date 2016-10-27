@@ -110,7 +110,7 @@ The file `config/monkyz.php` contains the configuration details of **Monkyz**:
 - `use_auth` (true|false): laravel authentication, otherwise access to panel is automatically
 - `cache_minutes`: minutes of duration of cache
 - `path_public_temp`: folder name, in `public` path, for temporary files
-- `vendors`: array for define vendors assets version (bootstrap, bootstrap3wysiwyg, datatables, fontawesome, jquery, html5shiv, pace, respond)
+- `vendors`: array for define [vendors assets](#vendors) version
 
 ### File `monkyz-tables.php`
 
@@ -309,7 +309,6 @@ Please see [`CHANGELOG.md`](https://github.com/lab1353/monkyz/blob/master/CHANGE
 
 **Monkyz** was made using the following css/js:
 
-- [Laravel](https://laravel.com/)
 - [Bootstrap](http://getbootstrap.com/)
 - [jQuery](https://jquery.com/)
 - [DataTables](https://datatables.net/)

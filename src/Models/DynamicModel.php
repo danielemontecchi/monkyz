@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 
+/**
+ * Dynamic model for any tables
+ * 
+ * @method integer count()
+ */
 class DynamicModel extends Model
 {
 	protected static $_table;
