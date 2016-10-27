@@ -21,6 +21,7 @@ class MonkyzServiceProvider extends ServiceProvider
 		// publish
 		$this->publishes([
 			$path_src.'Views' => resource_path('views/vendor/monkyz'),
+			$path_src.'vendor' => resource_path('views/vendor'),
 			$path_pkg.'config' => config_path(),
 			$path_pkg.'assets' => public_path('vendor/monkyz'),
 		]);
@@ -51,6 +52,6 @@ class MonkyzServiceProvider extends ServiceProvider
 		]);
 
 		// dependency
-		//$this->app->register('Barryvdh\Elfinder\ElfinderServiceProvider');
+		$this->app->register('Barryvdh\Elfinder\ElfinderServiceProvider');
 	}
 }

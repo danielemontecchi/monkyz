@@ -42,23 +42,21 @@
 <!-- CSS -->
 
 <!-- Bootstrap core CSS     -->
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/{{ config('monkyz.vendors.bootstrap', '3.3.7') }}/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <!-- Pace Theme -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pace/{{ config('monkyz.vendors.pace', '1.0.2') }}/pace.min.js"></script>
 <!-- Google Fonts -->
 <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
 <!-- Fonts and icons -->
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/{{ config('monkyz.vendors.fontawesome', '4.7.0') }}/css/font-awesome.min.css" rel="stylesheet">
 @if(!empty($scripts['datatables']))
 	<!--  Datatables     -->
-	{{-- //cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css --}}
-	{{-- //cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css --}}
-	<link href="//cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.css">
+	<link href="//cdn.datatables.net/v/bs/dt-{{ config('monkyz.vendors.datatables', '1.10.12') }}/datatables.min.css">
 @endif
 <!-- Custom CSS -->
 <link href="{{ $monkyz_assets }}css/monkyz.min.css" rel="stylesheet">
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<script src="https://oss.maxcdn.com/html5shiv/{{ config('monkyz.vendors.html5shiv', '3.7.3') }}/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/{{ config('monkyz.vendors.respond', '1.4.2') }}/respond.min.js"></script>
 <![endif]-->

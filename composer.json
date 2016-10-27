@@ -15,13 +15,11 @@
 	    "php": ">=5.5.9",
         "intervention/image": "2.*",
 	    "illuminate/database": "~5.2",
-	    "illuminate/support": "~5.2",
-        "barryvdh/laravel-elfinder": "^0.3.8"
+	    "illuminate/support": "~5.2"
     },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }

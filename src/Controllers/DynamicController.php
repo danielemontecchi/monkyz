@@ -25,7 +25,7 @@ class DynamicController extends MonkyzController
 
 			view()->share(compact('table', 'fields', 'section'));
 		} else {
-			abort(404);
+			abort(404, 'Table '.$section.' not found!');
 		}
 	}
 

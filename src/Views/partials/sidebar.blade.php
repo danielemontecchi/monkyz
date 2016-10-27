@@ -28,6 +28,7 @@
 						<a href="{{ route('monkyz.dashboard') }}"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Dashboard</a>
 					</li>
 
+					<li class="title">Content</li>
 					@foreach($tables as $table => $params)
 						@if(!empty($table))
 							@if($params['visible'])
@@ -39,6 +40,12 @@
 							@endif
 						@endif
 					@endforeach
+
+					<li class="title">Workshop</li>
+
+					<li @if($route_name=='settings')class="active"@endif>
+						<a href="{{ route('monkyz.settings') }}"><i class="fa fa-cog fa-fw" aria-hidden="true"></i>Settings</a>
+					</li>
 
 					<li @if(starts_with($route_name, 'tools.'))class="active"@endif>
 						<a data-toggle="collapse" href="#tools" @if(starts_with($route_name, 'tools.'))aria-expanded="true"@endif>

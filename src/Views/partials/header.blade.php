@@ -22,7 +22,7 @@
 							</li>
 							<li id="settings" class="icon">
 								<a href="{{ route('monkyz.settings') }}">
-									<i class="fa fa-cogs"></i><span>Settings</span>
+									<i class="fa fa-cog"></i><span>Settings</span>
 								</a>
 							</li>
 							@if (config('monkyz.use_auth'))

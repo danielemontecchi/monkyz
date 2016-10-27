@@ -22,28 +22,31 @@ class PanelController extends MonkyzController
 	{
 		// settings
 		$hsettings = new HSettings();
+		$settings = $hsettings->getAll();
 		$c_counters = $hsettings->getCounters();
 
 		// counters
 		$cache_key = $hsettings->cache_key_counters;
 		$counters = [];
 
-		if (Cache::has($cache_key)) {
-			$counters = Cache::get($cache_key);
-		} else {
-			$tables = $this->htables->getTables();
-			foreach ($tables as $table => $params) {
-				if ($params['visible'] && in_array($table, $c_counters)) {
-					$m = new DynamicModel($table);
-					$c = $m->count();
+		if (!empty($settings['dashboard']['counters'])) {
+			if (Cache::has($cache_key)) {
+				$counters = Cache::get($cache_key);
+			} else {
+				$tables = $this->htables->getTables();
+				foreach ($tables as $table => $params) {
+					if ($params['visible'] && !empty($c_counters[$table])) {
+						$m = new DynamicModel($table);
+						$c = $m->count();
 
-					$counters[$table] = [
-						'count' => $c,
-						'icon'  => $params['icon'],
-					];
+						$counters[$table] = [
+							'count' => $c,
+							'icon'  => $params['icon'],
+						];
+					}
 				}
+				Cache::put($cache_key, $counters, (int)config('monkyz.cache_minutes', 60));
 			}
-			Cache::put($cache_key, $counters, (int)config('monkyz.cache_minutes', 60));
 		}
 
 		$server = [

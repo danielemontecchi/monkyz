@@ -72,17 +72,17 @@
 
 @section('css')
 	@if($fields_editor)
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/0.3.3/bootstrap3-wysihtml5.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/{{ config('monkyz.vendors.bootstrap3wysiwyg', '0.3.3') }}/bootstrap3-wysihtml5.min.css" />
 	@endif
 @endsection
 
 @section('scripts')
 	@if($fields_editor)
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/0.3.3/bootstrap3-wysihtml5.all.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/{{ config('monkyz.vendors.bootstrap3wysiwyg', '0.3.3') }}/bootstrap3-wysihtml5.all.min.js"></script>
 		@if(Lang::getLocale()=='it')
-			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/0.3.3/locales/bootstrap-wysihtml5.it-IT.js"></script>
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/{{ config('monkyz.vendors.bootstrap3wysiwyg', '0.3.3') }}/locales/bootstrap-wysihtml5.it-IT.js"></script>
 		@else
-			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/0.3.3/locales/bootstrap-wysihtml5.en-US.min.js"></script>
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/{{ config('monkyz.vendors.bootstrap3wysiwyg', '0.3.3') }}/locales/bootstrap-wysihtml5.en-US.min.js"></script>
 		@endif
 		
 		<script>

@@ -9,23 +9,39 @@ class SettingsHelper
 	protected $cache_key_settings = 'monkyz-settings';
 	public $cache_key_counters = 'monkyz-widgets-counters';
 	protected $settings_key_counters = 'counters';
+	protected $settings_key_dashboard = 'dashboard';
 
+	public function resetDefault()
+	{
+		$settings = $this->getDefault();
+		$this->saveAll($settings);
+	}
 
 	/*******
 	 * GET *
 	 *******/
 
+	public function getDefault()
+	{
+		return [
+			$this->settings_key_dashboard=>[
+				'screenshot'	=> true,
+				'serverinfo'	=> true,
+				'counters'	=> true,
+			],
+			$this->settings_key_counters=>[],
+		];
+	}
+
 	public function getAll()
 	{
 		$cache_key = $this->cache_key_settings;
-		$settings = [ $this->settings_key_counters=>[] ];
-		if (Cache::has($cache_key)) {
-			$settings = Cache::get($cache_key);
-		} else {
-			$this->saveAll($settings);
+		
+		if (!Cache::has($cache_key)) {
+			$settings = $this->resetDefault();
 		}
 
-		return $settings;
+		return Cache::get($cache_key);
 	}
 
 	public function getCounters()
@@ -35,27 +51,22 @@ class SettingsHelper
 		return $settings[$this->settings_key_counters];
 	}
 
+	public function getDashboard()
+	{
+		$settings = $this->getAll();
+
+		return $settings[$this->settings_key_dashboard];
+	}
+
 
 	/********
 	 * SAVE *
 	 ********/
 
-	public function saveCounters($counters)
-	{
-		$this->save($this->settings_key_counters, $counters);
-		Cache::forget($this->cache_key_counters);
-	}
-
-	private function save($key, $values)
-	{
-		$settings = $this->getAll();
-		$settings[$key] = $values;
-
-		$this->saveAll($settings);
-	}
-
-	private function saveAll($settings)
+	public function saveAll($settings)
 	{
 		Cache::forever($this->cache_key_settings, $settings);
+
+		Cache::forget($this->cache_key_counters);
 	}
 }

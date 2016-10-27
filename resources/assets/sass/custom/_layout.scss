@@ -1,5 +1,6 @@
 .main-panel > .content {
 	min-height: calc(100% - 126px);
+	margin-bottom: 25px;
 }
 .footer .copyright {
 	text-align: right;
@@ -17,5 +18,5 @@
 }
 
 .hr {
-	border-bottom: 1px solid $font-color;
+	border-bottom: 1px solid $medium-gray;
 }

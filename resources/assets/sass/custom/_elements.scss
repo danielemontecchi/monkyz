@@ -9,10 +9,12 @@ a, .btn {
 	}
 }
 
-.text-right, .text-center {
-	a, .btn {
-		.fa {
-			text-align: right;
+.card-footer {
+	.text-right, .text-center {
+		a, .btn {
+			.fa {
+				text-align: right;
+			}
 		}
 	}
 }

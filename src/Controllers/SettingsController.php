@@ -19,22 +19,34 @@ class SettingsController extends MonkyzController
 
 	public function getIndex()
 	{
-		$page_title = '<i class="fa fa-tachometer"></i>Settings <small>dashboard</small>';
+		$page_title = '<i class="fa fa-tachometer"></i>Settings';
 
 		$tables = $this->htables->getTables();
 
 		$settings = $this->hsettings->getAll();
 
-		return view('monkyz::settings.dashboard')->with(compact('tables', 'page_title', 'settings'));
+		return view('monkyz::settings.index')->with(compact('tables', 'page_title', 'settings'));
 	}
 
-	public function postCounters(Request $request)
+	public function postSave(Request $request)
 	{
-		$counters = $request->all();
-		unset($counters['_token']);
-		$counters = array_keys($counters);
-		$this->hsettings->saveCounters($counters);
+		$inputs = $request->all();
+		unset($inputs['_token']);
 
-        return back()->with('success', 'Counters saved!');
+		$settings = $this->hsettings->getDefault();
+		foreach ($inputs as $input => $value) {
+			list($k, $sub) = explode('_', $input);
+			$settings[$k][$sub]	= (bool)$value;
+		}
+		$this->hsettings->saveAll($settings);
+
+        return back()->with('success', 'Settings saved!');
+	}
+
+	public function getDefault()
+	{
+		$this->hsettings->resetDefault();
+		
+        return back()->with('success', 'Default settings reset!');
 	}
 }
