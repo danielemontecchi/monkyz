@@ -7,11 +7,10 @@
 					@if(!empty($settings['dashboard']['screenshot']))
 						<div class="col-sm-4">
 							<img src="http://wimg.ca/{{ config('app.url') }}" class="img-rounded img-responsive">
-							<small><em>by <a href="http://wimg.ca/" target="_blank">wimg.ca</a></em></small>
 						</div>
 					@endif
 					@if(!empty($settings['dashboard']['serverinfo']))
-						<div class="col-sm-8">
+						<div class="col-sm-7">
 							<div class="card">
 								<div class="header">
 									<h4 class="title"><i class="fa fa-server" aria-hidden="true"></i> Server Info</h4>

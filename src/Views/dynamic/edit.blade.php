@@ -41,6 +41,7 @@
 						@endforeach
 					</div>
 					<div class="card-footer">
+						<hr class="hr" />
 						<a href="{{ route('monkyz.dynamic.list', compact('section')) }}" class="btn btn-info">
 							<i class="fa fa-chevron-left" aria-hidden="true"></i>Back to list
 						</a>
@@ -53,9 +54,9 @@
 						</button>
 						<button type="submit" class="btn btn-success" id="submitContinue" name="submitContinue" value="true">
 							@if ($is_add_mode)
-								<i class="fa fa-plus" aria-hidden="true"></i>Create and edit
+								<i class="fa fa-plus" aria-hidden="true"></i>Create and continue
 							@else
-								<i class="fa fa-floppy-o" aria-hidden="true"></i>Save and continue edit
+								<i class="fa fa-floppy-o" aria-hidden="true"></i>Save and continue
 							@endif
 						</button>
 						@if (!$is_add_mode && !$last_edit)

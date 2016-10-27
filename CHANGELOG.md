@@ -9,6 +9,7 @@
 
 ### Development
 
+* Dynamic Dashboard widgets
 * Configurable version of assets vendors
 * Minor bug fixed.
 

@@ -22,5 +22,10 @@ $(document).ready(function(){
 		return logout();
 	});
 
+	// settings reset default
+	$('#settingsResetDefault').on('click', function() {
+		return confirm('Do you want reset the default settings?');
+	});
+	
 
 });

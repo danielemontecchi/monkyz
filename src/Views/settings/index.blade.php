@@ -68,7 +68,7 @@
 	
 		<div class="row">
 			<div class="col-md-6">
-				<a href="{{ route('monkyz.settings.default') }}" class="btn btn-fill btn-info"><i class="fa fa-recycle" aria-hidden="true"></i>Reset Default</a>
+				<a href="{{ route('monkyz.settings.default') }}" id="settingsResetDefault" class="btn btn-fill btn-info"><i class="fa fa-recycle" aria-hidden="true"></i>Reset Default</a>
 			</div>
 			<div class="col-md-6 text-right">
 				<button type="submit" class="btn btn-fill btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i>Save settings</button>

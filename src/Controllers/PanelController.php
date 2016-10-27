@@ -66,6 +66,7 @@ class PanelController extends MonkyzController
 		// CHANGELOG
 		$file = str_finish($path, '/').'CHANGELOG.md';
 		$content = File::get($file);
+		$content = substr($content, strpos($content, '#development)')+13);
 		$content = substr($content, strpos($content, '[')+1);
 		$version = substr($content, 0, strpos($content, ' '));
 
