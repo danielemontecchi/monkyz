@@ -38,7 +38,7 @@ class SettingsHelper
 		$cache_key = $this->cache_key_settings;
 		
 		if (!Cache::has($cache_key)) {
-			$settings = $this->resetDefault();
+			$this->resetDefault();
 		}
 
 		return Cache::get($cache_key);

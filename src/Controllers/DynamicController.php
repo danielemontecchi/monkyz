@@ -182,7 +182,7 @@ class DynamicController extends MonkyzController
 				// save file
 				if (!empty($files_upload)) {
 					foreach ($files_upload as $field=>$params) {
-						$filename = $this->saveFile($field, $params);
+						$filename = $this->saveFile($request, $field, $params);
 						if (!empty($filename)) {
 							// save in model
 							$record->$field = $filename;
@@ -228,7 +228,7 @@ class DynamicController extends MonkyzController
 		}
 	}
 
-	private function saveFile($field, $params)
+	private function saveFile($request, $field, $params)
 	{
 		$file_name = '';
 
