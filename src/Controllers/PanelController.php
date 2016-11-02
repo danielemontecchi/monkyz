@@ -23,19 +23,21 @@ class PanelController extends MonkyzController
 		// settings
 		$hsettings = new HSettings();
 		$settings = $hsettings->getAll();
-		$c_counters = $hsettings->getCounters();
+		$sett_counters = $hsettings->getCounters();
+		$sett_dashboard = $hsettings->getDashboard();
+		$sett_analytics = $hsettings->getAnalytics();
 
 		// counters
 		$cache_key = $hsettings->cache_key_counters;
 		$counters = [];
 
-		if (!empty($settings['dashboard']['counters'])) {
+		if (!empty($sett_dashboard['counters'])) {
 			if (Cache::has($cache_key)) {
 				$counters = Cache::get($cache_key);
 			} else {
 				$tables = $this->htables->getTables();
 				foreach ($tables as $table => $params) {
-					if ($params['visible'] && !empty($c_counters[$table])) {
+					if ($params['visible'] && !empty($sett_counters[$table])) {
 						$m = new DynamicModel($table);
 						$c = $m->count();
 
@@ -49,14 +51,38 @@ class PanelController extends MonkyzController
 			}
 		}
 
-		$server = [
-			'url'	=> config('app.url'),
-			'php version'   => request()->server('PHP_VERSION'),
-			'server ip'   => request()->server('SERVER_ADDR'),
-			'web server'   => request()->server('SERVER_SOFTWARE'),
-		];
+		// serverinfo
+		$serverinfo = [];
+		if (!empty($sett_dashboard['serverinfo'])) {
+			$serverinfo = [
+				'url'	=> config('app.url'),
+				'php version'   => request()->server('PHP_VERSION'),
+				'server ip'   => request()->server('SERVER_ADDR'),
+				'web server'   => request()->server('SERVER_SOFTWARE'),
+			];
+		}
 
-		return view('monkyz::panel.dashboard')->with(compact('counters','server', 'settings'));
+		// analytics
+		$analytics = [];
+		if (!empty($sett_dashboard['analytics'])) {
+			$cache_key = $hsettings->cache_key_analytics;
+			if (!Cache::has($cache_key)) {
+				$analytics = Cache::get($cache_key);
+			} else {
+				$viewId = $sett_analytics['viewid'];
+				if (!empty($viewId)) {
+					$config = config('laravel-analytics');
+					$client = \Spatie\Analytics\AnalyticsClientFactory::createForConfig($config);
+					$classAnalytics = new \Spatie\Analytics\Analytics($client, $viewId);
+					$analytics['TotalVisitorsAndPageViews'] = $classAnalytics->fetchTotalVisitorsAndPageViews(\Spatie\Analytics\Period::days(14));
+					Cache::put($cache_key, $analytics, (int)config('monkyz.cache_minutes', 60));
+				} else {
+					$analytics = 'Set parameter viewId in <a href="'.route('monkyz.settings').'">Settings</a>';
+				}
+			}
+		}
+
+		return view('monkyz::panel.dashboard')->with(compact('counters','serverinfo','settings','analytics'));
 	}
 
 	public function getInfo()

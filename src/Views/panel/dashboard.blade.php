@@ -1,5 +1,51 @@
 @extends('monkyz::layouts.monkyz')
 
+@section('scripts')
+	@if(!empty($settings['dashboard']['analytics']) && is_array($analytics))
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script>
+			google.charts.load('current', {packages: ['corechart', 'line']});
+			google.charts.setOnLoadCallback(drawBackgroundColor);
+
+			function drawBackgroundColor() {
+				  var data = new google.visualization.DataTable();
+				  data.addColumn('string', 'Date');
+				  data.addColumn('number', 'Visitors');
+				  data.addColumn('number', 'Page views');
+
+				  data.addRows([
+					@php
+						$i = 0;
+						$numItems = count($analytics['TotalVisitorsAndPageViews']);
+						foreach ($analytics['TotalVisitorsAndPageViews'] as $value) {
+							echo '[
+								\''.$value['date']->day.'/'.$value['date']->month.'\',
+								'.$value['visitors'].',
+								'.$value['pageViews'].'
+							]';
+							if (++$i !== $numItems) echo ',';
+						};
+					@endphp
+				  ]);
+
+				  var options = {
+					hAxis: {
+					  axisTitlesPosition: 'none'
+					},
+					vAxis: {
+					  axisTitlesPosition: 'none'
+					},
+					chartArea: {left:50,top:10,width:'80%',height:'80%'},
+					backgroundColor: 'transparent'
+				  };
+
+				  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+				  chart.draw(data, options);
+				}
+		</script>
+	@endif
+@endsection
+
 @section('content')
 
 				{{-- DATA --}}
@@ -17,7 +63,7 @@
 								</div>
 								<div class="content">
 									<dl class="dl-horizontal">
-										@foreach($server as $k=>$v)
+										@foreach($serverinfo as $k=>$v)
 											<dt>{{$k}}</dt><dd>{{$v}}</dd>
 										@endforeach
 									</dl>
@@ -29,7 +75,7 @@
 
 				{{-- COUNTERS --}}
 				@if(!empty($settings['dashboard']['counters']))
-	 				@php
+					@php
 					$colors = ['success','info','warning','danger'];
 					@endphp
 					<p>&nbsp;</p>
@@ -66,6 +112,22 @@
 								</div>
 							</div>
 						@endforeach
+					</div>
+				@endif
+
+				{{-- ANALYTICS --}}
+				@if(!empty($settings['dashboard']['analytics']))
+					<div class="row">
+						<div class="col-xs-12">
+							@if(is_array($analytics))
+								<div id="chart_div"></div>
+							@else
+								<div class="alert alert-danger">
+                                    <button type="button" aria-hidden="true" class="close">×</button>
+                                    <span>{!! $analytics !!}</span>
+                                </div>
+							@endif
+						</div>
 					</div>
 				@endif
 @endsection

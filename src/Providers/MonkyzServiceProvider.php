@@ -50,5 +50,12 @@ class MonkyzServiceProvider extends ServiceProvider
 		$this->commands([
 			\Lab1353\Monkyz\Commands\MonkyzTables::class
 		]);
+
+		// providers
+		$this->app->register('Spatie\Analytics\AnalyticsServiceProvider');
+
+		// aliases
+		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+		$loader->alias('Analytics', 'Spatie\Analytics\AnalyticsFacade');
 	}
 }

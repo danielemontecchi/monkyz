@@ -8,8 +8,10 @@ class SettingsHelper
 {
 	protected $cache_key_settings = 'monkyz-settings';
 	public $cache_key_counters = 'monkyz-widgets-counters';
+	public $cache_key_analytics = 'monkyz-widgets-analytics';
 	protected $settings_key_counters = 'counters';
 	protected $settings_key_dashboard = 'dashboard';
+	protected $settings_key_analytics = 'analytics';
 
 	public function resetDefault()
 	{
@@ -28,8 +30,12 @@ class SettingsHelper
 				'screenshot'	=> true,
 				'serverinfo'	=> true,
 				'counters'	=> true,
+				'analytics'	=> true,
 			],
 			$this->settings_key_counters=>[],
+			$this->settings_key_analytics=>[
+				'viewid'	=> '',
+			],
 		];
 	}
 
@@ -56,6 +62,13 @@ class SettingsHelper
 		$settings = $this->getAll();
 
 		return $settings[$this->settings_key_dashboard];
+	}
+
+	public function getAnalytics()
+	{
+		$settings = $this->getAll();
+
+		return $settings[$this->settings_key_analytics];
 	}
 
 

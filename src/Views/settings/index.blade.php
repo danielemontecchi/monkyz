@@ -28,6 +28,13 @@
 							</div>
 						</div>
 						<div class="row">
+							<div class="col-xs-8">Analytics</div>
+							<div class="col-xs-4">
+								<input type="hidden" id="dashboard_analytics" name="dashboard_analytics" value="0" />
+								<input type="checkbox" id="dashboard_analytics" name="dashboard_analytics" @if($settings['dashboard']['analytics']) checked @endif data-toggle="switch" class="ct-primary" value="1" />
+							</div>
+						</div>
+						<div class="row">
 							<div class="col-xs-8">Counters</div>
 							<div class="col-xs-4">
 								<input type="hidden" id="dashboard_counters" name="dashboard_counters" value="0" />
@@ -59,6 +66,28 @@
 								</div>
 							@endif
 						@endforeach
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="header">
+						<h4 class="title">Google Analytics</h4>
+					</div>
+					<div class="content">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group">
+                                    <label class="col-sm-4">View ID</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="analytics_viewid" name="analytics_viewid" value="{{$settings['analytics']['viewid']}}" class="form-control" />
+                                    </div>
+                                </div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -13,12 +13,6 @@ use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 class DynamicModel extends Model
 {
 	protected static $_table;
-	/*
-	protected static $_primaryKey;
-	protected static $_dates;
-	protected static $_incrementing;
-	protected static $_keyType;
-	*/
 
 	//TODO: manage softDeleting: https://laravel.com/docs/5.2/eloquent#soft-deleting
 	public $timestamps = false;
@@ -43,7 +37,6 @@ class DynamicModel extends Model
 		foreach ($fields as $field=>$params) {
 			if ($params['type']=='key') {
 				$f_key_name = $field;
-				//$f_key_type = ($params['input']=='number') ? 'int' : 'string';
 			}
 			if ($field=='created_at') $f_created = true;
 			if ($field=='updated_at') $f_updated = true;

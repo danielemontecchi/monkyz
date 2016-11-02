@@ -36,7 +36,8 @@ class SettingsController extends MonkyzController
 		$settings = $this->hsettings->getDefault();
 		foreach ($inputs as $input => $value) {
 			list($k, $sub) = explode('_', $input);
-			$settings[$k][$sub]	= (bool)$value;
+			$value = ($value=='1' || $value=='0') ? (bool)$value : (string)$value;
+			$settings[$k][$sub]	= $value;
 		}
 		$this->hsettings->saveAll($settings);
 
