@@ -13,7 +13,7 @@ class MonkyzServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		$path_src = str_finish(dirname(__DIR__), '/');
+		$path_src = str_finish(__DIR__, '/');
 		$path_pkg = str_replace('src/', '', $path_src);
 
 		// load views
@@ -37,7 +37,7 @@ class MonkyzServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$path_src = str_finish(dirname(__DIR__), '/');
+		$path_src = str_finish(__DIR__, '/');
 		$path_pkg = str_replace('src/', '', $path_src);
 
 		// routes

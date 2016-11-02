@@ -281,7 +281,7 @@ touch custom.blade.php
 
 In the dashboard, you can view the statistics taken from Google Analytics.
 
-*Monkyz* used [spatie/laravel-analytics](https://github.com/spatie/laravel-analytics) package that requires a particular configuration to be able to retrieve data from Google Analytics.
+**Monkyz** used [spatie/laravel-analytics](https://github.com/spatie/laravel-analytics) package that requires a particular configuration to be able to retrieve data from Google Analytics.
 
 You have to follow the [official guide](https://github.com/spatie/laravel-analytics#getting-credentials) to create the file `storage/app/laravel-google-analytics/service-account-credentials.json`.
 Once you create the file, set the `viewId` parameter in the Settings page.
