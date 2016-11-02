@@ -121,7 +121,7 @@
 						<div class="col-xs-12">
 							@if(is_array($analytics))
 								<div id="chart_div"></div>
-							@else
+							@elseif(!empty($analytics))
 								<div class="alert alert-danger">
                                     <button type="button" aria-hidden="true" class="close">×</button>
                                     <span>{!! $analytics !!}</span>

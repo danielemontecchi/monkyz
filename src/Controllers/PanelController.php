@@ -66,7 +66,7 @@ class PanelController extends MonkyzController
 		$analytics = [];
 		if (!empty($sett_dashboard['analytics'])) {
 			$cache_key = $hsettings->cache_key_analytics;
-			if (!Cache::has($cache_key)) {
+			if (Cache::has($cache_key)) {
 				$analytics = Cache::get($cache_key);
 			} else {
 				$viewId = $sett_analytics['viewid'];
@@ -77,7 +77,7 @@ class PanelController extends MonkyzController
 					$analytics['TotalVisitorsAndPageViews'] = $classAnalytics->fetchTotalVisitorsAndPageViews(\Spatie\Analytics\Period::days(14));
 					Cache::put($cache_key, $analytics, (int)config('monkyz.cache_minutes', 60));
 				} else {
-					$analytics = 'Set parameter viewId in <a href="'.route('monkyz.settings').'">Settings</a>';
+					$analytics = 'Set parameter viewId in <a href="'.route('monkyz.settings').'" style="color:#FFF">Settings page</a>';
 				}
 			}
 		}

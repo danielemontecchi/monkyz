@@ -30,7 +30,7 @@ class SettingsHelper
 				'screenshot'	=> true,
 				'serverinfo'	=> true,
 				'counters'	=> true,
-				'analytics'	=> true,
+				'analytics'	=> false,
 			],
 			$this->settings_key_counters=>[],
 			$this->settings_key_analytics=>[
