@@ -68,14 +68,14 @@ And then, within `config/app.php`, include the service provider:
 
 ```php
 'providers' => [
-	Lab1353\Monkyz\Providers\MonkyzServiceProvider::class,
+	Lab1353\Monkyz\MonkyzServiceProvider::class,
 ];
 ```
 
 Finally, publish the assets:
 
 ```bash
-php artisan vendor:publish --provider="Lab1353\Monkyz\Providers\MonkyzServiceProvider"
+php artisan vendor:publish --provider="Lab1353\Monkyz\MonkyzServiceProvider"
 ```
 
 The following files will be published with the commands `php artisan vendor:publish`:

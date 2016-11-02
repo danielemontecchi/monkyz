@@ -1,6 +1,6 @@
 <?php
 
-namespace Lab1353\Monkyz\Providers;
+namespace Lab1353\Monkyz;
 
 use Illuminate\Support\ServiceProvider;
 
