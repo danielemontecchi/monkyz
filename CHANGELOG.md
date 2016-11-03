@@ -3,12 +3,16 @@
 ## Versions
 
 * [development](#development)
+* [1.0.3 (2016-11-03)](#103-2016-11-03)
 * [1.0.2 (2016-10-24)](#102-2016-10-24)
 * [1.0.1 (2016-10-10)](#101-2016-10-10)
 * [1.0.0 (2016-10-10)](#100-2016-10-10)
 
 ### Development
 
+### 1.0.3 (2016-11-03)
+
+* Integrate Google Analytics
 * Dynamic Dashboard widgets
 * Configurable version of assets vendors
 * Minor bug fixed.
