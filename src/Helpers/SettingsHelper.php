@@ -1,74 +1,61 @@
 <?php
 namespace Lab1353\Monkyz\Helpers;
 
-use Illuminate\Support\Facades\Cache;
+use Setting;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 
 class SettingsHelper
 {
-	protected $cache_key_settings = 'monkyz-settings';
-	public $cache_key_counters = 'monkyz-widgets-counters';
-	public $cache_key_analytics = 'monkyz-widgets-analytics';
-	protected $settings_key_counters = 'counters';
-	protected $settings_key_dashboard = 'dashboard';
-	protected $settings_key_analytics = 'analytics';
-
 	public function resetDefault()
 	{
 		$settings = $this->getDefault();
 		$this->saveAll($settings);
 	}
 
+	/***********
+	 * DEFAULT *
+	 ***********/
+
+	private function merge($old, $new)
+	{
+		$merge = [];
+
+		foreach ($old as $k => $v) {
+			$merge[$k] = (array_key_exists($k, $new))  ? $new[$k] : $v;
+		}
+
+		return $merge;
+	}
+
+	public function getDefault()
+	{
+		$default = [
+			'dashboard_screenshot'	=> true,
+			'dashboard_serverinfo'	=> true,
+			'dashboard_counters'	=> true,
+			'dashboard_analytics'	=> false,
+			'analytics_viewid'	=> '',
+		];
+
+		$htables = new HTables();
+		$tables = $htables->getTables();
+		foreach ($tables as $table=>$params) {
+			$default['counters_'.$table]	= $params['visible'];
+		}
+
+		return $default;
+	}
+
 	/*******
 	 * GET *
 	 *******/
 
-	public function getDefault()
-	{
-		return [
-			$this->settings_key_dashboard=>[
-				'screenshot'	=> true,
-				'serverinfo'	=> true,
-				'counters'	=> true,
-				'analytics'	=> false,
-			],
-			$this->settings_key_counters=>[],
-			$this->settings_key_analytics=>[
-				'viewid'	=> '',
-			],
-		];
-	}
-
 	public function getAll()
 	{
-		$cache_key = $this->cache_key_settings;
-		
-		if (!Cache::has($cache_key)) {
-			$this->resetDefault();
-		}
+		$default = $this->getDefault();
+		$settings = $this->merge($default, Setting::all());
 
-		return Cache::get($cache_key);
-	}
-
-	public function getCounters()
-	{
-		$settings = $this->getAll();
-
-		return $settings[$this->settings_key_counters];
-	}
-
-	public function getDashboard()
-	{
-		$settings = $this->getAll();
-
-		return $settings[$this->settings_key_dashboard];
-	}
-
-	public function getAnalytics()
-	{
-		$settings = $this->getAll();
-
-		return $settings[$this->settings_key_analytics];
+		return $settings;
 	}
 
 
@@ -76,10 +63,15 @@ class SettingsHelper
 	 * SAVE *
 	 ********/
 
-	public function saveAll($settings)
+	public function saveAll($new)
 	{
-		Cache::forever($this->cache_key_settings, $settings);
+		$old = $this->getAll();
+		$settings = $this->merge($old, $new);
 
-		Cache::forget($this->cache_key_counters);
+		foreach ($settings as $k=>$v) {
+			Setting::set($k, $v);
+		}
+		Setting::save();
 	}
+
 }

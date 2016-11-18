@@ -2,7 +2,7 @@
 
 @section('content')
 	<form method="post" action="{{route('monkyz.settings.save')}}">
-		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+		{!! csrf_field() !!}
 
 		<div class="row">
 			<div class="col-md-6">
@@ -17,28 +17,28 @@
 							<div class="col-xs-8">Screenshot</div>
 							<div class="col-xs-4">
 								<input type="hidden" id="dashboard_screenshot" name="dashboard_screenshot" value="0" />
-								<input type="checkbox" id="dashboard_screenshot" name="dashboard_screenshot" @if($settings['dashboard']['screenshot']) checked @endif data-toggle="switch" class="ct-primary" value="1" />
+								<input type="checkbox" id="dashboard_screenshot" name="dashboard_screenshot" @if($settings['dashboard_screenshot']) checked @endif data-toggle="switch" class="ct-primary" value="1" />
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-xs-8">Server info</div>
 							<div class="col-xs-4">
 								<input type="hidden" id="dashboard_serverinfo" name="dashboard_serverinfo" value="0" />
-								<input type="checkbox" id="dashboard_serverinfo" name="dashboard_serverinfo" @if($settings['dashboard']['serverinfo']) checked @endif data-toggle="switch" class="ct-primary" value="1" />
+								<input type="checkbox" id="dashboard_serverinfo" name="dashboard_serverinfo" @if($settings['dashboard_serverinfo']) checked @endif data-toggle="switch" class="ct-primary" value="1" />
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-xs-8">Analytics</div>
 							<div class="col-xs-4">
 								<input type="hidden" id="dashboard_analytics" name="dashboard_analytics" value="0" />
-								<input type="checkbox" id="dashboard_analytics" name="dashboard_analytics" @if($settings['dashboard']['analytics']) checked @endif data-toggle="switch" class="ct-primary" value="1" />
+								<input type="checkbox" id="dashboard_analytics" name="dashboard_analytics" @if($settings['dashboard_analytics']) checked @endif data-toggle="switch" class="ct-primary" value="1" />
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-xs-8">Counters</div>
 							<div class="col-xs-4">
 								<input type="hidden" id="dashboard_counters" name="dashboard_counters" value="0" />
-								<input type="checkbox" id="dashboard_counters" name="dashboard_counters" @if($settings['dashboard']['counters']) checked @endif data-toggle="switch" class="ct-primary" value="1" />
+								<input type="checkbox" id="dashboard_counters" name="dashboard_counters" @if($settings['dashboard_counters']) checked @endif data-toggle="switch" class="ct-primary" value="1" />
 							</div>
 						</div>
 					</div>
@@ -61,7 +61,7 @@
 									</div>
 									<div class="col-xs-4">
 										<input type="hidden" id="counters_{{$table}}" name="counters_{{$table}}" value="0" />
-										<input type="checkbox" id="counters_{{$table}}" name="counters_{{$table}}" @if(!empty($settings['counters'][$table])) checked @endif data-toggle="switch" class="ct-primary" value="1" />
+										<input type="checkbox" id="counters_{{$table}}" name="counters_{{$table}}" @if(!empty($settings['counters_'.$table])) checked @endif data-toggle="switch" class="ct-primary" value="1" />
 									</div>
 								</div>
 							@endif
@@ -83,7 +83,7 @@
 								<div class="form-group">
                                     <label class="col-sm-4">View ID</label>
                                     <div class="col-sm-8">
-                                        <input type="text" id="analytics_viewid" name="analytics_viewid" value="{{$settings['analytics']['viewid']}}" class="form-control" />
+                                        <input type="text" id="analytics_viewid" name="analytics_viewid" value="{{$settings['analytics_viewid']}}" class="form-control" />
                                     </div>
                                 </div>
 							</div>

@@ -1,7 +1,7 @@
 @extends('monkyz::layouts.monkyz')
 
 @section('scripts')
-	@if(!empty($settings['dashboard']['analytics']) && is_array($analytics))
+	@if(!empty($settings['dashboard_analytics']) && is_array($analytics))
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<script>
 			google.charts.load('current', {packages: ['corechart', 'line']});
@@ -48,14 +48,15 @@
 
 @section('content')
 
+{{dump($settings)}}
 				{{-- DATA --}}
 				<div class="row">
-					@if(!empty($settings['dashboard']['screenshot']))
+					@if(!empty($settings['dashboard_screenshot']))
 						<div class="col-sm-4">
 							<img src="http://wimg.ca/{{ config('app.url') }}" class="img-rounded img-responsive">
 						</div>
 					@endif
-					@if(!empty($settings['dashboard']['serverinfo']))
+					@if(!empty($settings['dashboard_serverinfo']))
 						<div class="col-sm-7">
 							<div class="card">
 								<div class="header">
@@ -74,49 +75,51 @@
 				</div>
 
 				{{-- COUNTERS --}}
-				@if(!empty($settings['dashboard']['counters']))
+				@if(!empty($settings['dashboard_counters']))
 					@php
 					$colors = ['success','info','warning','danger'];
 					@endphp
 					<p>&nbsp;</p>
 					<div class="row">
 						@foreach($counters as $section=>$params)
-							<div class="col-lg-3 col-sm-6">
-								<div class="card">
-									<div class="content">
-										<div class="row">
-											<div class="col-xs-5">
-												@php
-												$color = $colors[array_rand($colors)];
-												@endphp
-												<div class="icon-big icon-{{$color}} text-center">
-													<i class="{{ $params['icon'] }}"></i>
+							@if($settings['counters_'.$section])
+								<div class="col-lg-3 col-sm-6">
+									<div class="card">
+										<div class="content">
+											<div class="row">
+												<div class="col-xs-5">
+													@php
+													$color = $colors[array_rand($colors)];
+													@endphp
+													<div class="icon-big icon-{{$color}} text-center">
+														<i class="{{ $params['icon'] }}"></i>
+													</div>
 												</div>
-											</div>
-											<div class="col-xs-7">
-												<div class="numbers">
-													<p>{{ ucfirst($section) }}</p>
-													{{ $params['count'] }}
+												<div class="col-xs-7">
+													<div class="numbers">
+														<p>{{ ucfirst($section) }}</p>
+														{{ $params['count'] }}
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="card-footer">
-										<hr />
-										<div class="stats text-right">
-											<a href="{{ route('monkyz.dynamic.list', compact('section')) }}">
-												view all records<i class="fa fa-chevron-right" aria-hidden="true"></i>
-											</a>
+										<div class="card-footer">
+											<hr />
+											<div class="stats text-right">
+												<a href="{{ route('monkyz.dynamic.list', compact('section')) }}">
+													view all records<i class="fa fa-chevron-right" aria-hidden="true"></i>
+												</a>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							@endif
 						@endforeach
 					</div>
 				@endif
 
 				{{-- ANALYTICS --}}
-				@if(!empty($settings['dashboard']['analytics']))
+				@if(!empty($settings['dashboard_analytics']))
 					<div class="row">
 						<div class="col-xs-12">
 							@if(is_array($analytics))

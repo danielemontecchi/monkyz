@@ -20,7 +20,8 @@
         "intervention/image": "2.*",
 	    "illuminate/database": "~5.2",
 	    "illuminate/support": "~5.2",
-        "spatie/laravel-analytics": "^2.3"
+        "spatie/laravel-analytics": "^2.3",
+        "anlutro/l4-settings": "^0.4.9"
     },
     "autoload": {
         "psr-4": {

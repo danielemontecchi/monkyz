@@ -23,21 +23,17 @@ class PanelController extends MonkyzController
 		// settings
 		$hsettings = new HSettings();
 		$settings = $hsettings->getAll();
-		$sett_counters = $hsettings->getCounters();
-		$sett_dashboard = $hsettings->getDashboard();
-		$sett_analytics = $hsettings->getAnalytics();
 
 		// counters
-		$cache_key = $hsettings->cache_key_counters;
+		$cache_key = 'monkyz-widgets-counters';
 		$counters = [];
-
-		if (!empty($sett_dashboard['counters'])) {
+		if (!empty($settings['dashboard_counters'])) {
 			if (Cache::has($cache_key)) {
 				$counters = Cache::get($cache_key);
 			} else {
 				$tables = $this->htables->getTables();
 				foreach ($tables as $table => $params) {
-					if ($params['visible'] && !empty($sett_counters[$table])) {
+					if ($params['visible'] && !empty($settings['counters_'.$table])) {
 						$m = new DynamicModel($table);
 						$c = $m->count();
 
@@ -53,7 +49,7 @@ class PanelController extends MonkyzController
 
 		// serverinfo
 		$serverinfo = [];
-		if (!empty($sett_dashboard['serverinfo'])) {
+		if (!empty($settings['dashboard_serverinfo'])) {
 			$serverinfo = [
 				'url'	=> config('app.url'),
 				'php version'   => request()->server('PHP_VERSION'),
@@ -64,12 +60,12 @@ class PanelController extends MonkyzController
 
 		// analytics
 		$analytics = [];
-		if (!empty($sett_dashboard['analytics'])) {
-			$cache_key = $hsettings->cache_key_analytics;
+		if (!empty($settings['dashboard_analytics'])) {
+			$cache_key = 'monkyz-widgets-analytics';
 			if (Cache::has($cache_key)) {
 				$analytics = Cache::get($cache_key);
 			} else {
-				$viewId = $sett_analytics['viewid'];
+				$viewId = $settings['analytics_viewid'];
 				if (!empty($viewId)) {
 					$config = config('laravel-analytics');
 					$client = \Spatie\Analytics\AnalyticsClientFactory::createForConfig($config);

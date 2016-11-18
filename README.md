@@ -264,7 +264,7 @@ touch custom.blade.php
 
 You can add css references using the section `css`:
 
-```php
+```
 @section('css')
   @parent
 
@@ -274,7 +274,7 @@ You can add css references using the section `css`:
 
 or js with the section `scripts`:
 
-```php
+```
 @section('scripts')
   @parent
 

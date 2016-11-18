@@ -52,9 +52,11 @@ class MonkyzServiceProvider extends ServiceProvider
 
 		// providers
 		$this->app->register('Spatie\Analytics\AnalyticsServiceProvider');
+		$this->app->register('anlutro\LaravelSettings\ServiceProvider');
 
 		// aliases
 		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 		$loader->alias('Analytics', 'Spatie\Analytics\AnalyticsFacade');
+		$loader->alias('Setting', 'anlutro\LaravelSettings\Facade');
 	}
 }
