@@ -47,8 +47,6 @@
 @endsection
 
 @section('content')
-
-{{dump($settings)}}
 				{{-- DATA --}}
 				<div class="row">
 					@if(!empty($settings['dashboard_screenshot']))
