@@ -103,8 +103,9 @@ class FieldsHelper
 	private static function renderEnum($params, $value)
 	{
 		$enum = $params['enum'];
+		$ret = (!empty($enum[$value])) ? $enum[$value] : '';
 
-		return  $enum[$value];
+		return $ret;
 	}
 
 	private static function renderFile($value)

@@ -231,7 +231,6 @@ class DynamicController extends MonkyzController
 	private function saveFile($request, $field, $params)
 	{
 		$file_name = '';
-
 		if (!empty(Input::file($field)) && Input::file($field)->isValid()) {
 			$path_temp = config('monkyz.path_public_temp');
 			
@@ -243,16 +242,16 @@ class DynamicController extends MonkyzController
 			$file_name .= '.'.$file_ext;
 
 			if (!empty($file_name)) {
-				$input_type = $params['input'];
 				// get disk
 				$disk = 'local';
-				if (!empty($params[$input_type]['disk'])) $disk = $params[$input_type]['disk'];
+				if (!empty($params['file']['disk'])) $disk = $params['file']['disk'];
 
 				// get correct path
 				$file_path = '';
-				if (!empty($params[$input_type]['path'])) $file_path = $params[$input_type]['path'];
+				if (!empty($params['file']['path'])) $file_path = $params['file']['path'];
 				$file_path = str_finish($file_path, '/');
-				if (!Storage::exists($file_path)) Storage::makeDirectory($file_path);
+				if (substr($file_path, 0, 1) != '/') $file_path = '/'.$file_path;
+				if (!Storage::disk($disk)->exists($file_path)) Storage::disk($disk)->makeDirectory($file_path);
 
 				// put file upload in monkyz temp file
 				$temp_file = time().'_'.$file_name;
@@ -262,7 +261,7 @@ class DynamicController extends MonkyzController
 				// upload file
 				if (!Storage::disk($disk)->has($file_path.$file_name) || $params['file']['overwrite']) {
 					$request->file($field)->move($temp_path, $temp_file);
-					if ($input_type=='image' && $params['file']['resize']) {
+					if ($params['file']['resize']) {
 						$h = $params['file']['resize_height_px'];
 						$w = $params['file']['resize_width_px'];
 						$img = Image::make($temp_path.$temp_file);
