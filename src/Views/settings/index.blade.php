@@ -54,17 +54,15 @@
 					</div>
 					<div class="content">
 						@foreach($tables as $table=>$params)
-							@if($params['visible'])
-								<div class="row">
-									<div class="col-xs-8">
-										{{ ucfirst($table) }}
-									</div>
-									<div class="col-xs-4">
-										<input type="hidden" id="counters_{{$table}}" name="counters_{{$table}}" value="0" />
-										<input type="checkbox" id="counters_{{$table}}" name="counters_{{$table}}" @if(!empty($settings['counters_'.$table])) checked @endif data-toggle="switch" class="ct-primary" value="1" />
-									</div>
+							<div class="row">
+								<div class="col-xs-8">
+									{{ ucfirst($table) }}
 								</div>
-							@endif
+								<div class="col-xs-4">
+									<input type="hidden" id="counters_{{$table}}" name="counters_{{$table}}" value="0" />
+									<input type="checkbox" id="counters_{{$table}}" name="counters_{{$table}}" @if(!empty($settings['counters_'.$table])) checked @endif data-toggle="switch" class="ct-primary" value="1" />
+								</div>
+							</div>
 						@endforeach
 					</div>
 				</div>

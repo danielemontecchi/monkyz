@@ -33,7 +33,7 @@ class PanelController extends MonkyzController
 			} else {
 				$tables = $this->htables->getTables();
 				foreach ($tables as $table => $params) {
-					if ($params['visible'] && !empty($settings['counters_'.$table])) {
+					if (!empty($settings['counters_'.$table])) {
 						$m = new DynamicModel($table);
 						$c = $m->count();
 

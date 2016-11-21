@@ -4,6 +4,7 @@ namespace Lab1353\Monkyz\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Controller;
 use Lab1353\Monkyz\Helpers\SettingsHelper as HSettings;
 
@@ -19,7 +20,7 @@ class SettingsController extends MonkyzController
 
 	public function getIndex()
 	{
-		$page_title = '<i class="fa fa-tachometer"></i>Settings';
+		$page_title = '<i class="fa fa-cog"></i>Settings';
 
 		$tables = $this->htables->getTables();
 
@@ -39,6 +40,7 @@ class SettingsController extends MonkyzController
 			$settings[$input] = $value;
 		}
 		$this->hsettings->saveAll($settings);
+		Cache::forget('monkyz-widgets-counters');
 
         return back()->with('success', 'Settings saved!');
 	}
@@ -46,6 +48,7 @@ class SettingsController extends MonkyzController
 	public function getDefault()
 	{
 		$this->hsettings->resetDefault();
+		Cache::forget('monkyz-widgets-counters');
 		
         return back()->with('success', 'Default settings reset!');
 	}
