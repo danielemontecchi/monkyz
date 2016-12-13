@@ -117,11 +117,9 @@ class FileHelper
 			if (Cache::has($cache_key)) {
 				$url = Cache::get($cache_key);
 			} else {
-				if ($driver=='local') {
+				try {
 					$url = Storage::disk($disk)->url($path.$file_name);
-					$url = str_replace('/storage', '', $url);
-					$url = asset($url);
-				} else {
+				} catch (Exception $e) {
 					$adapter = Storage::disk($disk)->getAdapter();
 					if (!empty($adapter)) {
 						$client = $adapter->getClient();
