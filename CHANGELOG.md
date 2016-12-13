@@ -13,6 +13,7 @@
 
 ### Development
 
+* Minor bug fixed
 
 ### 1.0.6 (2016-12-13)
 
