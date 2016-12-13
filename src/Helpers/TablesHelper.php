@@ -114,7 +114,7 @@ class TablesHelper
 		if (empty($this->tables[$section]['fields'])) {
 			$fields_name_hide_in_edit = config('monkyz-tables.fields_name_hide_in_edit', []);
 
-			$db_name = Config::get('database.connections.'.Config::get('database.default').'.database');
+			$db_name = config('database.connections.'.config('database.default').'.database');
 			$columns = \DB::select('SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`=\''.$section.'\' AND `TABLE_SCHEMA`=\''.$db_name.'\'');
 			$fields = [];
 			foreach ($columns as $column) {
