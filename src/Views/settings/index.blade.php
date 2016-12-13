@@ -1,7 +1,7 @@
 @extends('monkyz::layouts.monkyz')
 
 @section('content')
-	<form method="post" action="{{route('monkyz.settings.save')}}">
+	<form method="post" action="{{route('monkyz.settings.save')}}" autocomplete="off">
 		{!! csrf_field() !!}
 
 		<div class="row">

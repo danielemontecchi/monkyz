@@ -4,7 +4,7 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="card">
-				<form method="get" action="{{ route('monkyz.tools.files.clean') }}">
+				<form method="get" action="{{ route('monkyz.tools.files.clean') }}" autocomplete="off">
 					<div class="header">
 						<h4 class="title">
 							Temp Files

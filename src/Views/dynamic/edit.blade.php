@@ -27,7 +27,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card">
-				<form action="{{ route('monkyz.dynamic.save', compact('section')) }}" method="post" @if($fields_files) enctype="multipart/form-data" @endif>
+				<form action="{{ route('monkyz.dynamic.save', compact('section')) }}" method="post" @if($fields_files) enctype="multipart/form-data" @endif autocomplete="off">
 					<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 					<div class="content">
 						@foreach($fields as $field=>$params)
