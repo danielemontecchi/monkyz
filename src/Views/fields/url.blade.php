@@ -11,4 +11,8 @@
 			@endforeach
 		@endif
 	>
+	@if(!empty($record->$field))
+		<br>
+		<a href="{{ $record->$field }}" target="_blank">go to link</a>
+	@endif
 </div>
