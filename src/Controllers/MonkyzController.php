@@ -36,14 +36,16 @@ class MonkyzController extends Controller
 		$tables = $this->htables->getTables();
 
 		// route name
-		$route_name = \Request::route()->getName();
+		$request = request();
+		//$route_name = \Request::route()->getName();
+		$route_name = $request->route() ? $request->route()->getName() : '';
 		$route_name = str_replace('monkyz.', '', $route_name);
-		$section_name = \Request::path();
+		$section_name = $request->path();
 		$section_name = str_replace(config('monkyz.prefix').'/', '', $section_name);
 		while (strpos($section_name, '/')!==false) {
 			$section_name = dirname($section_name);
 		}
-		$page_title = '<i class="fa fa-dashboard"></i>'.request()->server('HTTP_HOST');
+		$page_title = '<i class="fa fa-dashboard"></i>'.$request->server('HTTP_HOST');
 
 		// user
 		$user = [];
