@@ -133,6 +133,7 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
 	'title'	=> 'Table',
 	'icon'	=> 'fa fa-table fa-fw',
 	'visible'	=> true,
+  'ajax_list' => false,
 	'fields'	=> [
 		'field_name'	=> [	// name of field in db
 			'title'	=> 'Column',
@@ -168,6 +169,7 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
 - `title`: title of table
 - `icon`: the [fontawesome icon](http://fontawesome.io/icons/)
 - `visible` (true|false): visibility of table in the sidebar menù
+- `ajax_list` (true|false): defines whether to activate the ajax paging and filtering
 - `fields`: list of fields in table
 
 ##### Fields parameters

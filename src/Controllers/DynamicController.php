@@ -16,6 +16,7 @@ use Lab1353\Monkyz\Models\DynamicModel;
 class DynamicController extends MonkyzController
 {
 	protected $fields;
+	protected $ajax_list;
 
 	public function __construct() {
 		$this->init();
@@ -25,6 +26,7 @@ class DynamicController extends MonkyzController
 		if (\Schema::hasTable($section)) {
 			$fields = $this->fields = $this->htables->getColumns($section);
 			$table = $this->htables->getTable($section);
+			$this->ajax_list = (!empty($table['ajax_list'])) ? true : false;
 
 			view()->share(compact('table', 'fields', 'section'));
 		} else {
@@ -34,6 +36,8 @@ class DynamicController extends MonkyzController
 
 	public function getList($section)
 	{
+		$table_params = $this->htables->getTable($section);
+
 		// datatables
 		$dt = '
 		$(document).ready(function(){
@@ -43,6 +47,14 @@ class DynamicController extends MonkyzController
 			$dt.='
 	            "pagingType": "full_numbers",
 	            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+	        ';
+	        if ($this->ajax_list) {
+				$dt.='
+					"processing": true,
+	        		"serverSide": true,
+		        ';
+        	}
+			$dt.='
 	            "ajax": "'.route('monkyz.dynamic.page', compact('section')).'",
 	            responsive: true,
 				"language": {
@@ -88,47 +100,64 @@ class DynamicController extends MonkyzController
 
 	public function ajaxPagination(Request $request, $section)
 	{
-		$draw = $request->input('draw', 1);
-		$order = $request->input('order');
-		$start = $request->input('start', 0);
-		$length = $request->input('length', 0);
-		$search = $request->input('search.value', '');
-
-		$fields = $this->htables->getColumns($section);
+		$fields = array_keys($this->htables->getColumns($section));
 		$fields_list = $this->htables->getColumnsInList($section);
 		$key = $this->htables->findKeyFieldName($section);
-		// order
-		$order_column = $key;
-		$order_dir = 'asc';
-		if (!empty($order)) {
-			$columns = $request->input('columns');
-			$col_ind = (int)$order[0]['column'];
-			$order_column = $columns[$col_ind]['data'];
-			$order_dir = $order[0]['dir'];
-		}
-		// search
-		$search_str = '';
-		if (!empty($search)) {
-			foreach ($fields as $column => $param) {
-				if ($param['in_list']) {
-					if (!empty($search_str)) $search_str .= ' OR ';
-					$search_str .= $column." LIKE '%$search%'";
+		$model = new DynamicModel($section);
+		$items = null;
+		$recordsTotal = $model->count();
+		$recordsFiltered = 0;
+		$draw = $request->input('draw', 1);
+
+		if ($this->ajax_list) {
+			$order = $request->input('order');
+			$start = $request->input('start', 0);
+			$length = $request->input('length', 0);
+			$search = $request->input('search.value', '');
+			// order
+			$order_column = $key;
+			$order_dir = 'asc';
+			if (!empty($order)) {
+				$columns = $request->input('columns');
+				$col_ind = (int)$order[0]['column'];
+				$order_column = $columns[$col_ind]['data'];
+				$order_dir = $order[0]['dir'];
+			}
+			// search
+			$search_str = '';
+			if (!empty($search)) {
+				foreach ($fields as $column => $param) {
+					if ($param['in_list']) {
+						if (!empty($search_str)) $search_str .= ' OR ';
+						$search_str .= $column." LIKE '%$search%'";
+					}
 				}
 			}
-		}
-		if (empty($search_str)) $search_str = '1=1';
+			if (empty($search_str)) $search_str = '1=1';
 
-		$return = [];
-		$model = new DynamicModel($section);
-		$count = $model->count();
-		$items = $model->select($fields_list)->whereRaw($search_str)->orderBy($order_column, $order_dir)->skip($start)->take($length)->get()->toArray();
-		foreach ($items as $k=>$item) {
-			$item['actions'] = '<a href="'.route('monkyz.dynamic.edit', [ 'id'=>$item[$key], 'section'=>$section ]).'" class="btn btn-sm btn-fill btn-primary"><i class="fa fa-pencil"></i>Edit</a><a href="'.route('monkyz.dynamic.delete', [ 'id'=>$item[$key], 'section'=>$section ]).'" class="btn btn-sm btn-fill btn-danger btn-delete-record"><i class="fa fa-trash"></i>Delete</a>';
-			$return['data'][] = (object)$item;
+			$items = $model->select($fields)->whereRaw($search_str)->orderBy($order_column, $order_dir)->skip($start)->take($length)->get()->toArray();
+			$recordsFiltered = ($search_str == '1=1') ? $recordsTotal : count($items);
+		} else {
+			$items = $model->select($fields)->get()->toArray();
+			$recordsFiltered = $recordsTotal;
 		}
+		$return = [];
+		$records = [];
+		foreach ($items as $k=>$item) {
+			$new = $item;
+			foreach ($fields as $field) {
+				if (!in_array($field, $fields_list)) unset($new[$field]);
+			}
+			$new['actions'] = '
+				<a href="'.route('monkyz.dynamic.edit', [ 'id'=>$item[$key], 'section'=>$section ]).'" class="btn btn-sm btn-fill btn-primary"><i class="fa fa-pencil"></i>Edit</a>
+				<a href="'.route('monkyz.dynamic.delete', [ 'id'=>$item[$key], 'section'=>$section ]).'" class="btn btn-sm btn-fill btn-danger btn-delete-record"><i class="fa fa-trash"></i>Delete</a>
+			';
+			$records[] = (object)$new;
+		}
+		$return['data'] = $records;
 		$return["draw"] = $draw;
-		$return["recordsTotal"] = $count;
-		$return["recordsFiltered"] = ($search_str == '1=1') ? $count : count($items);
+		$return["recordsTotal"] = $recordsTotal;
+		$return["recordsFiltered"] = $recordsFiltered;
 
 		return $return;
 	}

@@ -77,7 +77,9 @@ class TablesHelper
 			$t_title = ucwords(str_replace('_', ' ', $table_name));
 			if (isset($override['title'])) $t_title = $override['title'];
 			$t_visible = true;
-			if (isset($override['visible'])) $t_visible = $override['visible'];
+			if (isset($override['visible'])) $t_visible = (bool)$override['visible'];
+			$t_ajax_list = false;
+			if (isset($override['ajax_list'])) $t_ajax_list = (bool)$override['ajax_list'];
 			$t_icon = 'fa fa-table';
 			if (isset($override['icon'])) $t_icon = $override['icon'];
 
@@ -85,6 +87,7 @@ class TablesHelper
 				'title'	=> $t_title,
 				'icon'	=> $t_icon,
 				'visible'	=> $t_visible,
+				'ajax_list'	=> $t_ajax_list,
 			];
 		}
 

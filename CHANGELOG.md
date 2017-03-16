@@ -16,7 +16,6 @@
 
 ### 1.0.7 (2017-03-15)
 
-* Minor bug fixed
 * Add Ajax paging and filtering at DataTables
 
 ### 1.0.6 (2016-12-13)
