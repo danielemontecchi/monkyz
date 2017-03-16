@@ -318,10 +318,10 @@ Please see [`CHANGELOG.md`](https://github.com/lab1353/monkyz/blob/master/CHANGE
 
 ## Into The Future
 
+- compatibility with Laravel 5.4
 - import/export configurations
 - manage useSoftDelete in model
 - roles for access sections
-- compatibility with [Laravel 5.3](https://laravel.com/docs/5.3/upgrade#upgrade-5.3.0)
 - [Laravel validation rules](https://laravel.com/docs/5.2/validation) for fields
 - multi files uploads
 

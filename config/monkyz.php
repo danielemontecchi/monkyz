@@ -12,7 +12,7 @@ return [
 	'vendors'	=> [	// version of assets
 		'bootstrap'	=> '3.3.7',	// https://www.bootstrapcdn.com/
 		'bootstrap3wysiwyg'	=> '0.3.3', // https://cdnjs.com/libraries/bootstrap3-wysiwyg
-		'datatables'	=> '1.10.12',	// https://cdn.datatables.net/
+		'datatables'	=> '1.10.13',	// https://cdn.datatables.net/
 		'fontawesome'	=> '4.7.0',	// https://www.bootstrapcdn.com/fontawesome/
 		'jquery'	=> '1.12.4',	// https://code.jquery.com/
 		'html5shiv'	=> '3.7.3',	// http://www.jsdelivr.com/projects/html5shiv

@@ -20,6 +20,7 @@ Route::group(['prefix' => config('monkyz.prefix'), 'middleware'=>['web'] ], func
 	Route::get('/users/logout', [ 'as'=>'monkyz.users.logout', 'uses'=>'Lab1353\Monkyz\Controllers\UsersController@getLogout' ]);
 
 	// dynamic
+	Route::get('/{section}/page', [ 'as'=>'monkyz.dynamic.page', 'uses'=>'Lab1353\Monkyz\Controllers\DynamicController@ajaxPagination' ]);
 	Route::get('/{section}/list', [ 'as'=>'monkyz.dynamic.list', 'uses'=>'Lab1353\Monkyz\Controllers\DynamicController@getList' ]);
 	Route::get('/{section}/add', [ 'as'=>'monkyz.dynamic.add', 'uses'=>'Lab1353\Monkyz\Controllers\DynamicController@getEdit' ]);
 	Route::get('/{section}/edit/{id}', [ 'as'=>'monkyz.dynamic.edit', 'uses'=>'Lab1353\Monkyz\Controllers\DynamicController@getEdit' ]);

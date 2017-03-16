@@ -2,10 +2,11 @@
 
 namespace Lab1353\Monkyz\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Lab1353\Monkyz\Models\DynamicModel;
 
 class UsersController extends MonkyzController
 {
@@ -16,7 +17,7 @@ class UsersController extends MonkyzController
 	}
 
 	public function getLogin()
-	{    	
+	{
 		return view('monkyz::users.login');
 	}
 
@@ -24,9 +25,8 @@ class UsersController extends MonkyzController
 	{
 		$email = $request->input('email');
 		$password = $request->input('password');
-		$remember = (!empty($request->input('remember'))) ? true : false;
 
-		if (Auth::attempt(compact('email', 'password'), $remember))
+		if (Auth::attempt(compact('email', 'password'), $request->has('remember')))
 		{
 			return redirect()->route('monkyz.dashboard');
 		}

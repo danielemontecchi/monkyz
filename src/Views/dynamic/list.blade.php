@@ -3,10 +3,6 @@
 @section('content')
 	<div class="row">
 		<div class="col-md-12">
-			@php
-				$htables = new Lab1353\Monkyz\Helpers\TablesHelper();
-				$key = $htables->findKeyFieldName($section);
-			@endphp
 			<div class="card">
 				<div class="content">
 					<div class="toolbar">
@@ -24,7 +20,7 @@
 									<th class="text-center">Actions</th>
 								</tr>
 							</thead>
-							<tbody>
+{{-- 							<tbody>
 								@foreach($records as $record)
 									<tr>
 										@foreach($fields as $field=>$params)
@@ -39,7 +35,7 @@
 									</tr>
 								@endforeach
 							</tbody>
-							<tfoot></tfoot>
+ --}}							<tfoot></tfoot>
 						</table>
 					</div>
 				</div>

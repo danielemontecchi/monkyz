@@ -265,4 +265,18 @@ class TablesHelper
 
 		return $this->tables[$section]['fields'];
 	}
+
+	public function getColumnsInList($section)
+	{
+	    $fields = $this->getColumns($section);
+	    $fields_list = [];
+
+	    foreach ($fields as $field => $param) {
+	    	if ($param['in_list']) {
+	    		$fields_list[] = $field;
+	    	}
+	    }
+
+	    return $fields_list;
+	}
 }

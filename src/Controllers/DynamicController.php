@@ -1,26 +1,29 @@
 <?php
 namespace Lab1353\Monkyz\Controllers;
 
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Lab1353\Monkyz\Models\DynamicModel;
-use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 use Lab1353\Monkyz\Helpers\FileHelper as HFile;
+use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
+use Lab1353\Monkyz\Models\DynamicModel;
 
 class DynamicController extends MonkyzController
 {
+	protected $fields;
+
 	public function __construct() {
 		$this->init();
 
 		$route = request()->route();
 		$section = $route->getParameter('section');
 		if (\Schema::hasTable($section)) {
-			$fields = $this->htables->getColumns($section);
+			$fields = $this->fields = $this->htables->getColumns($section);
 			$table = $this->htables->getTable($section);
 
 			view()->share(compact('table', 'fields', 'section'));
@@ -31,9 +34,6 @@ class DynamicController extends MonkyzController
 
 	public function getList($section)
 	{
-		$model = new DynamicModel($section);
-		$records = $model->get()->toArray();
-
 		// datatables
 		$dt = '
 		$(document).ready(function(){
@@ -43,9 +43,10 @@ class DynamicController extends MonkyzController
 			$dt.='
 	            "pagingType": "full_numbers",
 	            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+	            "ajax": "'.route('monkyz.dynamic.page', compact('section')).'",
 	            responsive: true,
 				"language": {
-					"url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Italian.json"
+					"url": "//cdn.datatables.net/plug-ins/'.config('monkyz.vendors.datatables', '1.10.12').'/i18n/Italian.json"
 				},';
 		}
 		$i = 0;
@@ -53,11 +54,13 @@ class DynamicController extends MonkyzController
 		$dt .= '"columns": [ ';
 		foreach ($this->htables->getColumns($section) as $column=>$params) {
 			if ($params['in_list']) {
+				$dt .= '{"data":"'.$column.'",';
 				if (in_array($params['input'], ['checkbox','color','file','image'])) {
-					$dt .= '{"orderable": false}, ';
+					$dt .= '"orderable": false';
 				} else {
-					$dt .= '{"orderable": true}, ';
+					$dt .= '"orderable": true';
 				}
+				$dt .= '}, ';
 				if ($params['input']=='text' && empty($dt_order)) {
 					$dt_order .= '
 						"order": [[ '.$i.', "asc" ]],
@@ -66,7 +69,7 @@ class DynamicController extends MonkyzController
 				$i++;
 			}
 		}
-		$dt .= '{"orderable": false} ],
+		$dt .= '{"data":"actions", "orderable": false} ],
 			'.$dt_order;
 
 		$dt .= '
@@ -80,7 +83,54 @@ class DynamicController extends MonkyzController
 		$page_title = '<i class="'.$table_params['icon'].'"></i>'.ucfirst($section).' <small>list</small>';
 
 
-		return view('monkyz::dynamic.list')->with(compact('records', 'scripts_datatables', 'page_title'));
+		return view('monkyz::dynamic.list')->with(compact('scripts_datatables', 'page_title'));
+	}
+
+	public function ajaxPagination(Request $request, $section)
+	{
+		$draw = $request->input('draw', 1);
+		$order = $request->input('order');
+		$start = $request->input('start', 0);
+		$length = $request->input('length', 0);
+		$search = $request->input('search.value', '');
+
+		$fields = $this->htables->getColumns($section);
+		$fields_list = $this->htables->getColumnsInList($section);
+		$key = $this->htables->findKeyFieldName($section);
+		// order
+		$order_column = $key;
+		$order_dir = 'asc';
+		if (!empty($order)) {
+			$columns = $request->input('columns');
+			$col_ind = (int)$order[0]['column'];
+			$order_column = $columns[$col_ind]['data'];
+			$order_dir = $order[0]['dir'];
+		}
+		// search
+		$search_str = '';
+		if (!empty($search)) {
+			foreach ($fields as $column => $param) {
+				if ($param['in_list']) {
+					if (!empty($search_str)) $search_str .= ' OR ';
+					$search_str .= $column." LIKE '%$search%'";
+				}
+			}
+		}
+		if (empty($search_str)) $search_str = '1=1';
+
+		$return = [];
+		$model = new DynamicModel($section);
+		$count = $model->count();
+		$items = $model->select($fields_list)->whereRaw($search_str)->orderBy($order_column, $order_dir)->skip($start)->take($length)->get()->toArray();
+		foreach ($items as $k=>$item) {
+			$item['actions'] = '<a href="'.route('monkyz.dynamic.edit', [ 'id'=>$item[$key], 'section'=>$section ]).'" class="btn btn-sm btn-fill btn-primary"><i class="fa fa-pencil"></i>Edit</a><a href="'.route('monkyz.dynamic.delete', [ 'id'=>$item[$key], 'section'=>$section ]).'" class="btn btn-sm btn-fill btn-danger btn-delete-record"><i class="fa fa-trash"></i>Delete</a>';
+			$return['data'][] = (object)$item;
+		}
+		$return["draw"] = $draw;
+		$return["recordsTotal"] = $count;
+		$return["recordsFiltered"] = ($search_str == '1=1') ? $count : count($items);
+
+		return $return;
 	}
 
 	public function getEdit($section, $id=0)
@@ -143,7 +193,7 @@ class DynamicController extends MonkyzController
 						case 'checkbox':
 							$record->$field = (!empty($value)) ? true : false;
 							break;
-						
+
 						case 'date':
 						case 'datetime':
 							$dt = new Carbon($value);
@@ -158,13 +208,13 @@ class DynamicController extends MonkyzController
 						case 'image':
 							if (!empty($value)) $files_upload[$field] = $params;
 							break;
-						
+
 						case 'password':
 							if (!empty($value)) {
 								$record->$field = bcrypt($value);
 							}
 							break;
-							
+
 						default:
 							if (in_array($params['input'], $fields_dates)) {
 								$value = new Carbon($value);
@@ -233,7 +283,7 @@ class DynamicController extends MonkyzController
 		$file_name = '';
 		if (!empty(Input::file($field)) && Input::file($field)->isValid()) {
 			$path_temp = config('monkyz.path_public_temp');
-			
+
 			// get file name
 			$file_ext = strtolower($request->file($field)->getClientOriginalExtension());
 			$file_name = strtolower($request->file($field)->getClientOriginalName());
