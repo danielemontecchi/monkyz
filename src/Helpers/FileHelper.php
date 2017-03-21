@@ -2,6 +2,7 @@
 namespace Lab1353\Monkyz\Helpers;
 
 use File;
+use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
@@ -43,13 +44,13 @@ class FileHelper
 	/***************
 	 * DIRECTORIES *
 	 ***************/
-	
+
 	public static function countFilesInFolder($folder)
 	{
 		$files = self::filesInFolder($folder);
 		return count($files);
 	}
-	
+
 	public static function filesInFolder($folder)
 	{
 		return File::files($folder);
@@ -109,7 +110,6 @@ class FileHelper
 		$url = '';
 		if (!empty($file_name)) {
 			$disk = $this->disk;
-			$driver = $this->disk_params['driver'];
 			$path = str_finish($path, '/');
 
 			$cache_key = 'monkyz-images-url_'.$disk.'_'.str_slug($path).'_'.str_slug($file_name);

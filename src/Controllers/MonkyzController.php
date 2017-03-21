@@ -26,7 +26,7 @@ class MonkyzController extends Controller
 		$this->storeViewShare();
 	}
 
-    public function storeViewShare()
+    public function storeViewShare(Request $request)
     {
     	// assets
     	$monkyz_assets = str_finish(asset('vendor/monkyz/'), '/');
@@ -36,8 +36,6 @@ class MonkyzController extends Controller
 		$tables = $this->htables->getTables();
 
 		// route name
-		$request = request();
-		//$route_name = \Request::route()->getName();
 		$route_name = $request->route() ? $request->route()->getName() : '';
 		$route_name = str_replace('monkyz.', '', $route_name);
 		$section_name = $request->path();

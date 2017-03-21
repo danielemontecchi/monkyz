@@ -36,8 +36,6 @@ class DynamicController extends MonkyzController
 
 	public function getList($section)
 	{
-		$table_params = $this->htables->getTable($section);
-
 		// datatables
 		$dt = '
 		$(document).ready(function(){

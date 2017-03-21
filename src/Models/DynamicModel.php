@@ -7,7 +7,7 @@ use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 
 /**
  * Dynamic model for any tables
- * 
+ *
  * @method integer count()
  */
 class DynamicModel extends Model
@@ -33,7 +33,7 @@ class DynamicModel extends Model
 		$f_created = false;
 		$f_updated = false;
 		$f_dates = [];
-		
+
 		foreach ($fields as $field=>$params) {
 			if ($params['type']=='key') {
 				$f_key_name = $field;
