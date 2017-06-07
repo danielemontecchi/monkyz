@@ -24,13 +24,12 @@ class MonkyzController extends Controller
 		$this->middleware('Lab1353\Monkyz\Middleware\ForceSchema');
 		if (config('monkyz.use_auth')) $this->middleware('Lab1353\Monkyz\Middleware\AdminAccess')->except(['getLogin','postLogin']);
 
-		$this->storeViewShare();
+    	$request = request();
+		$this->storeViewShare($request);
 	}
 
-    public function storeViewShare()
+    public function storeViewShare(Request $request)
     {
-    	$request = request();
-
     	// assets
     	$monkyz_assets = str_finish(asset('vendor/monkyz/'), '/');
 
