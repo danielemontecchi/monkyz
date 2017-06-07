@@ -24,19 +24,21 @@ class FieldsHelper
 		}
 	}
 
-	public static function renderInList($params, $value)
+	public static function renderInList($params, $value, $ajax = false)
 	{
 		$input = $params['input'];
 
-		$echo = '<td>';
+		$echo = $ajax ? '' : '<td>';
 		switch ($input) {
 		    case 'checkbox':
-		    	$echo = '<td align="center">';
+				$echo = $ajax ? '<div class="text-center">' : '<td align="center">';
 		    	$echo .= self::renderCheckbox($value);
+		    	if ($ajax) $echo .= '</div>';
 		        break;
 		    case 'color':
-		    	$echo = '<td align="center">';
+				$echo = $ajax ? '<div class="text-center">' : '<td align="center">';
 		    	$echo .= self::renderColor($value);
+		    	if ($ajax) $echo .= '</div>';
 		        break;
 		    case 'date':
 		    	$echo .= self::renderDate($value, false);
@@ -54,8 +56,9 @@ class FieldsHelper
 		    	$echo .= self::renderImage($params, $value);
 		        break;
 		    case 'number':
-		    	$echo = '<td align="right">';
+				$echo = $ajax ? '<div class="text-right">' : '<td align="right">';
 		    	$echo .= self::renderNumber($value);
+		    	if ($ajax) $echo .= '</div>';
 		        break;
 		    case 'relation':
 		    	$echo .= self::renderRelation($params, $value);
@@ -69,7 +72,7 @@ class FieldsHelper
 		    default:	// text, block, hidden
 		    	$echo .= self::renderText($value);
 		}
-		$echo .= '</td>';
+		$echo .= $ajax ? '' : '</td>';
 
 		return $echo;
 	}

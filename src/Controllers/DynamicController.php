@@ -9,6 +9,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
+use Lab1353\Monkyz\Helpers\FieldsHelper;
 use Lab1353\Monkyz\Helpers\FileHelper as HFile;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 use Lab1353\Monkyz\Models\DynamicModel;
@@ -36,33 +37,53 @@ class DynamicController extends MonkyzController
 
 	public function getList($section)
 	{
+		$records = [];
+		if (!$this->ajax_list) {
+			$model = new DynamicModel($section);
+			$records = $model->get()->toArray();
+		}
+
 		// datatables
 		$dt = '
 		$(document).ready(function(){
 			$(".table").DataTable( {';
 
-		if(\App::getLocale()=='it') {
+		$dt.='
+			"pagingType": "full_numbers",
+			"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+		';
+		if ($this->ajax_list) {
 			$dt.='
-	            "pagingType": "full_numbers",
-	            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-	        ';
-	        if ($this->ajax_list) {
-				$dt.='
-					"processing": true,
-	        		"serverSide": true,
-		        ';
-        	}
-			$dt.='
-	            "ajax": "'.route('monkyz.dynamic.page', compact('section')).'",
-	            responsive: true,
-				"language": {
-					"url": "//cdn.datatables.net/plug-ins/'.config('monkyz.vendors.datatables', '1.10.12').'/i18n/Italian.json"
-				},';
+				"processing": true,
+				"serverSide": true,
+			';
 		}
+		$dt.='
+			"ajax": "'.route('monkyz.dynamic.page', compact('section')).'",
+			responsive: true,';
+
+		switch (strtolower(\App::getLocale())) {
+			case 'it':	$language = 'Italian'; break;
+			case 'es':	$language = 'Spanish'; break;
+			case 'fr':	$language = 'French'; break;
+			case 'de':	$language = 'Dutch'; break;
+			case 'pt':	$language = 'Portuguese'; break;
+			case 'ru':	$language = 'Russian'; break;
+
+			case 'en':
+			default:
+				$language = 'English';
+				break;
+		}
+		$dt.='
+			"language": {
+				"url": "//cdn.datatables.net/plug-ins/'.config('monkyz.vendors.datatables', '1.10.12').'/i18n/'.$language.'.json"
+			},';
+
 		$i = 0;
 		$dt_order = '';
 		$dt .= '"columns": [ ';
-		foreach ($this->htables->getColumns($section) as $column=>$params) {
+		foreach ($this->fields as $column=>$params) {
 			if ($params['in_list']) {
 				$dt .= '{"data":"'.$column.'",';
 				if (in_array($params['input'], ['checkbox','color','file','image'])) {
@@ -72,8 +93,13 @@ class DynamicController extends MonkyzController
 				}
 				$dt .= '}, ';
 				if ($params['input']=='text' && empty($dt_order)) {
-					$dt_order .= '
+					$dt_order = '
 						"order": [[ '.$i.', "asc" ]],
+					';
+				}
+				if (!empty($params['order'])) {
+					$dt_order = '
+						"order": [[ '.$i.', "'.$params['order'].'" ]],
 					';
 				}
 				$i++;
@@ -91,14 +117,15 @@ class DynamicController extends MonkyzController
 
 		$table_params = $this->htables->getTable($section);
 		$page_title = '<i class="'.$table_params['icon'].'"></i>'.ucfirst($section).' <small>list</small>';
+		$ajax_list = $this->ajax_list;
+		$key = $this->htables->findKeyFieldName($section);
 
-
-		return view('monkyz::dynamic.list')->with(compact('scripts_datatables', 'page_title'));
+		return view('monkyz::dynamic.list')->with(compact('scripts_datatables', 'page_title', 'ajax_list', 'records', 'key'));
 	}
 
 	public function ajaxPagination(Request $request, $section)
 	{
-		$fields = array_keys($this->htables->getColumns($section));
+		$fields = array_keys($this->fields);
 		$fields_list = $this->htables->getColumnsInList($section);
 		$key = $this->htables->findKeyFieldName($section);
 		$model = new DynamicModel($section);
@@ -144,7 +171,11 @@ class DynamicController extends MonkyzController
 		foreach ($items as $k=>$item) {
 			$new = $item;
 			foreach ($fields as $field) {
-				if (!in_array($field, $fields_list)) unset($new[$field]);
+				if (in_array($field, $fields_list)) {
+					$new[$field] = FieldsHelper::renderInList($this->fields[$field], $new[$field], true);
+				} else {
+					unset($new[$field]);
+				}
 			}
 			$new['actions'] = '
 				<a href="'.route('monkyz.dynamic.edit', [ 'id'=>$item[$key], 'section'=>$section ]).'" class="btn btn-sm btn-fill btn-primary"><i class="fa fa-pencil"></i>Edit</a>
@@ -162,7 +193,7 @@ class DynamicController extends MonkyzController
 
 	public function getEdit($section, $id=0)
 	{
-		$fields = $this->htables->getColumns($section);
+		$fields = $this->fields;
 		$is_add_mode = true;
 		$last_edit = false;
 
@@ -200,7 +231,7 @@ class DynamicController extends MonkyzController
 		$data = $request->all();
 
 		if (!empty($data)) {
-			$fields = $this->htables->getColumns($section);
+			$fields = $this->fields;
 
 			$model = new DynamicModel($section);
 			$field_key = $model->getKeyName();	// $this->htables->findKeyFieldName($section)
@@ -362,7 +393,7 @@ class DynamicController extends MonkyzController
 	{
 		$model = new DynamicModel($section);
 
-		$fields = $this->htables->getColumns($section);
+		$fields = $this->fields;
 		$field_key = $this->htables->findKeyFieldName($section);
 		$files = [];
 		$useSoftDelete = false;

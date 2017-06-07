@@ -137,7 +137,8 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
 	'fields'	=> [
 		'field_name'	=> [	// name of field in db
 			'title'	=> 'Column',
-			'input'	=> 'text',
+      'input' => 'text',
+			'order'	=> 'asc',
 			'in_list'	=> true,
 			'in_edit'	=> true,
 			'enum'	=> [
@@ -193,6 +194,7 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
   - `textarea`: textarea tag
   - `url`: url tag (for details see: [W3C HTML Forms](http://www.w3schools.com/html/html_forms.asp))
   - (You can create [your own custom fields](#custom-fields))
+- `order`: (null|asc|desc) defines the default table sorting
 - `in_list` (true|false): visibility in list
 - `in_edit` (true|false): visibility in edit and add record
 - `enum`: array `'key' => 'value'` for populate the select box

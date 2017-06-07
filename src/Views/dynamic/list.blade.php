@@ -20,22 +20,24 @@
 									<th class="text-center">Actions</th>
 								</tr>
 							</thead>
-{{-- 							<tbody>
-								@foreach($records as $record)
-									<tr>
-										@foreach($fields as $field=>$params)
-											@if($params['in_list'])
-												{!! Lab1353\Monkyz\Helpers\FieldsHelper::renderInList($params, $record[$field]) !!}
-											@endif
-										@endforeach
-										<td align="right">
-											<a href="{{ route('monkyz.dynamic.edit', [ 'id'=>$record[$key], 'section'=>$section ]) }}" class="btn btn-sm btn-fill btn-primary"><i class="fa fa-pencil"></i>Edit</a>
-											<a href="{{ route('monkyz.dynamic.delete', [ 'id'=>$record[$key], 'section'=>$section ]) }}" class="btn btn-sm btn-fill btn-danger btn-delete-record"><i class="fa fa-trash"></i>Delete</a>
-										</td>
-									</tr>
-								@endforeach
-							</tbody>
- --}}							<tfoot></tfoot>
+							@if(!$ajax_list)
+								<tbody>
+									@foreach($records as $record)
+										<tr>
+											@foreach($fields as $field=>$params)
+												@if($params['in_list'])
+													{!! Lab1353\Monkyz\Helpers\FieldsHelper::renderInList($params, $record[$field]) !!}
+												@endif
+											@endforeach
+											<td align="right">
+												<a href="{{ route('monkyz.dynamic.edit', [ 'id'=>$record[$key], 'section'=>$section ]) }}" class="btn btn-sm btn-fill btn-primary"><i class="fa fa-pencil"></i>Edit</a>
+												<a href="{{ route('monkyz.dynamic.delete', [ 'id'=>$record[$key], 'section'=>$section ]) }}" class="btn btn-sm btn-fill btn-danger btn-delete-record"><i class="fa fa-trash"></i>Delete</a>
+											</td>
+										</tr>
+									@endforeach
+								</tbody>
+							@endif
+							<tfoot></tfoot>
 						</table>
 					</div>
 				</div>

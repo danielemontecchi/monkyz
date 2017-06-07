@@ -1,8 +1,9 @@
-# CHANGE LOG:
+# CHANGELOG:
 
 ## Versions
 
 * [development](#development)
+* [1.0.8 (2017-06-07)](#108-2017-06-07)
 * [1.0.7 (2017-03-15)](#107-2017-03-15)
 * [1.0.6 (2016-12-13)](#106-2016-12-13)
 * [1.0.5 (2016-11-18)](#105-2016-11-18)
@@ -13,6 +14,13 @@
 * [1.0.0 (2016-10-10)](#100-2016-10-10)
 
 ### Development
+
+### 1.0.8 (2017-06-07)
+
+* Bug Ajax table fixed
+* Minor bug fixed
+* Validation fields on login
+* Definition of table sorting
 
 ### 1.0.7 (2017-03-15)
 

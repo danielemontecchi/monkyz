@@ -153,6 +153,8 @@ class TablesHelper
 
 				$c_default = (!empty($column->COLUMN_DEFAULT)) ? $column->COLUMN_DEFAULT : '';
 
+				$c_order = (!empty($override['order']) && ($override['order']=='asc' || $override['order']=='desc')) ? $override['order'] : '';
+
 				$c_in_list = (!in_array($c_type, ['text', 'key']) && !in_array($c_name, $fields_name_hide_in_edit));
 				if (isset($override['in_list'])) $c_in_list = $override['in_list'];
 
@@ -247,6 +249,7 @@ class TablesHelper
 					'title'	=> $c_title,
 					'type'	=> $c_type,
 					'input'	=> $c_input,
+					'order'	=> $c_order,
 					'default'	=> $c_default,
 					'in_list'	=> $c_in_list,
 					'in_edit'	=> $c_in_edit,
