@@ -85,14 +85,14 @@
 		@else
 			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/{{ config('monkyz.vendors.bootstrap3wysiwyg', '0.3.3') }}/locales/bootstrap-wysihtml5.en-US.min.js"></script>
 		@endif
-		
+
 		<script>
 			$(document).ready(function(){
 				$('.wysiwyg').wysihtml5({
 					"font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
-					"color": false, //Button to change color of font  
+					"color": false, //Button to change color of font
 					"emphasis": true, //Italics, bold, etc. Default true
-					"blockquote": true, //Blockquote  
+					"blockquote": true, //Blockquote
 					"lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
 					"html": false, //Button which allows you to edit the generated HTML. Default false
 					"link": true, //Button to insert a link. Default true

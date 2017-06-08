@@ -199,7 +199,7 @@ The `tables` parameter are the ovveride array of dynamic DB structure:
 - `in_edit` (true|false): visibility in edit and add record
 - `enum`: array `'key' => 'value'` for populate the select box
 - `file`: file/image field details
-  - `disk`: disk name for `Storage` class, configured in config files `filesystems.php` (for more info see [Laravel Filesystem Documentation](https://laravel.com/docs/5.2/filesystem))
+  - `disk`: disk name for `Storage` class, configured in config files `filesystems.php` (for more info see [Laravel Filesystem Documentation](https://laravel.com/docs/5.2/filesystem)). If no one is indicated, it takes the default disk.
   - `path`: relative path of images uploaded
   - `overwrite` (true|false): overwrite the file if it already exists
   - `resize` (true|false): if field is a image, determines if the uploaded image will be resized

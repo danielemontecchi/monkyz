@@ -177,8 +177,8 @@ class TablesHelper
 
 				// file/image
 				$c_file = [
-					'disk'	=> 'local',
-					'path'	=> 'uploads/',
+					'disk'	=> config('filesystems.default'),
+					'path'	=> config('filesystems.disks.'.config('filesystems.default').'.root') ?? '/',
 					'overwrite'	=> true,
 					'resize'	=> false,
 					'resize_height_px'	=> 1000,

@@ -9,10 +9,10 @@ use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 
 class FileHelper
 {
-	protected $disk = 'local';
+	protected $disk = '';
 	protected $disk_params = [];
 
-	public function __construct($disk='local')
+	public function __construct($disk='')
 	{
 		$this->setDisk($disk);
 	}
@@ -30,7 +30,6 @@ class FileHelper
 	{
 		$disk = config('filesystems.default');
 		$disks = array_keys(config('filesystems.disks'));
-
 		if (in_array($disknew, $disks)) {
 			$disk = $disknew;
 		}
@@ -113,6 +112,7 @@ class FileHelper
 			$path = str_finish($path, '/');
 
 			$cache_key = 'monkyz-images-url_'.$disk.'_'.str_slug($path).'_'.str_slug($file_name);
+
 
 			if (Cache::has($cache_key)) {
 				$url = Cache::get($cache_key);
