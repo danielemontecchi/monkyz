@@ -6,7 +6,7 @@
 			<div class="card">
 				<div class="content">
 					<div class="toolbar">
-						<!--Here you can write extra buttons/actions for the toolbar-->
+						<a href="{{ route('monkyz.dynamic.add', compact('section')) }}" class="btn btn-fill btn-success"><i class="fa fa-plus"></i>Add new</a>
 					</div>
 					<div class="fresh-datatables">
 						<table id="datatables" class="table table-striped table-no-bordered table-hover">

@@ -15,6 +15,9 @@
 
 ### Development
 
+* change minor graphics
+* add button "create new"
+
 ### 1.0.8 (2017-06-07)
 
 * Bug Ajax table fixed
