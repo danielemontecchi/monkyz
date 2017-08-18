@@ -397,42 +397,47 @@ class DynamicController extends MonkyzController
 		$field_key = $this->htables->findKeyFieldName($section);
 		$files = [];
 		$useSoftDelete = false;
-		foreach ($fields as $field=>$params) {
-			if (in_array($params['input'], ['file', 'image'])) {
-				$files[$field] = '';
-			}
-			if ($field=='deleted_at') {
-				$useSoftDelete = true;
-			}
-		}
-
 		$record = $model->where($field_key, $id)->first();
-		foreach ($files as $field=>$file) {
-			$files[$field] = $record->$file;
-		}
-		if ($record->delete()) {
 
-			// delete files
-			if (!$useSoftDelete && !empty($files)) {
-				foreach ($files as $field=>$file) {
-					$field_params = $fields['fields'][$field]['file'];
-					$disk = $field_params['disk'];
-
-					if (!empty($disk)) {
-						$hfile = new HFile($disk);
-						$hfile->delete($field_params, $file);
-					}
+		if (!empty($record->id)) {
+			foreach ($fields as $field=>$params) {
+				if (in_array($params['input'], ['file', 'image'])) {
+					$files[$field] = $record->$field;
+				}
+				if ($field=='deleted_at') {
+					$useSoftDelete = true;
 				}
 			}
 
-			return redirect()
-				->route('monkyz.dynamic.list', compact('section'))
-				->with('success', 'You have successfully Deleted the record #'.$id.'!')
-			;
+			if ($record->delete()) {
+
+				// delete files
+				if (!$useSoftDelete && !empty($files)) {
+					foreach ($files as $field=>$file) {
+						$field_params = $fields['fields'][$field]['file'];
+						$disk = $field_params['disk'];
+
+						if (!empty($disk)) {
+							$hfile = new HFile($disk);
+							$hfile->delete($field_params, $file);
+						}
+					}
+				}
+
+				return redirect()
+					->route('monkyz.dynamic.list', compact('section'))
+					->with('success', 'You have successfully Deleted the record #'.$id.'!')
+				;
+			} else {
+				return redirect()
+					->back()
+					->with('error', 'It was an error in the deleting!')
+				;
+			}
 		} else {
 			return redirect()
 				->back()
-				->with('error', 'It was an error in the deleting!')
+				->with('error', 'Record #'.$id.' not found!')
 			;
 		}
 	}
