@@ -152,7 +152,7 @@ class DynamicController extends MonkyzController
 			$search_str = '';
 			if (!empty($search)) {
 				foreach ($fields as $column => $param) {
-					if ($param['in_list']) {
+					if (!empty($param['in_list'])) {
 						if (!empty($search_str)) $search_str .= ' OR ';
 						$search_str .= $column." LIKE '%$search%'";
 					}
