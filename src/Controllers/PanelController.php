@@ -32,15 +32,18 @@ class PanelController extends MonkyzController
 				$counters = Cache::get($cache_key);
 			} else {
 				$tables = $this->htables->getTables();
+				$config_tables = array_keys(config('monkyz-tables.tables'));
 				foreach ($tables as $table => $params) {
-					if (!empty($settings['counters_'.$table])) {
-						$m = new DynamicModel($table);
-						$c = $m->count();
+					if (in_array($table, $config_tables)) {
+						if (!empty($settings['counters_'.$table])) {
+							$m = new DynamicModel($table);
+							$c = $m->count();
 
-						$counters[$table] = [
-							'count' => $c,
-							'icon'  => $params['icon'],
-						];
+							$counters[$table] = [
+								'count' => $c,
+								'icon'  => $params['icon'],
+							];
+						}
 					}
 				}
 				Cache::put($cache_key, $counters, (int)config('monkyz.cache_minutes', 60));
@@ -90,8 +93,8 @@ class PanelController extends MonkyzController
 		$content = substr($content, strpos($content, '#development)')+13);
 		$content = substr($content, strpos($content, '[')+1);
 		$version = substr($content, 0, strpos($content, ' '));
-		
-		// PAGE TITLE		
+
+		// PAGE TITLE
 		$page_title = '<i class="fa fa-info"></i>Monkyz <small>'.$version.'</small>';
 
 		// README

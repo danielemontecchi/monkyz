@@ -30,6 +30,7 @@ class FileHelper
 	{
 		$disk = config('filesystems.default');
 		$disks = array_keys(config('filesystems.disks'));
+
 		if (in_array($disknew, $disks)) {
 			$disk = $disknew;
 		}
@@ -112,7 +113,6 @@ class FileHelper
 			$path = str_finish($path, '/');
 
 			$cache_key = 'monkyz-images-url_'.$disk.'_'.str_slug($path).'_'.str_slug($file_name);
-
 
 			if (Cache::has($cache_key)) {
 				$url = Cache::get($cache_key);
