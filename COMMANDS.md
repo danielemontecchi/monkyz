@@ -14,7 +14,7 @@ cat packages/lab1353/monkyz/resources/assets/js/pages/login.js > packages/lab135
 
 **Force publish assets**
 
-php artisan vendor:publish --provider="Lab1353\Monkyz\Providers\MonkyzServiceProvider" --force
+php artisan vendor:publish --provider="Lab1353\Monkyz\Providers\MonkyzServiceProvider" --force && rm -rf resources/views/vendor/monkyz
 
 # HELP
 

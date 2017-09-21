@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
                             <form method="post" action="{{ route('monkyz.users.login') }}">
-                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                {{ csrf_field() }}
                                 <div class="card" data-background="color" data-color="blue">
                                     <div class="header">
 										<img src="{{ $monkyz_assets }}images/logo/monkyz_light_80.png" />
