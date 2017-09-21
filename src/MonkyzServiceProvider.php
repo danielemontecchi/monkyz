@@ -1,6 +1,6 @@
 <?php
 
-namespace Lab1353\Monkyz\Providers;
+namespace Lab1353\Monkyz;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +13,7 @@ class MonkyzServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
-		$path_src = str_finish(dirname(__DIR__), '/');
+		$path_src = str_finish(__DIR__, '/');
 		$path_pkg = str_replace('src/', '', $path_src);
 
 		// load views
@@ -36,7 +36,7 @@ class MonkyzServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$path_src = str_finish(dirname(__DIR__), '/');
+		$path_src = str_finish(__DIR__, '/');
 		$path_pkg = str_replace('src/', '', $path_src);
 
 		// routes
@@ -49,5 +49,14 @@ class MonkyzServiceProvider extends ServiceProvider
 		$this->commands([
 			\Lab1353\Monkyz\Commands\MonkyzTables::class
 		]);
+
+		// providers
+		$this->app->register('Spatie\Analytics\AnalyticsServiceProvider');
+		$this->app->register('anlutro\LaravelSettings\ServiceProvider');
+
+		// aliases
+		$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+		$loader->alias('Analytics', 'Spatie\Analytics\AnalyticsFacade');
+		$loader->alias('Setting', 'anlutro\LaravelSettings\Facade');
 	}
 }

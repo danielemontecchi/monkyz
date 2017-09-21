@@ -40,6 +40,7 @@ return [
 			'title'	=> 'Users',
 			'icon'	=> 'fa fa-users',
 			'visible'	=> true,
+			'ajax_list'	=> true,
 			'fields'	=> [
 				'id'	=> [
 					'title'	=> 'Id',

@@ -1,0 +1,28 @@
+.sidebar .logo {
+	img {
+		height: 32px;
+	}
+}
+
+.perfect-scrollbar-off .sidebar .sidebar-wrapper {
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.sidebar .nav {
+	i {
+		line-height: 20px;
+	}
+	&> li.title {
+		background: rgba(0,0,0,0.1);
+		text-transform: uppercase;
+		padding: 8px 3px;
+		margin: 20px 0px 0px;
+		color: #D1CFCD;
+		font-weight: bold;
+	}
+	.nav i {
+		font-size: 16px;
+		margin-right: 5px;
+	}
+}

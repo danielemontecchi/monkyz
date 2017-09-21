@@ -20,8 +20,12 @@
 									<i class="fa fa-external-link"></i><span>Go to site</span>
 								</a>
 							</li>
+							<li id="settings" class="icon">
+								<a href="{{ route('monkyz.settings') }}">
+									<i class="fa fa-cog"></i><span>Settings</span>
+								</a>
+							</li>
 							@if (config('monkyz.use_auth'))
-								<li class="spacer"></li>
 								<li id="user" class="image">
 									<a href="#">
 										<img src="{{ $user['image'] }}" class="img-circle" />

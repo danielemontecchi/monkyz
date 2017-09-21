@@ -1,20 +1,31 @@
 <?php
 namespace Lab1353\Monkyz\Helpers;
 
-use Cache;
-use Storage;
+use File;
+use Exception;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Lab1353\Monkyz\Helpers\TablesHelper as HTables;
 
 class FileHelper
 {
-	protected $disk = 'local';
+	protected $disk = '';
 	protected $disk_params = [];
 
-	public function __construct($disk='local')
+	public function __construct($disk='')
 	{
 		$this->setDisk($disk);
 	}
 
+
+	/***********
+	 * PRIVATE *
+	 ***********/
+
+	/**
+	 * Setting the disk of Storage to use
+	 * @param string $disknew name of disk to use
+	 */
 	private function setDisk($disknew)
 	{
 		$disk = config('filesystems.default');
@@ -30,35 +41,47 @@ class FileHelper
 	}
 
 
-	/**
-	 * CONVERT
-	 */
+	/***************
+	 * DIRECTORIES *
+	 ***************/
 
-	public static function bytes2human($bytes) {
-		$bytes = floatval($unit);
+	public static function countFilesInFolder($folder)
+	{
+		$files = self::filesInFolder($folder);
+		return count($files);
+	}
 
-		$bytes_array = array(
-			'B' => 8,
-			'KB' => 1024,
-			'MB' => 1024 * 1024,
-			'GB' => 1024 * 1024 * 1024,
-			'TB' => 1024 * 1024 * 1024 * 1024,
-			'PB' => 1024 * 1024 * 1024 * 1024 * 1024,
-		);
+	public static function filesInFolder($folder)
+	{
+		return File::files($folder);
+	}
 
-		if (preg_match('#([KMGTP]?B)$#si', $bytes, $matches) && !empty($bytes_array[$matches[1]])) {
-			$bytes *= $bytes_array[$matches[1]];
-		}
-
-		$bytes = intval(round($bytes, 2));
-
-		return $bytes;
+	public static function cleanDirectory($folder)
+	{
+		return File::cleanDirectory($folder);
 	}
 
 
+	/***********
+	 * CONVERT *
+	 ***********/
+
 	/**
-	 * URL
+	 * Convert bytes to human readable
+	 * @param  integer $bytes    bytes to convert
+	 * @param  integer $decimals number of decimals
+	 * @return string            the readable string
 	 */
+	public static function bytes2human($bytes, $decimals = 2) {
+		$size = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
+		$factor = floor((strlen($bytes) - 1) / 3);
+		return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
+	}
+
+
+	/*******
+	 * URL *
+	 *******/
 
 	public function getUrlFileTypeIcon($file_name)
 	{
@@ -87,7 +110,6 @@ class FileHelper
 		$url = '';
 		if (!empty($file_name)) {
 			$disk = $this->disk;
-			$driver = $this->disk_params['driver'];
 			$path = str_finish($path, '/');
 
 			$cache_key = 'monkyz-images-url_'.$disk.'_'.str_slug($path).'_'.str_slug($file_name);
@@ -95,11 +117,9 @@ class FileHelper
 			if (Cache::has($cache_key)) {
 				$url = Cache::get($cache_key);
 			} else {
-				if ($driver=='local') {
+				try {
 					$url = Storage::disk($disk)->url($path.$file_name);
-					$url = str_replace('/storage', '', $url);
-					$url = asset($url);
-				} else {
+				} catch (Exception $e) {
 					$adapter = Storage::disk($disk)->getAdapter();
 					if (!empty($adapter)) {
 						$client = $adapter->getClient();
@@ -119,9 +139,9 @@ class FileHelper
 	}
 
 
-	/**
-	 * DELETE
-	 */
+	/**********
+	 * DELETE *
+	 **********/
 
 	public function delete($params, $file)
 	{

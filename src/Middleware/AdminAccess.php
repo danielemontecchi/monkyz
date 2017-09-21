@@ -3,7 +3,7 @@
 namespace Lab1353\Monkyz\Middleware;
 
 use Closure;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAccess
 {
@@ -14,7 +14,7 @@ class AdminAccess
 	 * @param  \Closure  $next
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next, $guard = null)
+	public function handle($request, Closure $next)
 	{
 		if (!Auth::check()) {
 			if ($request->ajax() || $request->wantsJson()) {

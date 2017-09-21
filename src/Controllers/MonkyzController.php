@@ -2,7 +2,7 @@
 
 namespace Lab1353\Monkyz\Controllers;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -23,28 +23,29 @@ class MonkyzController extends Controller
 		}
 		$this->middleware('Lab1353\Monkyz\Middleware\ForceSchema');
 		if (config('monkyz.use_auth')) $this->middleware('Lab1353\Monkyz\Middleware\AdminAccess')->except(['getLogin','postLogin']);
-		$this->storeViewShare();
+
+    	$request = request();
+		$this->storeViewShare($request);
 	}
 
-    public function storeViewShare()
+    public function storeViewShare(Request $request)
     {
     	// assets
-    	//$monkyz_assets = str_replace(['http:','https:'], '', str_finish(url('/vendor/monkyz/'), '/'));
-    	$monkyz_assets = '/vendor/monkyz/';
+    	$monkyz_assets = str_finish(asset('vendor/monkyz/'), '/');
 
     	// sections
     	$this->htables = new HTables();
 		$tables = $this->htables->getTables();
 
 		// route name
-		$route_name = \Request::route()->getName();
+		$route_name = $request->route() ? $request->route()->getName() : '';
 		$route_name = str_replace('monkyz.', '', $route_name);
-		$section_name = \Request::path();
+		$section_name = $request->path();
 		$section_name = str_replace(config('monkyz.prefix').'/', '', $section_name);
 		while (strpos($section_name, '/')!==false) {
 			$section_name = dirname($section_name);
 		}
-		$page_title = '<i class="fa fa-dashboard"></i>'.$_SERVER['HTTP_HOST'];
+		$page_title = '<i class="fa fa-dashboard"></i>'.$request->server('HTTP_HOST');
 
 		// user
 		$user = [];

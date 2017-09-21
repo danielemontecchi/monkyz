@@ -1,8 +1,9 @@
 <div class="form-group">
 	<label for="{{ $field }}">{{ $params['title'] }}@if(in_array('required', array_keys($params['attributes']))) <strong>*</strong>@endif</label>
-	<input type="url" class="form-control @if(!empty($params['attributes']['class'])){{ $params['attributes']['class'] }}@endif"
+	<textarea class="form-control wysiwyg @if(!empty($params['attributes']['class'])){{ $params['attributes']['class'] }}@endif"
 		id="{{ $field }}" name="{{ $field }}"
-		placeholder="{{ $params['title'] }}" value="{{ $record->$field }}"
+		placeholder="{{ $params['title'] }}"
+		rows="10"
 		@if(!empty($params['attributes']))
 			@foreach($params['attributes'] as $k=>$v)
 				@if(!empty($k))
@@ -10,9 +11,5 @@
 				@endif
 			@endforeach
 		@endif
-	>
-	@if(!empty($record->$field))
-		<br>
-		<a href="{{ $record->$field }}" target="_blank">go to link</a>
-	@endif
+	>{!! $record->$field !!}</textarea>
 </div>

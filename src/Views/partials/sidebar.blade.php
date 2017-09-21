@@ -25,9 +25,10 @@
 				</div> --}}
 				<ul class="nav">
 					<li @if($route_name=='dashboard')class="active"@endif>
-						<a href="{{ route('monkyz.dashboard') }}"><i class="fa fa-dashboard fa-fw"></i>Dashboard</a>
+						<a href="{{ route('monkyz.dashboard') }}"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Dashboard</a>
 					</li>
 
+					<li class="title">Content</li>
 					@foreach($tables as $table => $params)
 						@if(!empty($table))
 							@if($params['visible'])
@@ -40,18 +41,28 @@
 						@endif
 					@endforeach
 
-					{{-- <li @if(starts_with($route_name, 'settings.'))class="active"@endif>
-						<a data-toggle="collapse" href="#settings" @if(starts_with($route_name, 'settings.'))aria-expanded="true"@endif>
-							<i class="fa fa-cogs fa-fw"></i>
-							<p>Settings
+					<li class="title">Workshop</li>
+
+					<li @if($route_name=='settings')class="active"@endif>
+						<a href="{{ route('monkyz.settings') }}"><i class="fa fa-cog fa-fw" aria-hidden="true"></i>Settings</a>
+					</li>
+
+					<li @if(starts_with($route_name, 'tools.'))class="active"@endif>
+						<a data-toggle="collapse" href="#tools" @if(starts_with($route_name, 'tools.'))aria-expanded="true"@endif>
+							<i class="fa fa-wrench fa-fw" aria-hidden="true"></i>
+							<p>Tools
 								<b class="caret"></b>
 							</p>
 						</a>
-						<div class="collapse @if(starts_with($route_name, 'settings.'))in @endif" id="settings">
+						<div class="collapse @if(starts_with($route_name, 'tools.'))in @endif" id="tools">
 							<ul class="nav">
-								<li @if($route_name=='settings.dashboard')class="active"@endif><a href="{{ route('monkyz.settings.dashboard') }}">Dashboard</a></li>
+								<li @if($route_name=='tools.files')class="active"@endif><a href="{{ route('monkyz.tools.files') }}"><i class="fa fa-files-o fa-fw" aria-hidden="true"></i>Files</a></li>
 							</ul>
 						</div>
-					</li> --}}
+					</li>
+
+					<li @if($route_name=='info')class="active"@endif>
+						<a href="{{ route('monkyz.info') }}"><i class="fa fa-info fa-fw" aria-hidden="true"></i>Information</a>
+					</li>
 				</ul>
 			</div>

@@ -13,7 +13,7 @@
 
 .form-control {
     background-color: $gray-input-bg;
-    border: 1px solid $gray-input-outline;
+    border: 1px solid $medium-gray;
     border-radius: $border-radius-base;
     color: $font-color;
     font-size: $font-size-base;
@@ -21,7 +21,7 @@
     @include box-shadow(none);
 
     &:focus{
-       border: 1px solid $gray-input-outline;
+       border: 1px solid $dark-gray;
        background-color: $white-bg;
        @include box-shadow(none);
        outline: 0 !important;

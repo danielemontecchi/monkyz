@@ -1,7 +1,7 @@
 <?php
 namespace Lab1353\Monkyz\Helpers;
 
-use Cache;
+use Illuminate\Support\Facades\Cache;
 
 class TablesHelper
 {
@@ -48,7 +48,6 @@ class TablesHelper
 	{
 		if (empty($this->tables)) {
 			$tables = [];
-			$override = $this->override_tables;
 			$db_connection = config('database.default');
 			$db_name = config('database.connections.'.$db_connection.'.database');
 			if (!empty($db_name)) {
@@ -78,7 +77,9 @@ class TablesHelper
 			$t_title = ucwords(str_replace('_', ' ', $table_name));
 			if (isset($override['title'])) $t_title = $override['title'];
 			$t_visible = true;
-			if (isset($override['visible'])) $t_visible = $override['visible'];
+			if (isset($override['visible'])) $t_visible = (bool)$override['visible'];
+			$t_ajax_list = false;
+			if (isset($override['ajax_list'])) $t_ajax_list = (bool)$override['ajax_list'];
 			$t_icon = 'fa fa-table';
 			if (isset($override['icon'])) $t_icon = $override['icon'];
 
@@ -86,6 +87,7 @@ class TablesHelper
 				'title'	=> $t_title,
 				'icon'	=> $t_icon,
 				'visible'	=> $t_visible,
+				'ajax_list'	=> $t_ajax_list,
 			];
 		}
 
@@ -115,7 +117,8 @@ class TablesHelper
 		if (empty($this->tables[$section]['fields'])) {
 			$fields_name_hide_in_edit = config('monkyz-tables.fields_name_hide_in_edit', []);
 
-			$columns = \DB::select('SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`=\''.$section.'\'');
+			$db_name = config('database.connections.'.config('database.default').'.database');
+			$columns = \DB::select('SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_NAME`=\''.$section.'\' AND `TABLE_SCHEMA`=\''.$db_name.'\'');
 			$fields = [];
 			foreach ($columns as $column) {
 				$c_name = $column->COLUMN_NAME;
@@ -150,6 +153,8 @@ class TablesHelper
 
 				$c_default = (!empty($column->COLUMN_DEFAULT)) ? $column->COLUMN_DEFAULT : '';
 
+				$c_order = (!empty($override['order']) && ($override['order']=='asc' || $override['order']=='desc')) ? $override['order'] : '';
+
 				$c_in_list = (!in_array($c_type, ['text', 'key']) && !in_array($c_name, $fields_name_hide_in_edit));
 				if (isset($override['in_list'])) $c_in_list = $override['in_list'];
 
@@ -172,8 +177,8 @@ class TablesHelper
 
 				// file/image
 				$c_file = [
-					'disk'	=> 'local',
-					'path'	=> 'uploads/',
+					'disk'	=> config('filesystems.default'),
+					'path'	=> config('filesystems.disks.'.config('filesystems.default').'.root') ?? '/',
 					'overwrite'	=> true,
 					'resize'	=> false,
 					'resize_height_px'	=> 1000,
@@ -230,7 +235,8 @@ class TablesHelper
 					if ($length>0) $override['attributes']['maxlength'] = $length;
 				}
 
-				if ($column->IS_NULLABLE=='NO' && empty($column->COLUMN_DEFAULT) && $c_type!='key') $c_attributes['required'] = 'required';
+				if ($column->IS_NULLABLE=='NO' && is_null($column->COLUMN_DEFAULT) && $c_type!='key') $c_attributes['required'] = 'required';
+				if (empty($override['attributes']['required'])) unset($c_attributes['required']);
 
 				if (isset($override['attributes'])) {
 					foreach ($override['attributes'] as $k=>$v) {
@@ -243,6 +249,7 @@ class TablesHelper
 					'title'	=> $c_title,
 					'type'	=> $c_type,
 					'input'	=> $c_input,
+					'order'	=> $c_order,
 					'default'	=> $c_default,
 					'in_list'	=> $c_in_list,
 					'in_edit'	=> $c_in_edit,
@@ -263,5 +270,19 @@ class TablesHelper
 		}
 
 		return $this->tables[$section]['fields'];
+	}
+
+	public function getColumnsInList($section)
+	{
+	    $fields = $this->getColumns($section);
+	    $fields_list = [];
+
+	    foreach ($fields as $field => $param) {
+	    	if ($param['in_list']) {
+	    		$fields_list[] = $field;
+	    	}
+	    }
+
+	    return $fields_list;
 	}
 }
