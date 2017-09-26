@@ -59,6 +59,11 @@
 								<i class="fa fa-floppy-o" aria-hidden="true"></i>Save and continue
 							@endif
 						</button>
+						@if (!$is_add_mode && !$first_edit)
+							<button type="submit" class="btn btn-success" id="submitPrev" name="submitPrev" value="true">
+								<i class="fa fa-floppy-o" aria-hidden="true"></i>Save and edit prev&nbsp;<i class="fa fa-angle-double-left" aria-hidden="true"></i>
+							</button>
+						@endif
 						@if (!$is_add_mode && !$last_edit)
 							<button type="submit" class="btn btn-success" id="submitNext" name="submitNext" value="true">
 								<i class="fa fa-floppy-o" aria-hidden="true"></i>Save and edit next&nbsp;<i class="fa fa-angle-double-right" aria-hidden="true"></i>

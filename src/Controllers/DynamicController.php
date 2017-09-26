@@ -196,6 +196,7 @@ class DynamicController extends MonkyzController
 		$fields = $this->fields;
 		$is_add_mode = true;
 		$last_edit = false;
+		$last_first = false;
 
 		$model = new DynamicModel($section);
 		if (!empty($id)) {
@@ -204,8 +205,10 @@ class DynamicController extends MonkyzController
 
 			// check if is the last record in table
 			$model = new DynamicModel($section);
-			$model = $model->orderBy('id', 'desc')->first();
-			$last_edit = ($model->id==$id);
+			$model_first = $model->orderBy('id', 'desc')->first();
+			$model_first = $model->orderBy('id', 'asc')->first();
+			$last_edit = ($model_last->id==$id);
+			$first_edit = ($model_first->id==$id);
 		} else {
 			$record = $model;
 		}
@@ -223,7 +226,7 @@ class DynamicController extends MonkyzController
 		$table_params = $this->htables->getTable($section);
 		$page_title = '<i class="'.$table_params['icon'].'"></i>'.ucfirst($section).' <small>&gt; '.($id>0 ? 'edit #'.$id : 'create').'</small>';
 
-		return view('monkyz::dynamic.edit')->with(compact('record', 'fields', 'is_add_mode', 'page_title', 'last_edit'));
+		return view('monkyz::dynamic.edit')->with(compact('record', 'fields', 'is_add_mode', 'page_title', 'last_edit', 'first_edit'));
 	}
 
 	public function postSave(Request $request, $section)
@@ -306,14 +309,20 @@ class DynamicController extends MonkyzController
 				$mode = 'close';
 				if (!empty($request->input('submitContinue'))) $mode = 'continue';
 				if (!empty($request->input('submitNext'))) $mode = 'next';
+				if (!empty($request->input('submitPrev'))) $mode = 'prev';
 
 				if ($mode!='close') {
 					$id = $record->id;
-					if ($mode!='continue') {
+					if ($mode=='next') {
 						// go to next record?
 						$next = new DynamicModel($section);
 						$next = $next->where($field_key, '>', $id)->orderBy('id')->first();
 						$id = $next->id;
+					} elseif ($mode=='prev') {
+						// go to prev record?
+						$prev = new DynamicModel($section);
+						$prev = $prev->where($field_key, '<', $id)->orderBy('id', 'desc')->first();
+						$id = $prev->id;
 					}
 
 					$redirect = redirect()->route('monkyz.dynamic.edit', compact('section','id'))
