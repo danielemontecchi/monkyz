@@ -205,7 +205,7 @@ class DynamicController extends MonkyzController
 
 			// check if is the last record in table
 			$model = new DynamicModel($section);
-			$model_first = $model->orderBy('id', 'desc')->first();
+			$model_last = $model->orderBy('id', 'desc')->first();
 			$model_first = $model->orderBy('id', 'asc')->first();
 			$last_edit = ($model_last->id==$id);
 			$first_edit = ($model_first->id==$id);
