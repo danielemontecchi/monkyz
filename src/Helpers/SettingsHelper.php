@@ -40,7 +40,7 @@ class SettingsHelper
 		$htables = new HTables();
 		$tables = $htables->getTables();
 		foreach ($tables as $table=>$params) {
-			$default['counters_'.$table]	= $params['visible'];
+			if (!empty($params['visible'])) $default['counters_'.$table] = $params['visible'];
 		}
 
 		return $default;
