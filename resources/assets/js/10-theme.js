@@ -10,7 +10,8 @@ var mobile_menu_visible = 0,
 
 $(document).ready(function(){
 	// PERFECT SCROLLBAR
-	isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
+	// isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
+	isWindows = false;
 
 	if (isWindows && !$('body').hasClass('sidebar-mini')){
 		// if we are on windows OS we activate the perfectScrollbar function
