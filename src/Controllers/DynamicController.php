@@ -214,13 +214,19 @@ class DynamicController extends MonkyzController
 		}
 
 		foreach ($fields as $field=>$params) {
+			$field_value = '';
 			if ($is_add_mode && !empty($params['default'])) {
-				$record->$field = $params['default'];
+				$field_value = $params['default'];
 			}
 			if (in_array($params['input'], ['datetime', 'date'])) {
-				$dt = new Carbon($record->$field);
-				$record->$field = $dt;
+				if (in_array(strtoupper($field_value), ['CURRENT_TIMESTAMP', 'NOW', 'NOW()'])) {
+					$dt = Carbon::now();
+				} else {
+					$dt = new Carbon($field_value);
+				}
+				$field_value = $dt;
 			}
+			$record->$field = $field_value;
 		}
 
 		$table_params = $this->htables->getTable($section);
