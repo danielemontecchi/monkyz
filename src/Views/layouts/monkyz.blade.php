@@ -5,7 +5,7 @@
 	@yield('css')
 </head>
 <body>
-	<div class="wrapper">
+	<div class="wrapper perfect-scrollbar-off">
 
 		<!-- Navigation -->
 		<div class="sidebar" data-background-color="brown" data-active-color="warning">
