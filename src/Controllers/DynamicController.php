@@ -214,7 +214,7 @@ class DynamicController extends MonkyzController
 		}
 
 		foreach ($fields as $field=>$params) {
-			$field_value = '';
+			$field_value = $record->$field;
 			if ($is_add_mode && !empty($params['default'])) {
 				$field_value = $params['default'];
 			}
@@ -222,7 +222,7 @@ class DynamicController extends MonkyzController
 				if (in_array(strtoupper($field_value), ['CURRENT_TIMESTAMP', 'NOW', 'NOW()'])) {
 					$dt = Carbon::now();
 				} else {
-					$dt = new Carbon($field_value);
+					$dt = Carbon::parse($field_value);
 				}
 				$field_value = $dt;
 			}
