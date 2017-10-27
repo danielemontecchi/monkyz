@@ -13,18 +13,19 @@ $(document).ready(function(){
 	// isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 	isWindows = false;
 
-	if (isWindows && !$('body').hasClass('sidebar-mini')){
-		// if we are on windows OS we activate the perfectScrollbar function
-		try {
-		   $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+	// if (isWindows && !$('body').hasClass('sidebar-mini')){
+	// 	// if we are on windows OS we activate the perfectScrollbar function
+	// 	try {
+	// 	   $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
 
-		   $('html').addClass('perfect-scrollbar-on');
-	   	} catch {
-			$('html').addClass('perfect-scrollbar-off');
-	   }
-   } else {
-	   $('html').addClass('perfect-scrollbar-off');
-   }
+	// 	   $('html').addClass('perfect-scrollbar-off');
+	//    	} catch {
+	// 		$('html').addClass('perfect-scrollbar-off');
+	//    }
+ //   } else {
+	//    $('html').addClass('perfect-scrollbar-off');
+ //   }
+	$('html').addClass('perfect-scrollbar-off');
 
    // WINDOWS
 	window_width = $(window).width();
@@ -115,9 +116,9 @@ pdp = {
 				$btn.html('<i class="ti-more-alt"></i>');
 				pdp.misc.sidebar_mini_active = false;
 
-				if(isWindows){
-					$('.sidebar .sidebar-wrapper').perfectScrollbar();
-				}
+				// if(isWindows){
+				// 	$('.sidebar .sidebar-wrapper').perfectScrollbar();
+				// }
 
 			}else{
 
@@ -125,9 +126,9 @@ pdp = {
 					$(this).css('height','auto');
 				});
 
-				if(isWindows){
-					$('.sidebar .sidebar-wrapper').perfectScrollbar('destroy');
-				}
+				// if(isWindows){
+				// 	$('.sidebar .sidebar-wrapper').perfectScrollbar('destroy');
+				// }
 
 				setTimeout(function(){
 					$('body').addClass('sidebar-mini');

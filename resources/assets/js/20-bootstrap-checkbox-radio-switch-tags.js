@@ -542,8 +542,8 @@
 	    if (val === (val = input.val())) {return;}
 
 	    // Enter new content into testSubject
-	    var escaped = val.replace(/&/g, '&amp;').replace(/\s/g,' ').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-	    testSubject.html(escaped);
+	    // var escaped = val.replace(/&/g, '&amp;').replace(/\s/g,' ').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	    // testSubject.html(escaped);
 	    // Calculate new width + whether to change
 	    var testerWidth = testSubject.width(),
 	        newWidth = (testerWidth + o.comfortZone) >= minWidth ? testerWidth + o.comfortZone : minWidth,
